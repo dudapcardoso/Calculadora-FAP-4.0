@@ -2,4 +2,4 @@ title: Calculadora FAP
 logo: fapweb.png
 description: Preencha os números de Ordem de Frequência, Gravidade e Custo de acordo com a posição do Rol de Índices do portal fapweb.
 theme: jekyll-theme-minimal
-downloads: false
+show_downloads: false

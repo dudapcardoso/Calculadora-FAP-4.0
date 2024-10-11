@@ -88,7 +88,7 @@ layout: default
     <!-- Campos adicionais aparecem após calcular -->
     <div id="camposFap" class="hidden">
         <label for="ordemFrequencia">Número Ordem Frequência:</label>
-        <input type="number" id="ordemFrequencia" placeholder="Informe o Número Rol dos Índices de Frêquencia">
+        <input type="number" id="ordemFrequencia" placeholder="Informe o Número Rol dos Índices de Frequência">
 
         <label for="ordemGravidade">Número Ordem Gravidade:</label>
         <input type="number" id="ordemGravidade" placeholder="Informe o Número Rol dos Índices de Gravidade">
@@ -102,10 +102,10 @@ layout: default
     </div>
 
     <script>
-        function verificarCamposObrigatorios(ids) {
-            for (const id of ids) {
-                if (!document.getElementById(id).value) {
-                    alert(`Por favor, preencha o campo "${id}".`);
+        function verificarCamposObrigatorios(campos) {
+            for (let campo of campos) {
+                if (!document.getElementById(campo).value) {
+                    alert(`Por favor, preencha o campo: ${campo.replace(/([A-Z])/g, ' $1').trim()}`);
                     return false;
                 }
             }
@@ -116,7 +116,6 @@ layout: default
             const campos = ["cat", "b91", "b92", "b93", "b94", "massaSalarial", "mediaVinculos", "totalBeneficios"];
             if (!verificarCamposObrigatorios(campos)) return;
 
-            // Pegar os valores de input
             const cat = parseFloat(document.getElementById("cat").value) || 0;
             const b91 = parseFloat(document.getElementById("b91").value) || 0;
             const b92 = parseFloat(document.getElementById("b92").value) || 0;
@@ -126,23 +125,16 @@ layout: default
             const mediaVinculos = parseFloat(document.getElementById("mediaVinculos").value) || 1;
             const totalBeneficios = parseFloat(document.getElementById("totalBeneficios").value) || 0;
 
-            // Cálculo do Índice de Frequência
             const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
-
-            // Cálculo do Índice de Gravidade
             const indiceGravidade = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
-
-            // Cálculo do Índice de Custo
             const indiceCusto = (totalBeneficios / massaSalarial) * 1000;
 
-            // Exibir os resultados
             document.getElementById("result").innerHTML = `
                 <strong>Índice de Frequência:</strong> ${indiceFrequencia.toFixed(4)}<br>
                 <strong>Índice de Gravidade:</strong> ${indiceGravidade.toFixed(4)}<br>
                 <strong>Índice de Custo:</strong> ${indiceCusto.toFixed(4)}
             `;
 
-            // Mostrar campos adicionais para cálculo do FAP
             document.getElementById("camposFap").classList.remove("hidden");
         }
 
@@ -150,36 +142,31 @@ layout: default
             const campos = ["ordemFrequencia", "ordemGravidade", "ordemCusto", "totalEstabelecimentos", "taxaRotatividade"];
             if (!verificarCamposObrigatorios(campos)) return;
 
-            // Pegar os valores de input adicionais
             const ordemFrequencia = parseFloat(document.getElementById("ordemFrequencia").value) || 0;
             const ordemGravidade = parseFloat(document.getElementById("ordemGravidade").value) || 0;
             const ordemCusto = parseFloat(document.getElementById("ordemCusto").value) || 0;
             const totalEstabelecimentos = parseFloat(document.getElementById("totalEstabelecimentos").value) || 1;
             const taxaRotatividade = parseFloat(document.getElementById("taxaRotatividade").value) || 0;
 
-            // Cálculo dos Percentis
             const percentilFrequencia = ((ordemFrequencia - 1) / (totalEstabelecimentos - 1)) * 100;
             const percentilGravidade = ((ordemGravidade - 1) / (totalEstabelecimentos - 1)) * 100;
             const percentilCusto = ((ordemCusto - 1) / (totalEstabelecimentos - 1)) * 100;
 
-            // Cálculo do Índice Composto
             const indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
 
-            // Cálculo do FAP Calculado com a nova condicional
             let fapCalculado = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
 
-            // Aplicar condicional da taxa de rotatividade
             if (taxaRotatividade > 75 && fapCalculado < 1) {
                 fapCalculado = 1;
             }
 
-            // Exibir os resultados do FAP
-           document.getElementById("resultFap").innerHTML = `
-    <strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(4)}<br>
-    <strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(4)}<br>
-    <strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(4)}<br>
-    <strong>Índice Composto:</strong> ${indiceComposto.toFixed(4)}<br>
-    <strong>FAP Calculado:</strong> ${fapCalculado.toFixed(4)}
+            document.getElementById("resultFap").innerHTML = `
+                <strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(4)}<br>
+                <strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(4)}<br>
+                <strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(4)}<br>
+                <strong>Índice Composto:</strong> ${indiceComposto.toFixed(4)}<br>
+                <strong>FAP Calculado:</strong> ${fapCalculado.toFixed(4)}
+            `;
         }
     </script>
 </body>

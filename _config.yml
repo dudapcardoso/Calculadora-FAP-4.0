@@ -3,3 +3,4 @@ logo: fapweb.png
 description: Números de Ordem de Frequência, Gravidade e Custo devem ser preenchidos de acordo com Rol de Índices do Fapweb.
 theme: jekyll-theme-minimal
 show_downloads: false
+github.is_project_page: false

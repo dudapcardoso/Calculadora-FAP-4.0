@@ -1,3 +1,13 @@
-theme: jekyll-theme-minimal
-Logo: fapweb.png
 title: Calculadora FAP
+Logo: fapweb.png
+description: Utilize essa calculadora para alcançar os resultados de:
+Índice de Frequência
+Índice de Gravidade
+Índice de Custo
+Percentil de Frequência
+Percentil de Gravidade
+Percentil de Custo
+Índice Composto
+Índice FAP
+theme: jekyll-theme-minimal
+

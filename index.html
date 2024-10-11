@@ -173,8 +173,14 @@ layout: default
                 fapCalculado = 1;
             }
 
-            // Exibir os resultados do FAP
-            document.getElementById("resultFap").innerHTML = `<strong>FAP Calculado:</strong> ${fapCalculado.toFixed(4)}`;
+
+            // Exibir os resultados
+            document.getElementById("resultFap").innerHTML = 
+                <strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(4)}<br>
+                <strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(4)}<br>
+                <strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(4)}<br>
+                <strong>Índice Composto:</strong> ${indiceComposto.toFixed(4)}<br>
+                <strong>FAP Calculado:</strong> ${fapCalculado.toFixed(4)}
         }
     </script>
 </body>

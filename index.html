@@ -118,6 +118,11 @@ layout: default
 
     // Verifica se todos os campos iniciais estão preenchidos
     const todosPreenchidos = cat && b91 && b92 && b93 && b94 && massaSalarial && mediaVinculos && totalBeneficios && totalEstabelecimentos && taxaRotatividade;
+        
+    // Verificar se todos os campos estão zerados
+    if (cat === 0 && b91 === 0 && b92 === 0 && b93 === 0 && b94 === 0 && massaSalarial === 0 && mediaVinculos === 0 && totalBeneficios === 0) {
+        alert("Por favor, preencha pelo menos um campo com um valor diferente de zero.");
+        return; // Interrompe a execução da função
 
     // Ativa ou desativa o botão de calcular
     document.querySelector("button[onclick='calcularIndices()']").disabled = !todosPreenchidos;

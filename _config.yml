@@ -2,12 +2,7 @@ title: Calculadora FAP
 logo: fapweb.png
 description: |
     Desenvolvido por Eduardo Pereira Cardoso.
-
-    ✔️ Graduado em Ciências Contábeis pela UNISOCIESC, 2018.  
-    ✔️ Registrado no CRCSC-042192/O-9.  
-    ✔️ MBA em IFRS pela FUNDACE USP, 2022.  
-
-    Para dúvidas, entre em contato: https://www.linkedin.com/in/eduardo-pereira-cardoso-9a5a12b3/
-    
+    Para dúvidas, entre em contato pelo QRCODE
+logo: qrcode.png
 remote_theme: dudapcardoso/minimal
 show_downloads: false

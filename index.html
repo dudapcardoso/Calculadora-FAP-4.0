@@ -102,7 +102,20 @@ layout: default
     </div>
 
     <script>
+        function verificarCamposObrigatorios(ids) {
+            for (const id of ids) {
+                if (!document.getElementById(id).value) {
+                    alert(`Por favor, preencha o campo "${id}".`);
+                    return false;
+                }
+            }
+            return true;
+        }
+
         function calcularIndices() {
+            const campos = ["cat", "b91", "b92", "b93", "b94", "massaSalarial", "mediaVinculos", "totalBeneficios"];
+            if (!verificarCamposObrigatorios(campos)) return;
+
             // Pegar os valores de input
             const cat = parseFloat(document.getElementById("cat").value) || 0;
             const b91 = parseFloat(document.getElementById("b91").value) || 0;
@@ -134,6 +147,9 @@ layout: default
         }
 
         function calcularFap() {
+            const campos = ["ordemFrequencia", "ordemGravidade", "ordemCusto", "totalEstabelecimentos", "taxaRotatividade"];
+            if (!verificarCamposObrigatorios(campos)) return;
+
             // Pegar os valores de input adicionais
             const ordemFrequencia = parseFloat(document.getElementById("ordemFrequencia").value) || 0;
             const ordemGravidade = parseFloat(document.getElementById("ordemGravidade").value) || 0;
@@ -157,16 +173,9 @@ layout: default
                 fapCalculado = 1;
             }
 
-            // Exibir os resultados
-            document.getElementById("resultFap").innerHTML = `
-                <strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(4)}<br>
-                <strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(4)}<br>
-                <strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(4)}<br>
-                <strong>Índice Composto:</strong> ${indiceComposto.toFixed(4)}<br>
-                <strong>FAP Calculado:</strong> ${fapCalculado.toFixed(4)}
-            `;
+            // Exibir os resultados do FAP
+            document.getElementById("resultFap").innerHTML = `<strong>FAP Calculado:</strong> ${fapCalculado.toFixed(4)}`;
         }
     </script>
-
 </body>
 </html>

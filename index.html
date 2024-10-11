@@ -184,7 +184,7 @@ layout: default
         }
 
         function validarNumero(element) {
-            const value = element.value;
+            const value = element.value.replace(',', '.');
             if (isNaN(value) || value < 0) {
                 alert("Por favor, insira um número válido.");
                 element.value = '';

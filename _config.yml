@@ -1,5 +1,13 @@
 title: Calculadora FAP
 logo: fapweb.png
-description: Números de Ordem de Frequência, Gravidade e Custo devem ser preenchidos de acordo com Rol de Índices do Fapweb.
+description: |
+    Desenvolvido por Eduardo Pereira Cardoso.
+
+    ✔️ Graduado em Ciências Contábeis pela UNISOCIESC, 2018.  
+    ✔️ Registrado no CRCSC-042192/O-9.  
+    ✔️ MBA em IFRS pela FUNDACE USP, 2022.  
+
+    Para dúvidas, entre em contato: https://www.linkedin.com/in/eduardo-pereira-cardoso-9a5a12b3/
+    
 remote_theme: dudapcardoso/minimal
 show_downloads: false

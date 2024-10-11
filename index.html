@@ -52,34 +52,34 @@ layout: default
 <body>
 
     <label for="cat">Comunicação de Acidente de Trabalho (CAT):</label>
-    <input type="number" id="cat" placeholder="Informe o valor" oninput="validarCamposIniciais()">
+    <input type="number" id="cat" placeholder="Informe o valor">
 
     <label for="b91">Auxílio por incapacidade temporária (B91):</label>
-    <input type="number" id="b91" placeholder="Informe o valor" oninput="validarCamposIniciais()">
+    <input type="number" id="b91" placeholder="Informe o valor">
 
     <label for="b92">Aposentadoria por incapacidade permanente (B92):</label>
-    <input type="number" id="b92" placeholder="Informe o valor" oninput="validarCamposIniciais()">
+    <input type="number" id="b92" placeholder="Informe o valor">
 
     <label for="b93">Pensão por morte (B93):</label>
-    <input type="number" id="b93" placeholder="Informe o valor" oninput="validarCamposIniciais()">
+    <input type="number" id="b93" placeholder="Informe o valor">
 
     <label for="b94">Auxílio-acidente (B94):</label>
-    <input type="number" id="b94" placeholder="Informe o valor" oninput="validarCamposIniciais()">
+    <input type="number" id="b94" placeholder="Informe o valor">
 
     <label for="massaSalarial">Massa Salarial (R$):</label>
-    <input type="number" id="massaSalarial" placeholder="Informe o valor" oninput="validarCamposIniciais()">
+    <input type="number" id="massaSalarial" placeholder="Informe o valor">
 
     <label for="mediaVinculos">Número Médio de Vínculos:</label>
-    <input type="number" id="mediaVinculos" placeholder="Informe o valor" oninput="validarCamposIniciais()">
+    <input type="number" id="mediaVinculos" placeholder="Informe o valor">
 
     <label for="totalBeneficios">Valor Total de Benefícios Pagos (R$):</label>
-    <input type="number" id="totalBeneficios" placeholder="Informe o valor" oninput="validarCamposIniciais()">
+    <input type="number" id="totalBeneficios" placeholder="Informe o valor">
 
     <label for="totalEstabelecimentos">Total de Estabelecimentos na subclasse CNAE:</label>
-    <input type="number" id="totalEstabelecimentos" placeholder="Informe o valor" oninput="validarCamposIniciais()">
+    <input type="number" id="totalEstabelecimentos" placeholder="Informe o valor">
 
     <label for="taxaRotatividade">Taxa Média de Rotatividade (%):</label>
-    <input type="number" id="taxaRotatividade" placeholder="Informe o valor" oninput="validarCamposIniciais()">
+    <input type="number" id="taxaRotatividade" placeholder="Informe o valor">
 
     <button onclick="calcularIndices()">Calcular</button>
 
@@ -102,31 +102,6 @@ layout: default
     </div>
 
     <script>
-
-//inclui validação dos campos
-        function validarCamposIniciais() {
-            const cat = document.getElementById("cat").value;
-            const b91 = document.getElementById("b91").value;
-            const b92 = document.getElementById("b92").value;
-            const b93 = document.getElementById("b93").value;
-            const b94 = document.getElementById("b94").value;
-            const massaSalarial = document.getElementById("massaSalarial").value;
-            const mediaVinculos = document.getElementById("mediaVinculos").value;
-            const totalBeneficios = document.getElementById("totalBeneficios").value;
-            const totalEstabelecimentos = document.getElementById("totalEstabelecimentos").value;
-            const taxaRotatividade = document.getElementById("taxaRotatividade").value;
-
-    // Verifica se todos os campos iniciais estão preenchidos
-    const todosPreenchidos = cat && b91 && b92 && b93 && b94 && massaSalarial && mediaVinculos && totalBeneficios && totalEstabelecimentos && taxaRotatividade;
-        
-    // Verificar se todos os campos estão zerados
-    if (cat === 0 && b91 === 0 && b92 === 0 && b93 === 0 && b94 === 0 && massaSalarial === 0 && mediaVinculos === 0 && totalBeneficios === 0) {
-        alert("Por favor, preencha pelo menos um campo com um valor diferente de zero.");
-        return; // Interrompe a execução da função
-
-    // Ativa ou desativa o botão de calcular
-    document.querySelector("button[onclick='calcularIndices()']").disabled = !todosPreenchidos;
-}
         function calcularIndices() {
             // Pegar os valores de input
             const cat = parseFloat(document.getElementById("cat").value) || 0;

@@ -67,13 +67,19 @@ layout: default
     <input type="number" id="b94" placeholder="Informe o valor">
 
     <label for="massaSalarial">Massa Salarial (R$):</label>
-    <input type="number" id="massaSalarial" placeholder="Informe o valor">
+    <input type="text" id="massaSalarial" placeholder="Informe o valor" 
+           onblur="formatarMoeda(this)" 
+           onfocus="removerFormato(this)" 
+           oninput="validarNumero(this)">
 
     <label for="mediaVinculos">Número Médio de Vínculos:</label>
     <input type="number" id="mediaVinculos" placeholder="Informe o valor">
 
     <label for="totalBeneficios">Valor Total de Benefícios Pagos (R$):</label>
-    <input type="number" id="totalBeneficios" placeholder="Informe o valor">
+    <input type="text" id="totalBeneficios" placeholder="Informe o valor" 
+           onblur="formatarMoeda(this)" 
+           onfocus="removerFormato(this)" 
+           oninput="validarNumero(this)">
 
     <label for="totalEstabelecimentos">Total de Estabelecimentos na subclasse CNAE:</label>
     <input type="number" id="totalEstabelecimentos" placeholder="Informe o valor">
@@ -121,9 +127,9 @@ layout: default
             const b92 = parseFloat(document.getElementById("b92").value) || 0;
             const b93 = parseFloat(document.getElementById("b93").value) || 0;
             const b94 = parseFloat(document.getElementById("b94").value) || 0;
-            const massaSalarial = parseFloat(document.getElementById("massaSalarial").value) || 0;
+            const massaSalarial = parseFloat(document.getElementById("massaSalarial").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
             const mediaVinculos = parseFloat(document.getElementById("mediaVinculos").value) || 1;
-            const totalBeneficios = parseFloat(document.getElementById("totalBeneficios").value) || 0;
+            const totalBeneficios = parseFloat(document.getElementById("totalBeneficios").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
 
             const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
             const indiceGravidade = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
@@ -161,12 +167,28 @@ layout: default
             }
 
             document.getElementById("resultFap").innerHTML = `
-                <strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(4)}<br>
-                <strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(4)}<br>
-                <strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(4)}<br>
-                <strong>Índice Composto:</strong> ${indiceComposto.toFixed(4)}<br>
+                <strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(2)}%<br>
+                <strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(2)}%<br>
+                <strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(2)}%<br>
                 <strong>FAP Calculado:</strong> ${fapCalculado.toFixed(4)}
             `;
+        }
+
+        function formatarMoeda(element) {
+            let valor = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
+            element.value = valor ? `R$ ${parseFloat(valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : '';
+        }
+
+        function removerFormato(element) {
+            element.value = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
+        }
+
+        function validarNumero(element) {
+            const value = element.value;
+            if (isNaN(value) || value < 0) {
+                alert("Por favor, insira um número válido.");
+                element.value = '';
+            }
         }
     </script>
 </body>

@@ -1,11 +1,11 @@
 title: Calculadora FAP
 description: |
-   Desenvolvido por Eduardo Cardoso.
+  <p>Desenvolvido por Eduardo Cardoso.</p>
 
-    Precisa de ajuda com o FAP? Entre em contato:
+    <p>Precisa de ajuda com o FAP? Entre em contato:</p>
 
-    Linkedin: [Eduardo Cardoso](https://www.linkedin.com/in/eduardo-pereira-cardoso-9a5a12b3/)
+    <p><a href="https://www.linkedin.com/in/eduardo-pereira-cardoso-9a5a12b3/">Eduardo Cardoso no LinkedIn</a></p>
 
-    Telefone: (48) 99683-6949
+    <p>Telefone: (48) 99683-6949</p>
 logo: Logo Calculadora.jpeg
 remote_theme: dudapcardoso/minimal

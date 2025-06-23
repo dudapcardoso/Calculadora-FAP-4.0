@@ -113,7 +113,7 @@ layout: default
         function verificarCamposObrigatorios(campos) {
             for (let campo of campos) {
                 if (!document.getElementById(campo).value) {
-                    alert(Por favor, preencha o campo: ${campo.replace(/([A-Z])/g, ' $1').trim()});
+                    alert(Por favor, preencha o campo: ${campo.replace(/([A-Z])/g, ' $1').trim()}`);
                     return false;
                 }
             }
@@ -137,7 +137,7 @@ layout: default
             const indiceGravidade = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
             const indiceCusto = (totalBeneficios / massaSalarial) * 1000;
 
-            document.getElementById("result").innerHTML = 
+            document.getElementById("result").innerHTML = `
                 <strong>Índice de Frequência:</strong> ${indiceFrequencia.toFixed(4)}<br>
                 <strong>Índice de Gravidade:</strong> ${indiceGravidade.toFixed(4)}<br>
                 <strong>Índice de Custo:</strong> ${indiceCusto.toFixed(4)}
@@ -168,7 +168,7 @@ layout: default
                 fapCalculado = 1;
             }
 
-            document.getElementById("resultFap").innerHTML = 
+            document.getElementById("resultFap").innerHTML = `
                 <strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(2)}%<br>
                 <strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(2)}%<br>
                 <strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(2)}%<br>

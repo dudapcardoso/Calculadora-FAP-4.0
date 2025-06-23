@@ -1,3 +1,4 @@
+
 ---
 layout: default
 ---
@@ -93,7 +94,6 @@ layout: default
 
     <div class="result" id="result"></div>
 
-    <!-- Campos adicionais aparecem após calcular -->
     <div id="camposFap" class="hidden">
         <label for="ordemFrequencia">Número Ordem Frequência:</label>
         <input type="number" id="ordemFrequencia" placeholder="Informe o Número Rol dos Índices de Frequência">
@@ -107,7 +107,19 @@ layout: default
         <button onclick="calcularFap()">Calcular FAP</button>
 
         <div class="result" id="resultFap"></div>
+
+        <button onclick="abrirFormularioRelatorio()">Gerar Relatório do Cálculo</button>
     </div>
+
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'});" 
+            style="position: fixed; bottom: 80px; right: 20px; z-index: 999; background-color: #007BFF; color: white; border: none; border-radius: 50px; padding: 10px 15px; font-size: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); cursor: pointer;">
+        ⬆️ Topo
+    </button>
+
+    <a href="https://wa.me/5548996836949" target="_blank"
+       style="position: fixed; bottom: 20px; right: 20px; background-color: #25D366; color: white; border-radius: 50px; padding: 12px 18px; font-size: 14px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 1000;">
+      💬 Fale com o especialista
+    </a>
 
     <script>
         function verificarCamposObrigatorios(campos) {
@@ -176,6 +188,32 @@ layout: default
             `;
         }
 
+        function abrirFormularioRelatorio() {
+            const novaJanela = window.open('', '_blank');
+            novaJanela.document.write(`
+                <html><head><title>Relatório FAP</title></head><body>
+                <h2>Informe seu e-mail para visualizar o relatório:</h2>
+                <input type='email' id='emailRelatorio' placeholder='Digite seu e-mail'>
+                <button onclick='mostrarRelatorio()'>Visualizar Relatório</button>
+                <div id='relatorioContainer' style='margin-top:20px;'></div>
+                <script>
+                function mostrarRelatorio() {
+                    const email = document.getElementById('emailRelatorio').value;
+                    if (!email.includes('@')) {
+                        alert('Insira um e-mail válido.'); return;
+                    }
+                    const r = window.opener.document;
+                    document.getElementById('relatorioContainer').innerHTML = '<h3>Relatório:</h3>' +
+                        '<p>CAT: ' + r.getElementById('cat').value + '</p>' +
+                        '<p>B91: ' + r.getElementById('b91').value + '</p>' +
+                        '<p>Massa Salarial: ' + r.getElementById('massaSalarial').value + '</p>' +
+                        r.getElementById('result').innerHTML + '<br>' +
+                        r.getElementById('resultFap').innerHTML;
+                }
+                <\/script></body></html>
+            `);
+        }
+
         function formatarMoeda(element) {
             let valor = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
             element.value = valor ? `R$ ${parseFloat(valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : '';
@@ -193,71 +231,5 @@ layout: default
             }
         }
     </script>
-    function abrirFormularioRelatorio() {
-    const novaJanela = window.open('', '_blank');
-    novaJanela.document.write(`
-        <html>
-        <head>
-            <title>Relatório do Cálculo FAP</title>
-            <style>
-                body { font-family: Arial, sans-serif; padding: 20px; max-width: 700px; margin: auto; }
-                label, input { display: block; width: 100%; margin-bottom: 15px; }
-                button { padding: 10px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; }
-                button:hover { background-color: #0056b3; }
-            </style>
-        </head>
-        <body>
-            <h2>Informe seu e-mail para visualizar o relatório:</h2>
-            <label for="email">E-mail:</label>
-            <input type="email" id="emailRelatorio" placeholder="Digite seu e-mail">
-            <button onclick="mostrarRelatorio()">Visualizar Relatório</button>
-            <div id="relatorioContainer" style="display:none; margin-top: 30px;"></div>
-            <script>
-                function mostrarRelatorio() {
-                    const email = document.getElementById('emailRelatorio').value;
-                    if (!email || !email.includes('@')) {
-                        alert('Por favor, insira um e-mail válido.');
-                        return;
-                    }
-                    const relatorioHtml = \`
-                        <h3>Memória de Cálculo do FAP</h3>
-                        <p><strong>Dados informados:</strong></p>
-                        <ul>
-                            <li>CAT: \${window.opener.document.getElementById('cat').value}</li>
-                            <li>B91: \${window.opener.document.getElementById('b91').value}</li>
-                            <li>B92: \${window.opener.document.getElementById('b92').value}</li>
-                            <li>B93: \${window.opener.document.getElementById('b93').value}</li>
-                            <li>B94: \${window.opener.document.getElementById('b94').value}</li>
-                            <li>Massa Salarial: \${window.opener.document.getElementById('massaSalarial').value}</li>
-                            <li>Valor Benefícios: \${window.opener.document.getElementById('totalBeneficios').value}</li>
-                            <li>Vínculos Médios: \${window.opener.document.getElementById('mediaVinculos').value}</li>
-                            <li>Estabelecimentos na CNAE: \${window.opener.document.getElementById('totalEstabelecimentos').value}</li>
-                            <li>Rotatividade: \${window.opener.document.getElementById('taxaRotatividade').value}%</li>
-                        </ul>
-                        <p><strong>Resultado do Cálculo:</strong></p>
-                        <p>\${window.opener.document.getElementById('result').innerHTML}</p>
-                        <p>\${window.opener.document.getElementById('resultFap').innerHTML}</p>
-                        <p>Este relatório foi gerado com base nos dados inseridos na <strong>Calculadora FAP</strong> disponível em www.calculadorafap.com.br</p>
-                    \`;
-                    document.getElementById('relatorioContainer').innerHTML = relatorioHtml;
-                    document.getElementById('relatorioContainer').style.display = 'block';
-                }
-            <\/script>
-        </body>
-        </html>
-    `);
-}
 </body>
-<!-- BOTÃO VOLTAR AO TOPO -->
-<button onclick="window.scrollTo({top: 0, behavior: 'smooth'});" 
-        style="position: fixed; bottom: 80px; right: 20px; z-index: 999; background-color: #007BFF; color: white; border: none; border-radius: 50px; padding: 10px 15px; font-size: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); cursor: pointer;">
-    ⬆️ Topo
-</button>
-
-<!-- BOTÃO WHATSAPP FLUTUANTE -->
-<a href="https://wa.me/5548996836949" target="_blank"
-   style="position: fixed; bottom: 20px; right: 20px; background-color: #25D366; color: white; border-radius: 50px; padding: 12px 18px; font-size: 14px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 1000;">
-  💬 Fale com o especialista
-</a>
-
 </html>

@@ -195,8 +195,34 @@ function calcularIndices() {
         }
     }
 function abrirFormularioRelatorio() {
-    const indiceF = document.getElementById("result").innerHTML;
-    const fapFinal = document.getElementById("resultFap").innerHTML;
+    const cat = parseFloat(document.getElementById("cat").value) || 0;
+    const b91 = parseFloat(document.getElementById("b91").value) || 0;
+    const b92 = parseFloat(document.getElementById("b92").value) || 0;
+    const b93 = parseFloat(document.getElementById("b93").value) || 0;
+    const b94 = parseFloat(document.getElementById("b94").value) || 0;
+    const massaSalarial = parseFloat(document.getElementById("massaSalarial").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
+    const mediaVinculos = parseFloat(document.getElementById("mediaVinculos").value) || 1;
+    const totalBeneficios = parseFloat(document.getElementById("totalBeneficios").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
+
+    const ordemFrequencia = parseFloat(document.getElementById("ordemFrequencia").value) || 0;
+    const ordemGravidade = parseFloat(document.getElementById("ordemGravidade").value) || 0;
+    const ordemCusto = parseFloat(document.getElementById("ordemCusto").value) || 0;
+    const totalEstabelecimentos = parseFloat(document.getElementById("totalEstabelecimentos").value) || 1;
+    const taxaRotatividade = parseFloat(document.getElementById("taxaRotatividade").value) || 0;
+
+    const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
+    const indiceGravidade = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
+    const indiceCusto = (totalBeneficios / massaSalarial) * 1000;
+
+    const percentilFrequencia = ((ordemFrequencia - 1) / (totalEstabelecimentos - 1)) * 100;
+    const percentilGravidade = ((ordemGravidade - 1) / (totalEstabelecimentos - 1)) * 100;
+    const percentilCusto = ((ordemCusto - 1) / (totalEstabelecimentos - 1)) * 100;
+
+    let indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
+    let fapFinal = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
+    if (taxaRotatividade > 75 && fapFinal < 1) {
+        fapFinal = 1;
+    }
 
     const relatorio = `
         <html>
@@ -205,19 +231,48 @@ function abrirFormularioRelatorio() {
             <style>
                 body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
                 h2 { color: #007BFF; }
-                .box { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #f9f9f9; }
+                .box { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #f9f9f9; margin-bottom: 20px; }
+                code { background-color: #eef; padding: 2px 4px; border-radius: 4px; }
             </style>
         </head>
         <body>
             <h2>Relatório de Cálculo do FAP</h2>
+
             <div class="box">
-                <h3>Índices Preliminares</h3>
-                ${indiceF}
+                <h3>Índice de Frequência</h3>
+                <p><strong>Fórmula:</strong> <code>(B91 + B92 + B93 + B94 + CAT) / Média de Vínculos × 1000</code></p>
+                <p><strong>Valores:</strong> (${b91} + ${b92} + ${b93} + ${b94} + ${cat}) / ${mediaVinculos} × 1000</p>
+                <p><strong>Resultado:</strong> ${indiceFrequencia.toFixed(4)}</p>
             </div>
+
             <div class="box">
-                <h3>Cálculo Final do FAP</h3>
-                ${fapFinal}
+                <h3>Índice de Gravidade</h3>
+                <p><strong>Fórmula:</strong> <code>((B91×0.1 + B92×0.3 + B93×0.5 + B94×0.1 + CAT×0.5) / Média de Vínculos) × 1000</code></p>
+                <p><strong>Valores:</strong> ((${b91}×0.1 + ${b92}×0.3 + ${b93}×0.5 + ${b94}×0.1 + ${cat}×0.5) / ${mediaVinculos}) × 1000</p>
+                <p><strong>Resultado:</strong> ${indiceGravidade.toFixed(4)}</p>
             </div>
+
+            <div class="box">
+                <h3>Índice de Custo</h3>
+                <p><strong>Fórmula:</strong> <code>(Total de Benefícios / Massa Salarial) × 1000</code></p>
+                <p><strong>Valores:</strong> (${totalBeneficios} / ${massaSalarial}) × 1000</p>
+                <p><strong>Resultado:</strong> ${indiceCusto.toFixed(4)}</p>
+            </div>
+
+            <div class="box">
+                <h3>Percentis</h3>
+                <p><strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(2)}%</p>
+                <p><strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(2)}%</p>
+                <p><strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(2)}%</p>
+            </div>
+
+            <div class="box">
+                <h3>Índice Composto e FAP</h3>
+                <p><strong>Fórmula do Índice Composto:</strong> <code>(0.5×Gravidade + 0.35×Frequência + 0.15×Custo) × 0.02</code></p>
+                <p><strong>Resultado do Índice Composto:</strong> ${indiceComposto.toFixed(4)}</p>
+                <p><strong>FAP Final:</strong> ${fapFinal.toFixed(4)}${taxaRotatividade > 75 && fapFinal === 1 ? ' (ajustado por rotatividade > 75%)' : ''}</p>
+            </div>
+
             <p>Este relatório foi gerado automaticamente pelo site <strong>www.calculadorafap.com.br</strong></p>
             <p><em>Desenvolvido por Eduardo Cardoso</em></p>
         </body>

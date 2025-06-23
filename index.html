@@ -107,6 +107,8 @@ layout: default
         <button onclick="calcularFap()">Calcular FAP</button>
 
         <div class="result" id="resultFap"></div>
+        <button onclick="abrirFormularioRelatorio()">Gerar Relatório do Cálculo</button>
+
     </div>
 
     <script>
@@ -192,6 +194,44 @@ function calcularIndices() {
             element.value = '';
         }
     }
+function abrirFormularioRelatorio() {
+    const indiceF = document.getElementById("result").innerHTML;
+    const fapFinal = document.getElementById("resultFap").innerHTML;
+
+    const relatorio = `
+        <html>
+        <head>
+            <title>Relatório do Cálculo do FAP</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
+                h2 { color: #007BFF; }
+                .box { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #f9f9f9; }
+            </style>
+        </head>
+        <body>
+            <h2>Relatório de Cálculo do FAP</h2>
+            <div class="box">
+                <h3>Índices Preliminares</h3>
+                ${indiceF}
+            </div>
+            <div class="box">
+                <h3>Cálculo Final do FAP</h3>
+                ${fapFinal}
+            </div>
+            <p>Este relatório foi gerado automaticamente pelo site <strong>www.calculadorafap.com.br</strong></p>
+            <p><em>Desenvolvido por Eduardo Cardoso</em></p>
+        </body>
+        </html>
+    `;
+
+    const novaJanela = window.open('', '_blank');
+    novaJanela.document.write(relatorio);
+    novaJanela.document.close();
+}
 </script>
+    <a href="https://wa.me/5548996836949" target="_blank"
+   style="position: fixed; bottom: 20px; right: 20px; background-color: #25D366; color: white; border-radius: 50px; padding: 12px 18px; font-size: 14px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 1000;">
+  💬 Fale com o especialista
+</a>
 </body>
 </html>

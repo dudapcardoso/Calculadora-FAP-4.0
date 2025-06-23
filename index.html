@@ -110,88 +110,88 @@ layout: default
     </div>
 
     <script>
-        function verificarCamposObrigatorios(campos) {
-            for (let campo of campos) {
-                if (!document.getElementById(campo).value) {
-                    alert(Por favor, preencha o campo: ${campo.replace(/([A-Z])/g, ' $1').trim()}`);
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        function calcularIndices() {
-            const campos = ["cat", "b91", "b92", "b93", "b94", "massaSalarial", "mediaVinculos", "totalBeneficios"];
-            if (!verificarCamposObrigatorios(campos)) return;
-
-            const cat = parseFloat(document.getElementById("cat").value) || 0;
-            const b91 = parseFloat(document.getElementById("b91").value) || 0;
-            const b92 = parseFloat(document.getElementById("b92").value) || 0;
-            const b93 = parseFloat(document.getElementById("b93").value) || 0;
-            const b94 = parseFloat(document.getElementById("b94").value) || 0;
-            const massaSalarial = parseFloat(document.getElementById("massaSalarial").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
-            const mediaVinculos = parseFloat(document.getElementById("mediaVinculos").value) || 1;
-            const totalBeneficios = parseFloat(document.getElementById("totalBeneficios").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
-
-            const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
-            const indiceGravidade = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
-            const indiceCusto = (totalBeneficios / massaSalarial) * 1000;
-
-            document.getElementById("result").innerHTML = `
-                <strong>Índice de Frequência:</strong> ${indiceFrequencia.toFixed(4)}<br>
-                <strong>Índice de Gravidade:</strong> ${indiceGravidade.toFixed(4)}<br>
-                <strong>Índice de Custo:</strong> ${indiceCusto.toFixed(4)}
-            ;
-
-            document.getElementById("camposFap").classList.remove("hidden");
-        }
-
-        function calcularFap() {
-            const campos = ["ordemFrequencia", "ordemGravidade", "ordemCusto", "totalEstabelecimentos", "taxaRotatividade"];
-            if (!verificarCamposObrigatorios(campos)) return;
-
-            const ordemFrequencia = parseFloat(document.getElementById("ordemFrequencia").value) || 0;
-            const ordemGravidade = parseFloat(document.getElementById("ordemGravidade").value) || 0;
-            const ordemCusto = parseFloat(document.getElementById("ordemCusto").value) || 0;
-            const totalEstabelecimentos = parseFloat(document.getElementById("totalEstabelecimentos").value) || 1;
-            const taxaRotatividade = parseFloat(document.getElementById("taxaRotatividade").value) || 0;
-
-            const percentilFrequencia = ((ordemFrequencia - 1) / (totalEstabelecimentos - 1)) * 100;
-            const percentilGravidade = ((ordemGravidade - 1) / (totalEstabelecimentos - 1)) * 100;
-            const percentilCusto = ((ordemCusto - 1) / (totalEstabelecimentos - 1)) * 100;
-
-            const indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
-
-            let fapCalculado = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
-
-            if (taxaRotatividade > 75 && fapCalculado < 1) {
-                fapCalculado = 1;
-            }
-
-            document.getElementById("resultFap").innerHTML = `
-                <strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(2)}%<br>
-                <strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(2)}%<br>
-                <strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(2)}%<br>
-                <strong>FAP Calculado:</strong> ${fapCalculado.toFixed(4)}
-            ;
-        }
-
-        function formatarMoeda(element) {
-            let valor = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
-            element.value = valor ? R$ ${parseFloat(valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})} : '';
-        }
-
-        function removerFormato(element) {
-            element.value = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
-        }
-
-        function validarNumero(element) {
-            const value = element.value.replace(',', '.');
-            if (isNaN(value) || value < 0) {
-                alert("Por favor, insira um número válido.");
-                element.value = '';
+    function verificarCamposObrigatorios(campos) {
+        for (let campo of campos) {
+            if (!document.getElementById(campo).value) {
+                alert(`Por favor, preencha o campo: ${campo.replace(/([A-Z])/g, ' $1').trim()}`);
+                return false;
             }
         }
-    </script>
+        return true;
+    }
+        
+function calcularIndices() {
+        const campos = ["cat", "b91", "b92", "b93", "b94", "massaSalarial", "mediaVinculos", "totalBeneficios"];
+        if (!verificarCamposObrigatorios(campos)) return;
+
+        const cat = parseFloat(document.getElementById("cat").value) || 0;
+        const b91 = parseFloat(document.getElementById("b91").value) || 0;
+        const b92 = parseFloat(document.getElementById("b92").value) || 0;
+        const b93 = parseFloat(document.getElementById("b93").value) || 0;
+        const b94 = parseFloat(document.getElementById("b94").value) || 0;
+        const massaSalarial = parseFloat(document.getElementById("massaSalarial").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
+        const mediaVinculos = parseFloat(document.getElementById("mediaVinculos").value) || 1;
+        const totalBeneficios = parseFloat(document.getElementById("totalBeneficios").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
+
+        const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
+        const indiceGravidade = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
+        const indiceCusto = (totalBeneficios / massaSalarial) * 1000;
+
+        document.getElementById("result").innerHTML = `
+            <strong>Índice de Frequência:</strong> ${indiceFrequencia.toFixed(4)}<br>
+            <strong>Índice de Gravidade:</strong> ${indiceGravidade.toFixed(4)}<br>
+            <strong>Índice de Custo:</strong> ${indiceCusto.toFixed(4)}
+        `; // CORREÇÃO: crase de fechamento
+
+        document.getElementById("camposFap").classList.remove("hidden");
+    }
+
+       function calcularFap() {
+        const campos = ["ordemFrequencia", "ordemGravidade", "ordemCusto", "totalEstabelecimentos", "taxaRotatividade"];
+        if (!verificarCamposObrigatorios(campos)) return;
+
+        const ordemFrequencia = parseFloat(document.getElementById("ordemFrequencia").value) || 0;
+        const ordemGravidade = parseFloat(document.getElementById("ordemGravidade").value) || 0;
+        const ordemCusto = parseFloat(document.getElementById("ordemCusto").value) || 0;
+        const totalEstabelecimentos = parseFloat(document.getElementById("totalEstabelecimentos").value) || 1;
+        const taxaRotatividade = parseFloat(document.getElementById("taxaRotatividade").value) || 0;
+
+        const percentilFrequencia = ((ordemFrequencia - 1) / (totalEstabelecimentos - 1)) * 100;
+        const percentilGravidade = ((ordemGravidade - 1) / (totalEstabelecimentos - 1)) * 100;
+        const percentilCusto = ((ordemCusto - 1) / (totalEstabelecimentos - 1)) * 100;
+
+        const indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
+
+        let fapCalculado = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
+
+        if (taxaRotatividade > 75 && fapCalculado < 1) {
+            fapCalculado = 1;
+        }
+
+        document.getElementById("resultFap").innerHTML = `
+            <strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(2)}%<br>
+            <strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(2)}%<br>
+            <strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(2)}%<br>
+            <strong>FAP Calculado:</strong> ${fapCalculado.toFixed(4)}
+        `; // CORREÇÃO: crase de fechamento
+    }
+
+    function formatarMoeda(element) {
+        let valor = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
+        element.value = valor ? `R$ ${parseFloat(valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : ''; // CORREÇÃO: crase e template string
+    }
+
+    function removerFormato(element) {
+        element.value = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
+    }
+
+    function validarNumero(element) {
+        const value = element.value.replace(',', '.');
+        if (isNaN(value) || value < 0) {
+            alert("Por favor, insira um número válido.");
+            element.value = '';
+        }
+    }
+</script>
 </body>
 </html>

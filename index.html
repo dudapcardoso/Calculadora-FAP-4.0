@@ -12,7 +12,7 @@ layout: null
   <!-- Google AdSense (mantido) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2064027217812464" crossorigin="anonymous"></script>
 
-  <!-- Tailwind só nesta página -->
+  <!-- Tailwind apenas nesta página -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -53,7 +53,7 @@ layout: null
       <p class="mt-2 text-lg sm:text-xl text-tax-gold">Recalcule índices e veja o impacto</p>
     </header>
 
-    <!-- HERO orgânico (sem imagem externa) -->
+    <!-- HERO orgânico -->
     <section class="relative bg-tax-blue text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-lg overflow-hidden">
       <div class="blob w-40 h-40 bg-tax-gold rounded-full -top-10 -left-10 absolute"></div>
       <div class="blob w-36 h-36 bg-white rounded-full -bottom-10 -right-12 absolute"></div>
@@ -111,12 +111,12 @@ layout: null
             <input type="number" id="b94" inputmode="numeric" placeholder="Ex.: 2" class="w-full p-3 input-field">
           </div>
 
-          <!-- Massa Salarial (R$) com máscara como no antigo -->
+          <!-- Massa Salarial (R$) com máscara -->
           <div class="relative">
             <label for="massaSalarial" class="block text-sm font-medium text-tax-dark-gray mb-1">Massa Salarial (R$)</label>
-            <input type="text" id="massaSalarial" inputmode="decimal" placeholder="Informe o valor"
+            <input type="text" id="massaSalarial" inputmode="decimal" placeholder="R$ 1.000.000,00"
                    class="w-full p-3 input-field"
-                   onblur="formatarMoeda(this)" onfocus="removerFormato(this)" oninput="validarNumero(this)">
+                   oninput="maskBRLInput(this)" onblur="maskBRLInput(this)">
           </div>
 
           <div>
@@ -124,29 +124,31 @@ layout: null
             <input type="number" id="mediaVinculos" inputmode="numeric" placeholder="Ex.: 250" class="w-full p-3 input-field">
           </div>
 
-          <!-- Benefícios (R$) com máscara como no antigo -->
+          <!-- Benefícios (R$) com máscara -->
           <div class="relative">
             <label for="totalBeneficios" class="block text-sm font-medium text-tax-dark-gray mb-1">Valor Total de Benefícios Pagos (R$)</label>
-            <input type="text" id="totalBeneficios" inputmode="decimal" placeholder="Informe o valor"
+            <input type="text" id="totalBeneficios" inputmode="decimal" placeholder="R$ 200.000,00"
                    class="w-full p-3 input-field"
-                   onblur="formatarMoeda(this)" onfocus="removerFormato(this)" oninput="validarNumero(this)">
+                   oninput="maskBRLInput(this)" onblur="maskBRLInput(this)">
           </div>
 
           <div>
-            <label for="totalEstabelecimentos" class="block text-sm font-medium text-tax-dark-gray mb-1">Estabelecimentos subclasse CNAE (todos insumos)</label>
+            <label for="totalEstabelecimentos" class="block text-sm font-medium text-tax-dark-gray mb-1">Total de Estabelecimentos na subclasse CNAE (todos os insumos)</label>
             <input type="number" id="totalEstabelecimentos" inputmode="numeric" placeholder="Ex.: 1200" class="w-full p-3 input-field">
           </div>
 
-          <div>
+          <!-- Rotatividade em % -->
+          <div class="relative">
             <label for="taxaRotatividade" class="block text-sm font-medium text-tax-dark-gray mb-1">Taxa Média de Rotatividade (%)</label>
-            <input type="number" id="taxaRotatividade" inputmode="decimal" step="0.01" placeholder="Ex.: 18"
-                   class="w-full p-3 input-field">
+            <input type="text" id="taxaRotatividade" inputmode="decimal" placeholder="Ex.: 18,5"
+                   class="w-full p-3 pr-10 input-field">
+            <span class="addon">%</span>
           </div>
         </div>
 
         <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <button id="btnCalcular"  type="button" class="btn-primary">Calcular</button>
-          <button id="btnLimpar"    type="button" class="btn-secondary">Limpar</button>
+          <button id="btnCalcular" type="button" class="btn-primary" onclick="calcularIndices()">Calcular</button>
+          <button id="btnLimpar"   type="button" class="btn-secondary" onclick="location.reload()">Limpar</button>
         </div>
 
         <div class="mt-6 bg-white rounded-lg p-4">
@@ -175,8 +177,8 @@ layout: null
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <button id="btnCalcularFap" type="button" class="btn-primary">Calcular FAP</button>
-            <button id="btnRelatorio"   type="button" class="btn-secondary">Gerar Relatório do Cálculo</button>
+            <button id="btnCalcularFap" type="button" class="btn-primary" onclick="calcularFap()">Calcular FAP</button>
+            <button id="btnRelatorio"   type="button" class="btn-secondary" onclick="abrirFormularioRelatorio()">Gerar Relatório do Cálculo</button>
           </div>
 
           <div class="bg-tax-bg-light rounded-lg p-4">
@@ -205,9 +207,9 @@ layout: null
   </div>
 </section>
 
-<script>
-  /* ===== Helpers (flash) ===== */
-  const flashEl = document.getElementById('flash');
+<script type="text/javascript">
+  /* ===== Helpers ===== */
+  var flashEl = document.getElementById('flash');
   function flash(msg){
     if(!flashEl){ alert(msg); return; }
     flashEl.innerHTML = msg;
@@ -215,9 +217,40 @@ layout: null
     setTimeout(function(){ flashEl.className = "mb-4 rounded-md border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm"; }, 6000);
   }
 
-  function verificarCamposObrigatorios(campos) {
-    for (let id of campos) {
-      const el = document.getElementById(id);
+  function br4(n){ return isFinite(n) ? Number(n).toFixed(4).replace('.', ',') : '—'; }
+  function br2(n){ return isFinite(n) ? Number(n).toFixed(2).replace('.', ',') : '—'; }
+  function brCurrency(n){ return isFinite(n) ? Number(n).toLocaleString('pt-BR', {style:'currency', currency:'BRL'}) : '—'; }
+
+  // Máscara BRL em tempo real
+  function maskBRLInput(el){
+    var raw = (el.value || '').toString().replace(/\D/g,''); // só dígitos
+    if(raw.length === 0){ el.value = ''; return; }
+    var cents = parseInt(raw,10);
+    if(!isFinite(cents)){ el.value=''; return; }
+    var val = (cents / 100);
+    el.value = 'R$ ' + val.toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+
+  // Converte "R$ 1.234,56" -> 1234.56
+  function parseBRLForCalc(str){
+    if(str === null || str === undefined) return NaN;
+    var s = String(str).trim();
+    if(!s) return NaN;
+    return parseFloat(s.replace(/[R$\s]/g,'').replace(/\./g,'').replace(',', '.'));
+  }
+
+  // Converte números com vírgula (ex.: "18,5")
+  function parseGeneric(str){
+    if(str === null || str === undefined) return NaN;
+    var s = String(str).trim();
+    if(!s) return NaN;
+    return parseFloat(s.replace(/\./g,'').replace(',', '.'));
+  }
+
+  function verificarCamposObrigatorios(ids) {
+    for (var i=0;i<ids.length;i++){
+      var id = ids[i];
+      var el = document.getElementById(id);
       if (!el || !String(el.value).trim()) {
         flash('Por favor, preencha o campo: <strong>' + id.replace(/([A-Z])/g, ' $1').trim() + '</strong>');
         return false;
@@ -226,194 +259,221 @@ layout: null
     return true;
   }
 
-  /* ===== Máscaras/parsers (iguais ao antigo) ===== */
-  function formatarMoeda(element) {
-    let valor = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
-    element.value = valor ? `R$ ${parseFloat(valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : '';
-  }
-  function removerFormato(element) {
-    element.value = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
-  }
-  function validarNumero(element) {
-    const value = element.value.replace(',', '.');
-    if (isNaN(value) || value < 0) {
-      alert("Por favor, insira um número válido.");
-      element.value = '';
+  /* ===== Cálculo 1: Índices (por mil) ===== */
+  function calcularIndices() {
+    try{
+      var obrig = ["cat","b91","b92","b93","b94","massaSalarial","mediaVinculos","totalBeneficios"];
+      if (!verificarCamposObrigatorios(obrig)) return;
+
+      var cat = parseGeneric(document.getElementById("cat").value) || 0;
+      var b91 = parseGeneric(document.getElementById("b91").value) || 0;
+      var b92 = parseGeneric(document.getElementById("b92").value) || 0;
+      var b93 = parseGeneric(document.getElementById("b93").value) || 0;
+      var b94 = parseGeneric(document.getElementById("b94").value) || 0;
+
+      var massaSalarial   = parseBRLForCalc(document.getElementById("massaSalarial").value);
+      var mediaVinculos   = parseGeneric(document.getElementById("mediaVinculos").value);
+      var totalBeneficios = parseBRLForCalc(document.getElementById("totalBeneficios").value);
+
+      if (!isFinite(massaSalarial) || massaSalarial <= 0){ flash("Massa Salarial deve ser maior que zero."); return; }
+      if (!isFinite(mediaVinculos) || mediaVinculos <= 0){ flash("Número Médio de Vínculos deve ser maior que zero."); return; }
+
+      var MULT = 1000;
+      var somaEventos   = (b91 + b92 + b93 + b94 + cat);
+      var somaGravidade = (b91*0.1 + b92*0.3 + b93*0.5 + b94*0.1 + cat*0.5);
+
+      var indiceFrequencia = (somaEventos   / mediaVinculos) * MULT;
+      var indiceGravidade  = (somaGravidade / mediaVinculos) * MULT;
+      var indiceCusto      = (totalBeneficios / massaSalarial) * MULT;
+
+      var html = ''
+        + '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">'
+        +   '<div><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-2xl font-bold text-tax-blue">' + (isFinite(indiceFrequencia)?indiceFrequencia.toFixed(4):'—') + '</p>'
+        +       '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaEventos+' / '+mediaVinculos+') × 1000</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-2xl font-bold text-tax-blue">' + (isFinite(indiceGravidade)?indiceGravidade.toFixed(4):'—') + '</p>'
+        +       '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaGravidade.toFixed(4)+' / '+mediaVinculos+') × 1000</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-2xl font-bold text-tax-blue">' + (isFinite(indiceCusto)?indiceCusto.toFixed(4):'—') + '</p>'
+        +       '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+totalBeneficios+' / '+massaSalarial+') × 1000</p></div>'
+        + '</div>';
+      document.getElementById("result").innerHTML = html;
+
+      // mostra a etapa 2
+      document.getElementById("camposFap").classList.remove('hidden');
+    }catch(err){
+      console.error(err); flash("Erro ao calcular os índices. Revise os campos e tente novamente.");
     }
   }
 
-  /* ===== Cálculo 1: Índices (replicado do antigo) ===== */
-  function calcularIndices() {
-    const campos = ["cat", "b91", "b92", "b93", "b94", "massaSalarial", "mediaVinculos", "totalBeneficios"];
-    if (!verificarCamposObrigatorios(campos)) return;
-
-    const cat  = parseFloat(document.getElementById("cat").value) || 0;
-    const b91  = parseFloat(document.getElementById("b91").value) || 0;
-    const b92  = parseFloat(document.getElementById("b92").value) || 0;
-    const b93  = parseFloat(document.getElementById("b93").value) || 0;
-    const b94  = parseFloat(document.getElementById("b94").value) || 0;
-
-    const massaSalarial = parseFloat(document.getElementById("massaSalarial").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
-    const mediaVinculos = parseFloat(document.getElementById("mediaVinculos").value) || 1;
-    const totalBeneficios = parseFloat(document.getElementById("totalBeneficios").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
-
-    const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
-    const indiceGravidade  = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
-    const indiceCusto      = (totalBeneficios / massaSalarial) * 1000;
-
-    document.getElementById("result").innerHTML = `
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-        <div><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-2xl font-bold text-tax-blue">${indiceFrequencia.toFixed(4)}</p></div>
-        <div><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-2xl font-bold text-tax-blue">${indiceGravidade.toFixed(4)}</p></div>
-        <div><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-2xl font-bold text-tax-blue">${indiceCusto.toFixed(4)}</p></div>
-      </div>
-    `;
-    document.getElementById("camposFap").classList.remove("hidden");
-  }
-
-  /* ===== Cálculo 2: Percentis + FAP (replicado do antigo) ===== */
+  /* ===== Cálculo 2: Percentis + FAP ===== */
   function calcularFap() {
-    const campos = ["ordemFrequencia", "ordemGravidade", "ordemCusto", "totalEstabelecimentos", "taxaRotatividade"];
-    if (!verificarCamposObrigatorios(campos)) return;
+    try{
+      var obrig = ["ordemFrequencia","ordemGravidade","ordemCusto","totalEstabelecimentos","taxaRotatividade"];
+      if (!verificarCamposObrigatorios(obrig)) return;
 
-    const ordemFrequencia = parseFloat(document.getElementById("ordemFrequencia").value) || 0;
-    const ordemGravidade  = parseFloat(document.getElementById("ordemGravidade").value) || 0;
-    const ordemCusto      = parseFloat(document.getElementById("ordemCusto").value) || 0;
-    const totalEstabelecimentos = parseFloat(document.getElementById("totalEstabelecimentos").value) || 1;
-    const taxaRotatividade = parseFloat(document.getElementById("taxaRotatividade").value) || 0;
+      var ordemFrequencia = parseGeneric(document.getElementById("ordemFrequencia").value) || 0;
+      var ordemGravidade  = parseGeneric(document.getElementById("ordemGravidade").value) || 0;
+      var ordemCusto      = parseGeneric(document.getElementById("ordemCusto").value) || 0;
+      var totalEstab      = parseGeneric(document.getElementById("totalEstabelecimentos").value) || 1;
+      var taxaRot         = parseGeneric(document.getElementById("taxaRotatividade").value) || 0;
 
-    const percentilFrequencia = ((ordemFrequencia - 1) / (totalEstabelecimentos - 1)) * 100;
-    const percentilGravidade  = ((ordemGravidade  - 1) / (totalEstabelecimentos - 1)) * 100;
-    const percentilCusto      = ((ordemCusto      - 1) / (totalEstabelecimentos - 1)) * 100;
+      var denom = (totalEstab - 1);
+      var temBasePercentil = denom > 0;
 
-    const indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
+      var pFreq  = temBasePercentil ? ((ordemFrequencia - 1) / denom) * 100 : 0;
+      var pGrav  = temBasePercentil ? ((ordemGravidade  - 1) / denom) * 100 : 0;
+      var pCusto = temBasePercentil ? ((ordemCusto      - 1) / denom) * 100 : 0;
 
-    let fapCalculado = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
-    if (taxaRotatividade > 75 && fapCalculado < 1) fapCalculado = 1;
+      var indiceComposto = ((0.5 * pGrav) + (0.35 * pFreq) + (0.15 * pCusto)) * 0.02;
+      var fap = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
+      if (taxaRot > 75 && fap < 1) fap = 1;
 
-    document.getElementById("resultFap").innerHTML = `
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
-        <div><p class="text-sm text-tax-dark-gray">% Frequência</p><p class="text-2xl font-bold text-tax-blue">${percentilFrequencia.toFixed(2)}%</p></div>
-        <div><p class="text-sm text-tax-dark-gray">% Gravidade</p><p class="text-2xl font-bold text-tax-blue">${percentilGravidade.toFixed(2)}%</p></div>
-        <div><p class="text-sm text-tax-dark-gray">% Custo</p><p class="text-2xl font-bold text-tax-blue">${percentilCusto.toFixed(2)}%</p></div>
-        <div><p class="text-sm text-tax-dark-gray">FAP Calculado</p><p class="text-2xl font-bold text-tax-blue">${fapCalculado.toFixed(4)}</p></div>
-      </div>
-    `;
+      var html = ''
+        + '<div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">'
+        +   '<div><p class="text-sm text-tax-dark-gray">% Frequência</p><p class="text-2xl font-bold text-tax-blue">' + br2(pFreq) + '%</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">% Gravidade</p><p class="text-2xl font-bold text-tax-blue">' + br2(pGrav) + '%</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">% Custo</p><p class="text-2xl font-bold text-tax-blue">' + br2(pCusto) + '%</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">FAP Calculado</p><p class="text-2xl font-bold text-tax-blue">' + br4(fap) + '</p></div>'
+        + '</div>'
+        + (temBasePercentil ? '' : '<p class="text-xs text-red-600 mt-2">Observação: N (total de estabelecimentos) ≤ 1. Percentis exibidos como 0% para evitar divisão por zero.</p>');
+      document.getElementById("resultFap").innerHTML = html;
+    }catch(err){
+      console.error(err); flash("Erro ao calcular FAP. Revise os campos e tente novamente.");
+    }
   }
 
-  /* ===== Relatório — com </script> ESCAPADO ===== */
+  /* ===== Relatório (com MULT = 1000 e percentis) ===== */
   function abrirFormularioRelatorio() {
-    const cat  = parseFloat(document.getElementById("cat").value) || 0;
-    const b91  = parseFloat(document.getElementById("b91").value) || 0;
-    const b92  = parseFloat(document.getElementById("b92").value) || 0;
-    const b93  = parseFloat(document.getElementById("b93").value) || 0;
-    const b94  = parseFloat(document.getElementById("b94").value) || 0;
+    try{
+      var cat = parseGeneric(document.getElementById("cat").value) || 0;
+      var b91 = parseGeneric(document.getElementById("b91").value) || 0;
+      var b92 = parseGeneric(document.getElementById("b92").value) || 0;
+      var b93 = parseGeneric(document.getElementById("b93").value) || 0;
+      var b94 = parseGeneric(document.getElementById("b94").value) || 0;
 
-    const massaSalarial = parseFloat(document.getElementById("massaSalarial").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
-    const mediaVinculos = parseFloat(document.getElementById("mediaVinculos").value) || 1;
-    const totalBeneficios = parseFloat(document.getElementById("totalBeneficios").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
+      var massaSalarial   = parseBRLForCalc(document.getElementById("massaSalarial").value) || 0;
+      var mediaVinculos   = parseGeneric(document.getElementById("mediaVinculos").value) || 1;
+      var totalBeneficios = parseBRLForCalc(document.getElementById("totalBeneficios").value) || 0;
 
-    const ordemFrequencia = parseFloat(document.getElementById("ordemFrequencia").value) || 0;
-    const ordemGravidade  = parseFloat(document.getElementById("ordemGravidade").value) || 0;
-    const ordemCusto      = parseFloat(document.getElementById("ordemCusto").value) || 0;
-    const totalEstabelecimentos = parseFloat(document.getElementById("totalEstabelecimentos").value) || 1;
-    const taxaRotatividade = parseFloat(document.getElementById("taxaRotatividade").value) || 0;
+      var ordemFrequencia = parseGeneric(document.getElementById("ordemFrequencia").value) || 0;
+      var ordemGravidade  = parseGeneric(document.getElementById("ordemGravidade").value) || 0;
+      var ordemCusto      = parseGeneric(document.getElementById("ordemCusto").value) || 0;
+      var totalEstab      = parseGeneric(document.getElementById("totalEstabelecimentos").value) || 1;
+      var taxaRot         = parseGeneric(document.getElementById("taxaRotatividade").value) || 0;
 
-    const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
-    const indiceGravidade  = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
-    const indiceCusto      = (totalBeneficios / massaSalarial) * 1000;
+      var MULT = 1000;
+      var somaEventos   = (b91 + b92 + b93 + b94 + cat);
+      var somaGravidade = (b91*0.1 + b92*0.3 + b93*0.5 + b94*0.1 + cat*0.5);
 
-    const percentilFrequencia = ((ordemFrequencia - 1) / (totalEstabelecimentos - 1)) * 100;
-    const percentilGravidade  = ((ordemGravidade  - 1) / (totalEstabelecimentos - 1)) * 100;
-    const percentilCusto      = ((ordemCusto      - 1) / (totalEstabelecimentos - 1)) * 100;
+      var indiceFrequencia = (somaEventos   / mediaVinculos) * MULT;
+      var indiceGravidade  = (somaGravidade / mediaVinculos) * MULT;
+      var indiceCusto      = (totalBeneficios / massaSalarial) * MULT;
 
-    let indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
-    let fapFinal = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
-    if (taxaRotatividade > 75 && fapFinal < 1) fapFinal = 1;
+      var denom = (totalEstab - 1);
+      var temBasePercentil = denom > 0;
 
-    const html = `
-      <!doctype html>
-      <html lang="pt-BR"><head><meta charset="utf-8">
-      <title>Relatório do Cálculo do FAP</title><meta name="viewport" content="width=device-width, initial-scale=1">
-      <script src="https://cdn.tailwindcss.com"><\/script>
-      <script>tailwind.config={theme:{extend:{colors:{'tax-blue':'#152E3E','tax-gold':'#E2B874','tax-gray':'#EBEBEB','tax-dark-gray':'#6B7280','tax-bg-light':'#F9FAFB'}}}}<\/script>
-      <style>@media print{.no-print{display:none!important}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
-      .card{background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1)}
-      code{background:#F3F4F6;padding:.1rem .35rem;border-radius:.35rem}</style></head>
-      <body class="bg-tax-bg-light text-tax-blue">
-        <header class="bg-tax-blue text-white p-6 sm:p-8">
-          <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div><h1 class="text-2xl sm:text-3xl font-extrabold">Relatório do Cálculo do FAP</h1><p class="text-tax-gold">www.calculadorafap.com.br</p></div>
-            <button class="no-print bg-white text-tax-blue font-semibold px-4 py-2 rounded-md shadow" onclick="window.print()">Imprimir / Salvar PDF</button>
-          </div>
-        </header>
+      var pFreq  = temBasePercentil ? ((ordemFrequencia - 1) / denom) * 100 : 0;
+      var pGrav  = temBasePercentil ? ((ordemGravidade  - 1) / denom) * 100 : 0;
+      var pCusto = temBasePercentil ? ((ordemCusto      - 1) / denom) * 100 : 0;
 
-        <main class="max-w-5xl mx-auto p-6 sm:p-8 space-y-8">
-          <section class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-3xl font-bold">${indiceFrequencia.toFixed(4)}</p></div>
-            <div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-3xl font-bold">${indiceGravidade.toFixed(4)}</p></div>
-            <div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-3xl font-bold">${indiceCusto.toFixed(4)}</p></div>
-          </section>
+      var indiceComposto = ((0.5 * pGrav) + (0.35 * pFreq) + (0.15 * pCusto)) * 0.02;
+      var fap = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
+      if (taxaRot > 75 && fap < 1) fap = 1;
 
-          <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="card p-5">
-              <h2 class="text-lg font-bold mb-4">Entradas (Fatos Geradores)</h2>
-              <table class="w-full text-sm"><tbody class="divide-y divide-tax-gray">
-                <tr><td class="py-2">CAT</td><td class="py-2 text-right">${cat.toFixed(2)}</td></tr>
-                <tr><td class="py-2">B91</td><td class="py-2 text-right">${b91.toFixed(2)}</td></tr>
-                <tr><td class="py-2">B92</td><td class="py-2 text-right">${b92.toFixed(2)}</td></tr>
-                <tr><td class="py-2">B93</td><td class="py-2 text-right">${b93.toFixed(2)}</td></tr>
-                <tr><td class="py-2">B94</td><td class="py-2 text-right">${b94.toFixed(2)}</td></tr>
-                <tr><td class="py-2">Massa Salarial</td><td class="py-2 text-right">R$ ${massaSalarial.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td></tr>
-                <tr><td class="py-2">Média de Vínculos</td><td class="py-2 text-right">${mediaVinculos.toFixed(2)}</td></tr>
-                <tr><td class="py-2">Benefícios Pagos</td><td class="py-2 text-right">R$ ${totalBeneficios.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td></tr>
-              </tbody></table>
-            </div>
+      var html = ''
+      + '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">'
+      + '<title>Relatório do Cálculo do FAP</title><meta name="viewport" content="width=device-width, initial-scale=1">'
+      + '<script src="https://cdn.tailwindcss.com"><\/script>'
+      + '<script>tailwind.config={theme:{extend:{colors:{\"tax-blue\":\"#152E3E\",\"tax-gold\":\"#E2B874\",\"tax-gray\":\"#EBEBEB\",\"tax-dark-gray\":\"#6B7280\",\"tax-bg-light\":\"#F9FAFB\"}}}}<\/script>'
+      + '<style>@media print{.no-print{display:none!important}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'
+      + '.card{background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1)}'
+      + 'code{background:#F3F4F6;padding:.1rem .35rem;border-radius:.35rem}</style></head>'
+      + '<body class="bg-tax-bg-light text-tax-blue">'
+        + '<header class="bg-tax-blue text-white p-6 sm:p-8">'
+          + '<div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">'
+            + '<div><h1 class="text-2xl sm:text-3xl font-extrabold">Relatório do Cálculo do FAP</h1><p class="text-tax-gold">www.calculadorafap.com.br</p></div>'
+            + '<button class="no-print bg-white text-tax-blue font-semibold px-4 py-2 rounded-md shadow" onclick="window.print()">Imprimir / Salvar PDF</button>'
+          + '</div>'
+        + '</header>'
+        + '<main class="max-w-5xl mx-auto p-6 sm:p-8 space-y-8">'
+          + '<section class="grid grid-cols-1 sm:grid-cols-3 gap-6">'
+            + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-3xl font-bold">' + br4(indiceFrequencia) + '</p>'
+            + '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaEventos+' / '+mediaVinculos+') × 1000</p></div>'
+            + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-3xl font-bold">' + br4(indiceGravidade) + '</p>'
+            + '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaGravidade.toFixed(4)+' / '+mediaVinculos+') × 1000</p></div>'
+            + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-3xl font-bold">' + br4(indiceCusto) + '</p>'
+            + '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+totalBeneficios+' / '+massaSalarial+') × 1000</p></div>'
+          + '</section>'
+          + '<section class="grid grid-cols-1 lg:grid-cols-2 gap-6">'
+            + '<div class="card p-5"><h2 class="text-lg font-bold mb-4">Entradas (Fatos Geradores)</h2>'
+              + '<table class="w-full text-sm"><tbody class="divide-y divide-tax-gray">'
+                + '<tr><td class="py-2">CAT</td><td class="py-2 text-right">' + br2(cat) + '</td></tr>'
+                + '<tr><td class="py-2">B91</td><td class="py-2 text-right">' + br2(b91) + '</td></tr>'
+                + '<tr><td class="py-2">B92</td><td class="py-2 text-right">' + br2(b92) + '</td></tr>'
+                + '<tr><td class="py-2">B93</td><td class="py-2 text-right">' + br2(b93) + '</td></tr>'
+                + '<tr><td class="py-2">B94</td><td class="py-2 text-right">' + br2(b94) + '</td></tr>'
+                + '<tr><td class="py-2">Massa Salarial</td><td class="py-2 text-right">' + brCurrency(massaSalarial) + '</td></tr>'
+                + '<tr><td class="py-2">Média de Vínculos</td><td class="py-2 text-right">' + br2(mediaVinculos) + '</td></tr>'
+                + '<tr><td class="py-2">Benefícios Pagos</td><td class="py-2 text-right">' + brCurrency(totalBeneficios) + '</td></tr>'
+              + '</tbody></table></div>'
+            + '<div class="card p-5"><h2 class="text-lg font-bold mb-4">Percentis e Composto</h2>'
+              + '<table class="w-full text-sm mb-4"><tbody class="divide-y divide-tax-gray">'
+                + '<tr><td class="py-2">% Frequência</td><td class="py-2 text-right">' + br2(pFreq) + '%</td></tr>'
+                + '<tr><td class="py-2">% Gravidade</td><td class="py-2 text-right">' + br2(pGrav) + '%</td></tr>'
+                + '<tr><td class="py-2">% Custo</td><td class="py-2 text-right">' + br2(pCusto) + '%</td></tr>'
+                + '<tr><td class="py-2 font-semibold">Índice Composto</td><td class="py-2 text-right font-semibold">' + br4(indiceComposto) + '</td></tr>'
+                + '<tr><td class="py-2 font-semibold">FAP Final</td><td class="py-2 text-right font-semibold">' + br4(fap) + ((taxaRot>75 && fap===1)?' <span class="text-xs text-tax-dark-gray">(ajustado por rotatividade > 75%)</span>':'') + '</td></tr>'
+              + '</tbody></table>'
+              + (temBasePercentil ? '' : '<p class="text-xs text-red-600">Observação: N (total de estabelecimentos) ≤ 1.</p>')
+            + '</div>'
+          + '</section>'
+          + '<section class="card p-5"><h2 class="text-lg font-bold mb-3">Fórmulas Utilizadas</h2>'
+            + '<ul class="space-y-2 text-sm text-tax-dark-gray">'
+              + '<li><strong>Índice de Frequência (IF):</strong> <code>(B91 + B92 + B93 + B94 + CAT) / Média de Vínculos × 1000</code></li>'
+              + '<li><strong>Índice de Gravidade (IG):</strong> <code>((B91×0,1 + B92×0,3 + B93×0,5 + B94×0,1 + CAT×0,5) / Média de Vínculos) × 1000</code></li>'
+              + '<li><strong>Índice de Custo (IC):</strong> <code>(Total de Benefícios / Massa Salarial) × 1000</code></li>'
+              + '<li><strong>Percentis:</strong> <code>P = ((k − 1) / (N − 1)) × 100</code> (k = posição no rol; N = total).'
+                + '<div class="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-3">'
+                  + '<div class="p-3 bg-tax-bg-light rounded-lg"><div class="text-xs text-tax-dark-gray">Frequência</div><div class="text-sm"><code>k='+(ordemFrequencia||0)+', N='+(totalEstab||0)+'</code> ⇒ <strong>'+br2(pFreq)+'%</strong></div></div>'
+                  + '<div class="p-3 bg-tax-bg-light rounded-lg"><div class="text-xs text-tax-dark-gray">Gravidade</div><div class="text-sm"><code>k='+(ordemGravidade||0)+', N='+(totalEstab||0)+'</code> ⇒ <strong>'+br2(pGrav)+'%</strong></div></div>'
+                  + '<div class="p-3 bg-tax-bg-light rounded-lg"><div class="text-xs text-tax-dark-gray">Custo</div><div class="text-sm"><code>k='+(ordemCusto||0)+', N='+(totalEstab||0)+'</code> ⇒ <strong>'+br2(pCusto)+'%</strong></div></div>'
+                + '</div>'
+              + '</li>'
+              + '<li><strong>Índice Composto:</strong> <code>(0,5×P<sub>Grav</sub> + 0,35×P<sub>Freq</sub> + 0,15×P<sub>Custo</sub>) × 0,02</code></li>'
+              + '<li><strong>Regra de Rotatividade:</strong> se <code>Rotatividade &gt; 75%</code> e <code>FAP &lt; 1</code>, então <code>FAP = 1</code>.</li>'
+            + '</ul>'
+          + '</section>'
+          + '<p class="text-center text-xs text-tax-dark-gray">Gerado por calculadorafap.com.br</p>'
+        + '</main>'
+      + '</body></html>';
 
-            <div class="card p-5">
-              <h2 class="text-lg font-bold mb-4">Percentis e Composto</h2>
-              <table class="w-full text-sm mb-4"><tbody class="divide-y divide-tax-gray">
-                <tr><td class="py-2">% Frequência</td><td class="py-2 text-right">${percentilFrequencia.toFixed(2)}%</td></tr>
-                <tr><td class="py-2">% Gravidade</td><td class="py-2 text-right">${percentilGravidade.toFixed(2)}%</td></tr>
-                <tr><td class="py-2">% Custo</td><td class="py-2 text-right">${percentilCusto.toFixed(2)}%</td></tr>
-                <tr><td class="py-2 font-semibold">Índice Composto</td><td class="py-2 text-right font-semibold">${indiceComposto.toFixed(4)}</td></tr>
-                <tr><td class="py-2 font-semibold">FAP Final</td><td class="py-2 text-right font-semibold">${fapFinal.toFixed(4)}${(taxaRotatividade>75 && fapFinal===1)?' <span class="text-xs text-tax-dark-gray">(ajustado por rotatividade > 75%)</span>':''}</td></tr>
-              </tbody></table>
-            </div>
-          </section>
-
-          <section class="card p-5">
-            <h2 class="text-lg font-bold mb-3">Fórmulas Utilizadas</h2>
-            <ul class="space-y-2 text-sm text-tax-dark-gray">
-              <li><strong>Índice de Frequência (IF):</strong> <code>(B91 + B92 + B93 + B94 + CAT) / Média de Vínculos × 1000</code></li>
-              <li><strong>Índice de Gravidade (IG):</strong> <code>((B91×0,1 + B92×0,3 + B93×0,5 + B94×0,1 + CAT×0,5) / Média de Vínculos) × 1000</code></li>
-              <li><strong>Índice de Custo (IC):</strong> <code>(Total de Benefícios / Massa Salarial) × 1000</code></li>
-              <li><strong>Percentis:</strong> <code>P = ((k − 1) / (N − 1)) × 100</code> (k = posição no rol; N = total na subclasse).</li>
-              <li><strong>Índice Composto:</strong> <code>(0,5×P<sub>Grav</sub> + 0,35×P<sub>Freq</sub> + 0,15×P<sub>Custo</sub>) × 0,02</code></li>
-              <li><strong>Regra de Rotatividade:</strong> se <code>Rotatividade &gt; 75%</code> e <code>FAP &lt; 1</code>, então <code>FAP = 1</code>.</li>
-            </ul>
-          </section>
-
-          <p class="text-center text-xs text-tax-dark-gray">Gerado por calculadorafap.com.br</p>
-        </main>
-      </body></html>
-    `;
-
-    const w = window.open('', '_blank');
-    w.document.open(); w.document.write(html); w.document.close();
+      var w = window.open('', '_blank');
+      w.document.open(); w.document.write(html); w.document.close();
+    }catch(err){
+      console.error(err); flash("Erro ao gerar o relatório.");
+    }
   }
 
-  /* ===== Listeners (sem inline) ===== */
-  document.addEventListener('DOMContentLoaded', () => {
-    const btnCalcular   = document.getElementById('btnCalcular');
-    const btnLimpar     = document.getElementById('btnLimpar');
-    const btnCalcularFap= document.getElementById('btnCalcularFap');
-    const btnRelatorio  = document.getElementById('btnRelatorio');
+  // Expor no escopo global (garante o funcionamento do onclick)
+  window.calcularIndices = calcularIndices;
+  window.calcularFap = calcularFap;
+  window.abrirFormularioRelatorio = abrirFormularioRelatorio;
 
-    if (btnCalcular)    btnCalcular.addEventListener('click', calcularIndices);
-    if (btnLimpar)      btnLimpar.addEventListener('click', () => location.reload());
-    if (btnCalcularFap) btnCalcularFap.addEventListener('click', calcularFap);
-    if (btnRelatorio)   btnRelatorio.addEventListener('click', abrirFormularioRelatorio);
+  // Garantias extras (listeners)
+  document.addEventListener('DOMContentLoaded', function(){
+    var c  = document.getElementById('btnCalcular');
+    var cf = document.getElementById('btnCalcularFap');
+    var r  = document.getElementById('btnRelatorio');
+    var l  = document.getElementById('btnLimpar');
+    if(c)  c.addEventListener('click', calcularIndices);
+    if(cf) cf.addEventListener('click', calcularFap);
+    if(r)  r.addEventListener('click', abrirFormularioRelatorio);
+    if(l)  l.addEventListener('click', function(){ location.reload(); });
+
+    // normaliza BRL ao sair do campo
+    var ms = document.getElementById('massaSalarial');
+    var tb = document.getElementById('totalBeneficios');
+    if(ms) ms.addEventListener('blur', function(){ maskBRLInput(ms); });
+    if(tb) tb.addEventListener('blur', function(){ maskBRLInput(tb); });
   });
 </script>
 

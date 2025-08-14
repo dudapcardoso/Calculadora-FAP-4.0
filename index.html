@@ -31,7 +31,7 @@ layout: null
   </script>
 
   <style>
-    /* Estilo geral da página no mesmo padrão da calculadora de impacto */
+    /* Estilo geral seguindo o padrão da calculadora de impacto */
     #calc-fap { background-color: #152E3E; min-height: 100vh; }
     #calc-fap .main-card{
       background:#fff;border-radius:.75rem;
@@ -63,6 +63,11 @@ layout: null
 
     /* Utilidades */
     .hidden{ display:none; }
+
+    /* Hero “orgânico” com blobs (sem imagem externa) */
+    .blob {
+      position:absolute; inset:auto; filter: blur(40px); opacity:.25; pointer-events:none;
+    }
   </style>
 </head>
 <body>
@@ -71,23 +76,62 @@ layout: null
   <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
 
     <!-- Cabeçalho -->
-    <header class="text-center mb-8">
+    <header class="text-center mb-6">
       <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Calculadora do FAP</h1>
       <p class="mt-2 text-lg sm:text-xl text-tax-gold">Recalcule índices e veja o impacto</p>
     </header>
 
-    <!-- Banner (mantido) -->
-    <div class="mb-8">
-      <img src="banner fappp.png.png" alt="Soluções para empresas e escritórios - Calculadora FAP"
-           class="w-full rounded-xl shadow-md">
-    </div>
+    <!-- HERO ORGÂNICO (substitui a imagem) -->
+    <section class="relative bg-tax-blue text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-lg overflow-hidden">
+      <!-- blobs decorativos -->
+      <div class="blob w-40 h-40 bg-tax-gold rounded-full -top-10 -left-10"></div>
+      <div class="blob w-36 h-36 bg-white rounded-full -bottom-10 -right-12"></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center relative">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold leading-tight">Solução para Empresas e Escritórios</h2>
+          <p class="mt-3 text-tax-gold">Preencha os dados e recalcule o FAP com base na metodologia oficial.</p>
+
+          <div class="mt-6 flex flex-col sm:flex-row gap-3">
+            <a href="#calc-form" class="btn-primary sm:w-auto text-center">Gerar Relatório</a>
+            <a href="https://eduardocardosop.hotmart.host/descomplicando-a-contestacao-do-fap-11-passos-para-reduzir-custos-e-corrigir-inconsistencias-01babbea-fcfd-4b31-a0b3-be2ec1c869bf"
+               target="_blank" class="btn-secondary sm:w-auto text-center">eBook atualizado • R$ 149,00</a>
+          </div>
+
+          <ul class="mt-6 space-y-2">
+            <li class="flex gap-3"><span class="text-tax-gold">➜</span><span>Relatório técnico detalhado para defesas administrativas ou judiciais.</span></li>
+            <li class="flex gap-3"><span class="text-tax-gold">➜</span><span>Identifique inconsistências nos B91–B94, CAT, percentis e índice composto.</span></li>
+          </ul>
+        </div>
+
+        <!-- “Featurettes” simples (sem imagem externa) -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-white/10 rounded-xl p-4">
+            <p class="font-semibold">Portal FAPWeb</p>
+            <p class="text-sm text-tax-gray">Conferência rápida de dados</p>
+          </div>
+          <div class="bg-white/10 rounded-xl p-4">
+            <p class="font-semibold">Relatório</p>
+            <p class="text-sm text-tax-gray">Pronto para impressão/PDF</p>
+          </div>
+          <div class="bg-white/10 rounded-xl p-4">
+            <p class="font-semibold">eBook técnico</p>
+            <p class="text-sm text-tax-gray">11 erros frequentes</p>
+          </div>
+          <div class="bg-white/10 rounded-xl p-4">
+            <p class="font-semibold">Suporte</p>
+            <p class="text-sm text-tax-gray">WhatsApp especialista</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <div class="main-card overflow-hidden">
       <!-- Painel de Entradas -->
       <div class="p-6 sm:p-8 bg-tax-bg-light border-b border-tax-gray">
         <h2 class="text-xl font-bold text-tax-blue mb-6">1. Preencha os dados</h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div id="calc-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label for="cat" class="block text-sm font-medium text-tax-dark-gray mb-1">
               Comunicação de Acidente de Trabalho (CAT)
@@ -165,7 +209,7 @@ layout: null
 
         <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           <button class="btn-primary" onclick="calcularIndices()">Calcular</button>
-          <button class="btn-secondary" onclick="document.getElementById('formFap').reset?.();">Limpar</button>
+          <button class="btn-secondary" onclick="location.reload()">Limpar</button>
         </div>
 
         <div class="mt-6 bg-white rounded-lg p-4">
@@ -181,23 +225,23 @@ layout: null
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div>
               <label for="ordemFrequencia" class="block text-sm font-medium text-tax-dark-gray mb-1">
-                Número Ordem Frequência
+                Número Ordem Frequência (k)
               </label>
-              <input type="number" id="ordemFrequencia" placeholder="Informe o Número Rol dos Índices de Frequência" class="w-full p-3 input-field">
+              <input type="number" id="ordemFrequencia" placeholder="Posição no rol (1..N)" class="w-full p-3 input-field">
             </div>
 
             <div>
               <label for="ordemGravidade" class="block text-sm font-medium text-tax-dark-gray mb-1">
-                Número Ordem Gravidade
+                Número Ordem Gravidade (k)
               </label>
-              <input type="number" id="ordemGravidade" placeholder="Informe o Número Rol dos Índices de Gravidade" class="w-full p-3 input-field">
+              <input type="number" id="ordemGravidade" placeholder="Posição no rol (1..N)" class="w-full p-3 input-field">
             </div>
 
             <div>
               <label for="ordemCusto" class="block text-sm font-medium text-tax-dark-gray mb-1">
-                Número Ordem Custo
+                Número Ordem Custo (k)
               </label>
-              <input type="number" id="ordemCusto" placeholder="Informe o Número Rol dos Índices de Custo" class="w-full p-3 input-field">
+              <input type="number" id="ordemCusto" placeholder="Posição no rol (1..N)" class="w-full p-3 input-field">
             </div>
           </div>
 
@@ -224,7 +268,7 @@ layout: null
       💬 Fale com um especialista
     </a>
 
-    <!-- Bloco eBook (mantido, com leve ajuste visual) -->
+    <!-- Bloco eBook (mantido) -->
     <div class="mt-8 p-6 bg-blue-50 rounded-xl text-center shadow-sm">
       <h3 class="text-xl font-bold text-tax-blue mb-2">🔍 Quer ir além?</h3>
       <p class="text-base mb-4">
@@ -336,22 +380,14 @@ layout: null
     `;
   }
 
-  function formatarMoeda(element) {
-    let valor = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
-    element.value = valor ? `R$ ${parseFloat(valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : '';
-  }
-  function removerFormato(element) {
-    element.value = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
-  }
-  function validarNumero(element) {
-    const value = element.value.replace(',', '.');
-    if (isNaN(value) || value < 0) {
-      alert("Por favor, insira um número válido.");
-      element.value = '';
-    }
-  }
+  /* Helpers de formato */
+  const br4 = (n) => (isFinite(n) ? n.toFixed(4).replace('.', ',') : '—');
+  const br2 = (n) => (isFinite(n) ? n.toFixed(2).replace('.', ',') : '—');
+  const br$ = (n) => isFinite(n) ? n.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}) : '—';
 
+  /* Relatório estilizado + fórmulas (inclui percentis) e exemplo com k/N do usuário */
   function abrirFormularioRelatorio() {
+    // Coleta
     const cat = parseFloat(document.getElementById("cat").value) || 0;
     const b91 = parseFloat(document.getElementById("b91").value) || 0;
     const b92 = parseFloat(document.getElementById("b92").value) || 0;
@@ -367,81 +403,151 @@ layout: null
     const totalEstabelecimentos = parseFloat(document.getElementById("totalEstabelecimentos").value) || 1;
     const taxaRotatividade = parseFloat(document.getElementById("taxaRotatividade").value) || 0;
 
+    // Cálculos
     const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
-    const indiceGravidade = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
-    const indiceCusto = (totalBeneficios / massaSalarial) * 1000;
+    const indiceGravidade  = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
+    const indiceCusto      = (totalBeneficios / massaSalarial) * 1000;
 
-    const percentilFrequencia = ((ordemFrequencia - 1) / (totalEstabelecimentos - 1)) * 100;
-    const percentilGravidade = ((ordemGravidade - 1) / (totalEstabelecimentos - 1)) * 100;
-    const percentilCusto = ((ordemCusto - 1) / (totalEstabelecimentos - 1)) * 100;
+    const denom = (totalEstabelecimentos - 1);
+    const temBasePercentil = denom > 0;
+
+    const percentilFrequencia = temBasePercentil ? ((ordemFrequencia - 1) / denom) * 100 : 0;
+    const percentilGravidade  = temBasePercentil ? ((ordemGravidade  - 1) / denom) * 100 : 0;
+    const percentilCusto      = temBasePercentil ? ((ordemCusto      - 1) / denom) * 100 : 0;
 
     let indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
     let fapFinal = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
-    if (taxaRotatividade > 75 && fapFinal < 1) {
-      fapFinal = 1;
-    }
+    if (taxaRotatividade > 75 && fapFinal < 1) fapFinal = 1;
 
-    const relatorio = `
-      <html>
-      <head>
-        <title>Relatório do Cálculo do FAP</title>
-        <style>
-          body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
-          h2 { color: #007BFF; }
-          .box { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #f9f9f9; margin-bottom: 20px; }
-          code { background-color: #eef; padding: 2px 4px; border-radius: 4px; }
-        </style>
-      </head>
-      <body>
-        <h2>Relatório de Cálculo do FAP</h2>
-
-        <div class="box">
-          <h3>Índice de Frequência</h3>
-          <p><strong>Fórmula:</strong> <code>(B91 + B92 + B93 + B94 + CAT) / Média de Vínculos × 1000</code></p>
-          <p><strong>Valores:</strong> (${b91} + ${b92} + ${b93} + ${b94} + ${cat}) / ${mediaVinculos} × 1000</p>
-          <p><strong>Resultado:</strong> ${indiceFrequencia.toFixed(4)}</p>
+    // HTML do relatório
+    const html = `
+    <!doctype html>
+    <html lang="pt-BR">
+    <head>
+      <meta charset="utf-8">
+      <title>Relatório do Cálculo do FAP</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script src="https://cdn.tailwindcss.com"></script>
+      <script>
+        tailwind.config = { theme: { extend: {
+          colors:{ 'tax-blue':'#152E3E','tax-gold':'#E2B874','tax-gray':'#EBEBEB','tax-dark-gray':'#6B7280','tax-bg-light':'#F9FAFB' }
+        } } }
+      <\/script>
+      <style>
+        @media print { .no-print{display:none!important} body{-webkit-print-color-adjust:exact;print-color-adjust:exact} }
+        .card{background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1)}
+        code{background:#F3F4F6;padding:.1rem .35rem;border-radius:.35rem}
+      </style>
+    </head>
+    <body class="bg-tax-bg-light text-tax-blue">
+      <header class="bg-tax-blue text-white p-6 sm:p-8">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold">Relatório do Cálculo do FAP</h1>
+            <p class="text-tax-gold">www.calculadorafap.com.br</p>
+          </div>
+          <button class="no-print bg-white text-tax-blue font-semibold px-4 py-2 rounded-md shadow" onclick="window.print()">Imprimir / Salvar PDF</button>
         </div>
+      </header>
 
-        <div class="box">
-          <h3>Índice de Gravidade</h3>
-          <p><strong>Fórmula:</strong> <code>((B91×0.1 + B92×0.3 + B93×0.5 + B94×0.1 + CAT×0.5) / Média de Vínculos) × 1000</code></p>
-          <p><strong>Valores:</strong> ((${b91}×0.1 + ${b92}×0.3 + ${b93}×0.5 + ${b94}×0.1 + ${cat}×0.5) / ${mediaVinculos}) × 1000</p>
-          <p><strong>Resultado:</strong> ${indiceGravidade.toFixed(4)}</p>
-        </div>
+      <main class="max-w-5xl mx-auto p-6 sm:p-8 space-y-8">
+        <!-- Resumo -->
+        <section class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-3xl font-bold">${br4(indiceFrequencia)}</p></div>
+          <div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-3xl font-bold">${br4(indiceGravidade)}</p></div>
+          <div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-3xl font-bold">${br4(indiceCusto)}</p></div>
+        </section>
 
-        <div class="box">
-          <h3>Índice de Custo</h3>
-          <p><strong>Fórmula:</strong> <code>(Total de Benefícios / Massa Salarial) × 1000</code></p>
-          <p><strong>Valores:</strong> (${totalBeneficios} / ${massaSalarial}) × 1000</p>
-          <p><strong>Resultado:</strong> ${indiceCusto.toFixed(4)}</p>
-        </div>
+        <!-- Tabelas -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card p-5">
+            <h2 class="text-lg font-bold mb-4">Entradas (Fatos Geradores)</h2>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-tax-gray">
+                <tr><td class="py-2">CAT</td><td class="py-2 text-right">${br2(cat)}</td></tr>
+                <tr><td class="py-2">B91</td><td class="py-2 text-right">${br2(b91)}</td></tr>
+                <tr><td class="py-2">B92</td><td class="py-2 text-right">${br2(b92)}</td></tr>
+                <tr><td class="py-2">B93</td><td class="py-2 text-right">${br2(b93)}</td></tr>
+                <tr><td class="py-2">B94</td><td class="py-2 text-right">${br2(b94)}</td></tr>
+                <tr><td class="py-2">Massa Salarial</td><td class="py-2 text-right">${br$(massaSalarial)}</td></tr>
+                <tr><td class="py-2">Média de Vínculos</td><td class="py-2 text-right">${br2(mediaVinculos)}</td></tr>
+                <tr><td class="py-2">Benefícios Pagos</td><td class="py-2 text-right">${br$(totalBeneficios)}</td></tr>
+              </tbody>
+            </table>
+          </div>
 
-        <div class="box">
-          <h3>Percentis</h3>
-          <p><strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(2)}%</p>
-          <p><strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(2)}%</p>
-          <p><strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(2)}%</p>
-        </div>
+          <div class="card p-5">
+            <h2 class="text-lg font-bold mb-4">Percentis e Composto</h2>
+            <table class="w-full text-sm mb-4">
+              <tbody class="divide-y divide-tax-gray">
+                <tr><td class="py-2">% Frequência</td><td class="py-2 text-right">${br2(percentilFrequencia)}%</td></tr>
+                <tr><td class="py-2">% Gravidade</td><td class="py-2 text-right">${br2(percentilGravidade)}%</td></tr>
+                <tr><td class="py-2">% Custo</td><td class="py-2 text-right">${br2(percentilCusto)}%</td></tr>
+                <tr><td class="py-2 font-semibold">Índice Composto</td><td class="py-2 text-right font-semibold">${br4(indiceComposto)}</td></tr>
+                <tr><td class="py-2 font-semibold">FAP Final</td><td class="py-2 text-right font-semibold">${br4(fapFinal)}${(taxaRotatividade>75 && fapFinal===1)?' <span class="text-xs text-tax-dark-gray">(ajustado por rotatividade > 75%)</span>':''}</td></tr>
+              </tbody>
+            </table>
+            ${temBasePercentil ? '' : '<p class="text-xs text-red-600">Observação: N (total de estabelecimentos) ≤ 1. Percentis exibidos como 0% para evitar divisão por zero.</p>'}
+          </div>
+        </section>
 
-        <div class="box">
-          <h3>Índice Composto e FAP</h3>
-          <p><strong>Fórmula do Índice Composto:</strong> <code>(0.5×Gravidade + 0.35×Frequência + 0.15×Custo) × 0.02</code></p>
-          <p><strong>Resultado do Índice Composto:</strong> ${indiceComposto.toFixed(4)}</p>
-          <p><strong>FAP Final:</strong> ${fapFinal.toFixed(4)}${taxaRotatividade > 75 && fapFinal === 1 ? ' (ajustado por rotatividade > 75%)' : ''}</p>
-        </div>
+        <!-- Fórmulas Utilizadas (inclui percentis com exemplo usando k/N do usuário) -->
+        <section class="card p-5">
+          <h2 class="text-lg font-bold mb-3">Fórmulas Utilizadas</h2>
+          <ul class="space-y-2 text-sm text-tax-dark-gray">
+            <li><strong>Índice de Frequência (IF):</strong> <code>(B91 + B92 + B93 + B94 + CAT) / Média de Vínculos × 1000</code></li>
+            <li><strong>Índice de Gravidade (IG):</strong> <code>((B91×0,1 + B92×0,3 + B93×0,5 + B94×0,1 + CAT×0,5) / Média de Vínculos) × 1000</code></li>
+            <li><strong>Índice de Custo (IC):</strong> <code>(Total de Benefícios / Massa Salarial) × 1000</code></li>
+            <li><strong>Percentis (para cada dimensão):</strong> <code>P = ((k − 1) / (N − 1)) × 100</code>,
+              onde <code>k</code> é a posição no rol (1..N) e <code>N</code> é o total de estabelecimentos da subclasse.
+              <div class="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="p-3 bg-tax-bg-light rounded-lg">
+                  <div class="text-xs text-tax-dark-gray">Exemplo (Frequência)</div>
+                  <div class="text-sm"><code>k=${ordemFrequencia || 0}, N=${totalEstabelecimentos || 0}</code> ⇒ <strong>${br2(percentilFrequencia)}%</strong></div>
+                </div>
+                <div class="p-3 bg-tax-bg-light rounded-lg">
+                  <div class="text-xs text-tax-dark-gray">Exemplo (Gravidade)</div>
+                  <div class="text-sm"><code>k=${ordemGravidade || 0}, N=${totalEstabelecimentos || 0}</code> ⇒ <strong>${br2(percentilGravidade)}%</strong></div>
+                </div>
+                <div class="p-3 bg-tax-bg-light rounded-lg">
+                  <div class="text-xs text-tax-dark-gray">Exemplo (Custo)</div>
+                  <div class="text-sm"><code>k=${ordemCusto || 0}, N=${totalEstabelecimentos || 0}</code> ⇒ <strong>${br2(percentilCusto)}%</strong></div>
+                </div>
+              </div>
+            </li>
+            <li><strong>Índice Composto:</strong> <code>(0,5×P<sub>Grav</sub> + 0,35×P<sub>Freq</sub> + 0,15×P<sub>Custo</sub>) × 0,02</code></li>
+            <li><strong>Regra de Rotatividade:</strong> se <code>Rotatividade &gt; 75%</code> e <code>FAP &lt; 1</code>, então <code>FAP = 1</code>.</li>
+          </ul>
+        </section>
 
-        <p>Este relatório foi gerado automaticamente pelo site <strong>www.calculadorafap.com.br</strong></p>
-        <p><em>Desenvolvido por Eduardo Cardoso</em></p>
-      </body>
-      </html>
+        <p class="text-center text-xs text-tax-dark-gray">Gerado por calculadorafap.com.br</p>
+      </main>
+    </body>
+    </html>
     `;
 
-    const novaJanela = window.open('', '_blank');
-    novaJanela.document.write(relatorio);
-    novaJanela.document.close();
+    const w = window.open('', '_blank');
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+  }
+
+  /* Formatação de moeda e validações */
+  function formatarMoeda(element) {
+    let valor = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
+    element.value = valor ? `R$ ${parseFloat(valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : '';
+  }
+  function removerFormato(element) {
+    element.value = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
+  }
+  function validarNumero(element) {
+    const value = element.value.replace(',', '.');
+    if (isNaN(value) || value < 0) {
+      alert("Por favor, insira um número válido.");
+      element.value = '';
+    }
   }
 </script>
 
 </body>
 </html>
-

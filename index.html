@@ -283,7 +283,7 @@ layout: null
       var somaGravidade = (b91*0.1 + b92*0.3 + b93*0.5 + b94*0.1 + cat*0.5);
 
       var indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
-      var indiceGravidade  = ((b91*0.1 + b92*0.3 + b93*0.5 + b94*0.1 + cat*0.5) / mediaVinculos) * 1000;
+      var indiceGravidade  = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
       var indiceCusto      = (totalBeneficios / massaSalarial) * MULT;
 
       var html = ''
@@ -479,6 +479,7 @@ layout: null
 
 </body>
 </html>
+
 
 
 

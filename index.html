@@ -39,7 +39,6 @@ layout: null
     .hidden{ display:none; }
     .blob { position:absolute; filter: blur(40px); opacity:.25; pointer-events:none; }
     .addon { position:absolute; right:.75rem; top:50%; transform:translateY(-50%); color:#6B7280; font-weight:600; }
-    /* banner de erro */
     #flash{display:none} #flash.show{display:block}
   </style>
 </head>
@@ -54,7 +53,7 @@ layout: null
       <p class="mt-2 text-lg sm:text-xl text-tax-gold">Recalcule índices e veja o impacto</p>
     </header>
 
-    <!-- HERO -->
+    <!-- HERO orgânico -->
     <section class="relative bg-tax-blue text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-lg overflow-hidden">
       <div class="blob w-40 h-40 bg-tax-gold rounded-full -top-10 -left-10 absolute"></div>
       <div class="blob w-36 h-36 bg-white rounded-full -bottom-10 -right-12 absolute"></div>
@@ -112,7 +111,7 @@ layout: null
             <input type="number" id="b94" inputmode="numeric" placeholder="Ex.: 2" class="w-full p-3 input-field">
           </div>
 
-          <!-- Massa Salarial (R$) à esquerda, com máscara em tempo real -->
+          <!-- Massa Salarial (R$) com máscara -->
           <div class="relative">
             <label for="massaSalarial" class="block text-sm font-medium text-tax-dark-gray mb-1">Massa Salarial (R$)</label>
             <input type="text" id="massaSalarial" inputmode="decimal" placeholder="R$ 1.000.000,00"
@@ -125,7 +124,7 @@ layout: null
             <input type="number" id="mediaVinculos" inputmode="numeric" placeholder="Ex.: 250" class="w-full p-3 input-field">
           </div>
 
-          <!-- Benefícios (R$) à esquerda, com máscara em tempo real -->
+          <!-- Benefícios (R$) com máscara -->
           <div class="relative">
             <label for="totalBeneficios" class="block text-sm font-medium text-tax-dark-gray mb-1">Valor Total de Benefícios Pagos (R$)</label>
             <input type="text" id="totalBeneficios" inputmode="decimal" placeholder="R$ 200.000,00"
@@ -138,7 +137,7 @@ layout: null
             <input type="number" id="totalEstabelecimentos" inputmode="numeric" placeholder="Ex.: 1200" class="w-full p-3 input-field">
           </div>
 
-          <!-- Rotatividade em % (aceita vírgula) -->
+          <!-- Rotatividade em % -->
           <div class="relative">
             <label for="taxaRotatividade" class="block text-sm font-medium text-tax-dark-gray mb-1">Taxa Média de Rotatividade (%)</label>
             <input type="text" id="taxaRotatividade" inputmode="decimal" placeholder="Ex.: 18,5"
@@ -260,7 +259,7 @@ layout: null
     return true;
   }
 
-  /* ===== Cálculo 1: Índices ===== */
+  /* ===== Cálculo 1: Índices (por mil) ===== */
   function calcularIndices() {
     try{
       var obrig = ["cat","b91","b92","b93","b94","massaSalarial","mediaVinculos","totalBeneficios"];
@@ -279,19 +278,27 @@ layout: null
       if (!isFinite(massaSalarial) || massaSalarial <= 0){ flash("Massa Salarial deve ser maior que zero."); return; }
       if (!isFinite(mediaVinculos) || mediaVinculos <= 0){ flash("Número Médio de Vínculos deve ser maior que zero."); return; }
 
-      var indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
-      var indiceGravidade  = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
-      var indiceCusto      = (totalBeneficios / massaSalarial) * 1000;
+      var MULT = 1000;
+      var somaEventos   = (b91 + b92 + b93 + b94 + cat);
+      var somaGravidade = (b91*0.1 + b92*0.3 + b93*0.5 + b94*0.1 + cat*0.5);
+
+      var indiceFrequencia = (somaEventos   / mediaVinculos) * MULT;
+      var indiceGravidade  = (somaGravidade / mediaVinculos) * MULT;
+      var indiceCusto      = (totalBeneficios / massaSalarial) * MULT;
 
       var html = ''
         + '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">'
-        +   '<div><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-2xl font-bold text-tax-blue">' + (isFinite(indiceFrequencia)?indiceFrequencia.toFixed(4):'—') + '</p></div>'
-        +   '<div><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-2xl font-bold text-tax-blue">' + (isFinite(indiceGravidade)?indiceGravidade.toFixed(4):'—') + '</p></div>'
-        +   '<div><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-2xl font-bold text-tax-blue">' + (isFinite(indiceCusto)?indiceCusto.toFixed(4):'—') + '</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-2xl font-bold text-tax-blue">' + (isFinite(indiceFrequencia)?indiceFrequencia.toFixed(4):'—') + '</p>'
+        +       '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaEventos+' / '+mediaVinculos+') × 1000</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-2xl font-bold text-tax-blue">' + (isFinite(indiceGravidade)?indiceGravidade.toFixed(4):'—') + '</p>'
+        +       '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaGravidade.toFixed(4)+' / '+mediaVinculos+') × 1000</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-2xl font-bold text-tax-blue">' + (isFinite(indiceCusto)?indiceCusto.toFixed(4):'—') + '</p>'
+        +       '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+totalBeneficios+' / '+massaSalarial+') × 1000</p></div>'
         + '</div>';
       document.getElementById("result").innerHTML = html;
 
-      document.getElementById("camposFap").className = document.getElementById("camposFap").className.replace('hidden','').trim();
+      // mostra a etapa 2
+      document.getElementById("camposFap").classList.remove('hidden');
     }catch(err){
       console.error(err); flash("Erro ao calcular os índices. Revise os campos e tente novamente.");
     }
@@ -334,7 +341,7 @@ layout: null
     }
   }
 
-  /* ===== Relatório ===== */
+  /* ===== Relatório (com MULT = 1000 e percentis) ===== */
   function abrirFormularioRelatorio() {
     try{
       var cat = parseGeneric(document.getElementById("cat").value) || 0;
@@ -353,9 +360,13 @@ layout: null
       var totalEstab      = parseGeneric(document.getElementById("totalEstabelecimentos").value) || 1;
       var taxaRot         = parseGeneric(document.getElementById("taxaRotatividade").value) || 0;
 
-      var indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
-      var indiceGravidade  = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
-      var indiceCusto      = (totalBeneficios / massaSalarial) * 1000;
+      var MULT = 1000;
+      var somaEventos   = (b91 + b92 + b93 + b94 + cat);
+      var somaGravidade = (b91*0.1 + b92*0.3 + b93*0.5 + b94*0.1 + cat*0.5);
+
+      var indiceFrequencia = (somaEventos   / mediaVinculos) * MULT;
+      var indiceGravidade  = (somaGravidade / mediaVinculos) * MULT;
+      var indiceCusto      = (totalBeneficios / massaSalarial) * MULT;
 
       var denom = (totalEstab - 1);
       var temBasePercentil = denom > 0;
@@ -385,9 +396,12 @@ layout: null
         + '</header>'
         + '<main class="max-w-5xl mx-auto p-6 sm:p-8 space-y-8">'
           + '<section class="grid grid-cols-1 sm:grid-cols-3 gap-6">'
-            + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-3xl font-bold">' + br4(indiceFrequencia) + '</p></div>'
-            + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-3xl font-bold">' + br4(indiceGravidade) + '</p></div>'
-            + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-3xl font-bold">' + br4(indiceCusto) + '</p></div>'
+            + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-3xl font-bold">' + br4(indiceFrequencia) + '</p>'
+            + '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaEventos+' / '+mediaVinculos+') × 1000</p></div>'
+            + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-3xl font-bold">' + br4(indiceGravidade) + '</p>'
+            + '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaGravidade.toFixed(4)+' / '+mediaVinculos+') × 1000</p></div>'
+            + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-3xl font-bold">' + br4(indiceCusto) + '</p>'
+            + '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+totalBeneficios+' / '+massaSalarial+') × 1000</p></div>'
           + '</section>'
           + '<section class="grid grid-cols-1 lg:grid-cols-2 gap-6">'
             + '<div class="card p-5"><h2 class="text-lg font-bold mb-4">Entradas (Fatos Geradores)</h2>'
@@ -444,18 +458,18 @@ layout: null
   window.calcularFap = calcularFap;
   window.abrirFormularioRelatorio = abrirFormularioRelatorio;
 
-  // Também ligar pelos listeners (dupla garantia)
+  // Garantias extras (listeners)
   document.addEventListener('DOMContentLoaded', function(){
-    var c = document.getElementById('btnCalcular');
+    var c  = document.getElementById('btnCalcular');
     var cf = document.getElementById('btnCalcularFap');
-    var r = document.getElementById('btnRelatorio');
-    var l = document.getElementById('btnLimpar');
-    if(c) c.addEventListener('click', calcularIndices);
+    var r  = document.getElementById('btnRelatorio');
+    var l  = document.getElementById('btnLimpar');
+    if(c)  c.addEventListener('click', calcularIndices);
     if(cf) cf.addEventListener('click', calcularFap);
-    if(r) r.addEventListener('click', abrirFormularioRelatorio);
-    if(l) l.addEventListener('click', function(){ location.reload(); });
+    if(r)  r.addEventListener('click', abrirFormularioRelatorio);
+    if(l)  l.addEventListener('click', function(){ location.reload(); });
 
-    // Ajuste inicial: se usuário já digitou número sem "R$", normaliza ao sair do campo
+    // normaliza BRL ao sair do campo
     var ms = document.getElementById('massaSalarial');
     var tb = document.getElementById('totalBeneficios');
     if(ms) ms.addEventListener('blur', function(){ maskBRLInput(ms); });

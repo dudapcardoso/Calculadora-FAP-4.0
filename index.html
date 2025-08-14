@@ -145,7 +145,7 @@ layout: null
         </div>
 
         <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <button id="btnCalcular" type="button" class="btn-primary" onclick="calcularIndices()">Calcular</button>
+          <button id="btnCalcular" type="button" class="btn-primary" onclick="window.calcularIndices && window.calcularIndices()">Calcular</button>
           <button id="btnLimpar"   type="button" class="btn-secondary" onclick="location.reload()">Limpar</button>
         </div>
 
@@ -175,8 +175,8 @@ layout: null
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <button id="btnCalcularFap" type="button" class="btn-primary" onclick="calcularFap()">Calcular FAP</button>
-            <button id="btnRelatorio"   type="button" class="btn-secondary" onclick="abrirFormularioRelatorio()">Gerar Relatório do Cálculo</button>
+            <button id="btnCalcularFap" type="button" class="btn-primary" onclick="window.calcularFap && window.calcularFap()">Calcular FAP</button>
+            <button id="btnRelatorio"   type="button" class="btn-secondary" onclick="window.abrirFormularioRelatorio && window.abrirFormularioRelatorio()">Gerar Relatório do Cálculo</button>
           </div>
 
           <div class="bg-tax-bg-light rounded-lg p-4">
@@ -226,7 +226,7 @@ layout: null
     return true;
   }
 
-  /* ===== Mesmas máscaras e parses do código antigo ===== */
+  /* ===== Mesmas máscaras/parsers do antigo ===== */
   function formatarMoeda(element) {
     let valor = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
     element.value = valor ? `R$ ${parseFloat(valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : '';
@@ -242,8 +242,8 @@ layout: null
     }
   }
 
-  /* ===== Cálculo 1: Índices — igual ao antigo ===== */
-  function calcularIndices() {
+  /* ===== Cálculo 1: Índices — replicado do antigo ===== */
+  window.calcularIndices = function () {
     try{
       const campos = ["cat", "b91", "b92", "b93", "b94", "massaSalarial", "mediaVinculos", "totalBeneficios"];
       if (!verificarCamposObrigatorios(campos)) return;
@@ -269,16 +269,15 @@ layout: null
           <div><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-2xl font-bold text-tax-blue">${indiceCusto.toFixed(4)}</p></div>
         </div>
       `;
-
       document.getElementById("camposFap").classList.remove("hidden");
     }catch(err){
       console.error(err);
       flash("Erro ao calcular os índices. Revise os campos e tente novamente.");
     }
-  }
+  };
 
-  /* ===== Cálculo 2: Percentis + FAP — igual ao antigo ===== */
-  function calcularFap() {
+  /* ===== Cálculo 2: Percentis + FAP — replicado do antigo ===== */
+  window.calcularFap = function () {
     try{
       const campos = ["ordemFrequencia", "ordemGravidade", "ordemCusto", "totalEstabelecimentos", "taxaRotatividade"];
       if (!verificarCamposObrigatorios(campos)) return;
@@ -310,10 +309,10 @@ layout: null
       console.error(err);
       flash("Erro ao calcular FAP. Revise os campos e tente novamente.");
     }
-  }
+  };
 
-  /* ===== Relatório ===== */
-  function abrirFormularioRelatorio() {
+  /* ===== Relatório — com </script> ESCAPADO ===== */
+  window.abrirFormularioRelatorio = function () {
     try{
       const cat  = parseFloat(document.getElementById("cat").value) || 0;
       const b91  = parseFloat(document.getElementById("b91").value) || 0;
@@ -347,7 +346,7 @@ layout: null
       <!doctype html>
       <html lang="pt-BR"><head><meta charset="utf-8">
       <title>Relatório do Cálculo do FAP</title><meta name="viewport" content="width=device-width, initial-scale=1">
-      <script src="https://cdn.tailwindcss.com"></script>
+      <script src="https://cdn.tailwindcss.com"><\/script>
       <script>tailwind.config={theme:{extend:{colors:{'tax-blue':'#152E3E','tax-gold':'#E2B874','tax-gray':'#EBEBEB','tax-dark-gray':'#6B7280','tax-bg-light':'#F9FAFB'}}}}<\/script>
       <style>@media print{.no-print{display:none!important}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
       .card{background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1)}
@@ -409,7 +408,7 @@ layout: null
           <p class="text-center text-xs text-tax-dark-gray">Gerado por calculadorafap.com.br</p>
         </main>
       </body></html>
-    `;
+      `;
 
       const w = window.open('', '_blank');
       w.document.open(); w.document.write(html); w.document.close();
@@ -417,21 +416,17 @@ layout: null
       console.error(err);
       flash("Erro ao gerar o relatório.");
     }
-  }
+  };
 
-  /* Expor no escopo global + listeners (redundância ao inline onclick) */
-  window.calcularIndices = calcularIndices;
-  window.calcularFap = calcularFap;
-  window.abrirFormularioRelatorio = abrirFormularioRelatorio;
-
+  /* Listeners (redundância ao inline) */
   document.addEventListener('DOMContentLoaded', () => {
     const c  = document.getElementById('btnCalcular');
     const cf = document.getElementById('btnCalcularFap');
     const r  = document.getElementById('btnRelatorio');
     const l  = document.getElementById('btnLimpar');
-    if (c)  c.addEventListener('click', calcularIndices);
-    if (cf) cf.addEventListener('click', calcularFap);
-    if (r)  r.addEventListener('click', abrirFormularioRelatorio);
+    if (c)  c.addEventListener('click', window.calcularIndices);
+    if (cf) cf.addEventListener('click', window.calcularFap);
+    if (r)  r.addEventListener('click', window.abrirFormularioRelatorio);
     if (l)  l.addEventListener('click', () => location.reload());
   });
 </script>

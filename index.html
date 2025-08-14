@@ -1,203 +1,358 @@
 ---
-layout: default
+layout: null
+permalink: /calculadora-fap/
 ---
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="pt-br">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2064027217812464"
-     crossorigin="anonymous"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora FAP – Recalcule seu índice com precisão</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0 auto;
-            padding: 20px;
-            max-width: 800px;
+  <meta charset="UTF-8">
+  <title>Calculadora FAP – Recalcule seu índice com precisão</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google AdSense (mantido) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2064027217812464" crossorigin="anonymous"></script>
+
+  <!-- Tailwind apenas nesta página -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'tax-blue': '#152E3E',
+            'tax-gold': '#E2B874',
+            'tax-gray': '#EBEBEB',
+            'tax-dark-gray': '#6B7280',
+            'tax-bg-light': '#F9FAFB',
+          }
         }
-        h1 {
-            text-align: center;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input[type="number"], input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px;
-            width: 100%;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .result {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
+      }
+    }
+  </script>
+
+  <style>
+    /* Estilo geral da página no mesmo padrão da calculadora de impacto */
+    #calc-fap { background-color: #152E3E; min-height: 100vh; }
+    #calc-fap .main-card{
+      background:#fff;border-radius:.75rem;
+      box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1)
+    }
+    #calc-fap .input-field{
+      background:#F3F4F6;border:1px solid #D1D5DB;border-radius:.5rem;
+      transition:all .2s ease-in-out;color:#152E3E
+    }
+    #calc-fap .input-field:focus,
+    #calc-fap .input-field:focus-within{
+      border-color:#E2B874;box-shadow:0 0 0 2px rgba(226,184,116,.3);outline:none
+    }
+    #calc-fap input[type=number]::-webkit-inner-spin-button,
+    #calc-fap input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+    #calc-fap input[type=number]{-moz-appearance:textfield}
+
+    /* Botões padrão */
+    #calc-fap .btn-primary{
+      background:#152E3E;color:#fff;border-radius:.5rem;
+      padding:.75rem 1rem;font-weight:600;transition:filter .2s ease;width:100%
+    }
+    #calc-fap .btn-primary:hover{ filter:brightness(1.1) }
+    #calc-fap .btn-secondary{
+      background:#E2B874;color:#152E3E;border-radius:.5rem;
+      padding:.75rem 1rem;font-weight:600;transition:filter .2s ease;width:100%
+    }
+    #calc-fap .btn-secondary:hover{ filter:brightness(1.05) }
+
+    /* Utilidades */
+    .hidden{ display:none; }
+  </style>
 </head>
 <body>
-    <div style="text-align: center; margin-bottom: 30px;">
-  <img src="banner fappp.png.png" alt="Soluções para empresas e escritórios - Calculadora FAP" style="max-width: 100%; border-radius: 10px;">
-</div>
-    <label for="cat">Comunicação de Acidente de Trabalho (CAT):</label>
-    <input type="number" id="cat" placeholder="Informe o valor">
 
-    <label for="b91">Auxílio por incapacidade temporária (B91):</label>
-    <input type="number" id="b91" placeholder="Informe o valor">
+<section id="calc-fap" class="text-gray-800">
+  <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
 
-    <label for="b92">Aposentadoria por incapacidade permanente (B92):</label>
-    <input type="number" id="b92" placeholder="Informe o valor">
+    <!-- Cabeçalho -->
+    <header class="text-center mb-8">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Calculadora do FAP</h1>
+      <p class="mt-2 text-lg sm:text-xl text-tax-gold">Recalcule índices e veja o impacto</p>
+    </header>
 
-    <label for="b93">Pensão por morte (B93):</label>
-    <input type="number" id="b93" placeholder="Informe o valor">
-
-    <label for="b94">Auxílio-acidente (B94):</label>
-    <input type="number" id="b94" placeholder="Informe o valor">
-
-    <label for="massaSalarial">Massa Salarial (R$):</label>
-    <input type="text" id="massaSalarial" placeholder="Informe o valor" 
-           onblur="formatarMoeda(this)" 
-           onfocus="removerFormato(this)" 
-           oninput="validarNumero(this)">
-
-    <label for="mediaVinculos">Número Médio de Vínculos:</label>
-    <input type="number" id="mediaVinculos" placeholder="Informe o valor">
-
-    <label for="totalBeneficios">Valor Total de Benefícios Pagos (R$):</label>
-    <input type="text" id="totalBeneficios" placeholder="Informe o valor" 
-           onblur="formatarMoeda(this)" 
-           onfocus="removerFormato(this)" 
-           oninput="validarNumero(this)">
-
-    <label for="totalEstabelecimentos">Total de Estabelecimentos na subclasse CNAE:</label>
-    <input type="number" id="totalEstabelecimentos" placeholder="Informe o valor">
-
-    <label for="taxaRotatividade">Taxa Média de Rotatividade (%):</label>
-    <input type="number" id="taxaRotatividade" placeholder="Informe o valor">
-
-    <button onclick="calcularIndices()">Calcular</button>
-
-    <div class="result" id="result"></div>
-
-    <!-- Campos adicionais aparecem após calcular -->
-    <div id="camposFap" class="hidden">
-        <label for="ordemFrequencia">Número Ordem Frequência:</label>
-        <input type="number" id="ordemFrequencia" placeholder="Informe o Número Rol dos Índices de Frequência">
-
-        <label for="ordemGravidade">Número Ordem Gravidade:</label>
-        <input type="number" id="ordemGravidade" placeholder="Informe o Número Rol dos Índices de Gravidade">
-
-        <label for="ordemCusto">Número Ordem Custo:</label>
-        <input type="number" id="ordemCusto" placeholder="Informe o Número Rol dos Índices de Custo">
-
-        <button onclick="calcularFap()">Calcular FAP</button>
-
-        <div class="result" id="resultFap"></div>
-        <button onclick="abrirFormularioRelatorio()">Gerar Relatório do Cálculo</button>
-
+    <!-- Banner (mantido) -->
+    <div class="mb-8">
+      <img src="banner fappp.png.png" alt="Soluções para empresas e escritórios - Calculadora FAP"
+           class="w-full rounded-xl shadow-md">
     </div>
 
-    <script>
-    function verificarCamposObrigatorios(campos) {
-        for (let campo of campos) {
-            if (!document.getElementById(campo).value) {
-                alert(`Por favor, preencha o campo: ${campo.replace(/([A-Z])/g, ' $1').trim()}`);
-                return false;
-            }
-        }
-        return true;
+    <div class="main-card overflow-hidden">
+      <!-- Painel de Entradas -->
+      <div class="p-6 sm:p-8 bg-tax-bg-light border-b border-tax-gray">
+        <h2 class="text-xl font-bold text-tax-blue mb-6">1. Preencha os dados</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="cat" class="block text-sm font-medium text-tax-dark-gray mb-1">
+              Comunicação de Acidente de Trabalho (CAT)
+            </label>
+            <input type="number" id="cat" placeholder="Informe o valor" class="w-full p-3 input-field">
+          </div>
+
+          <div>
+            <label for="b91" class="block text-sm font-medium text-tax-dark-gray mb-1">
+              Auxílio por incapacidade temporária (B91)
+            </label>
+            <input type="number" id="b91" placeholder="Informe o valor" class="w-full p-3 input-field">
+          </div>
+
+          <div>
+            <label for="b92" class="block text-sm font-medium text-tax-dark-gray mb-1">
+              Aposentadoria por incapacidade permanente (B92)
+            </label>
+            <input type="number" id="b92" placeholder="Informe o valor" class="w-full p-3 input-field">
+          </div>
+
+          <div>
+            <label for="b93" class="block text-sm font-medium text-tax-dark-gray mb-1">
+              Pensão por morte (B93)
+            </label>
+            <input type="number" id="b93" placeholder="Informe o valor" class="w-full p-3 input-field">
+          </div>
+
+          <div>
+            <label for="b94" class="block text-sm font-medium text-tax-dark-gray mb-1">
+              Auxílio-acidente (B94)
+            </label>
+            <input type="number" id="b94" placeholder="Informe o valor" class="w-full p-3 input-field">
+          </div>
+
+          <div>
+            <label for="massaSalarial" class="block text-sm font-medium text-tax-dark-gray mb-1">
+              Massa Salarial (R$)
+            </label>
+            <input type="text" id="massaSalarial" placeholder="Informe o valor"
+                   class="w-full p-3 input-field text-right"
+                   onblur="formatarMoeda(this)" onfocus="removerFormato(this)" oninput="validarNumero(this)">
+          </div>
+
+          <div>
+            <label for="mediaVinculos" class="block text-sm font-medium text-tax-dark-gray mb-1">
+              Número Médio de Vínculos
+            </label>
+            <input type="number" id="mediaVinculos" placeholder="Informe o valor" class="w-full p-3 input-field">
+          </div>
+
+          <div>
+            <label for="totalBeneficios" class="block text-sm font-medium text-tax-dark-gray mb-1">
+              Valor Total de Benefícios Pagos (R$)
+            </label>
+            <input type="text" id="totalBeneficios" placeholder="Informe o valor"
+                   class="w-full p-3 input-field text-right"
+                   onblur="formatarMoeda(this)" onfocus="removerFormato(this)" oninput="validarNumero(this)">
+          </div>
+
+          <div>
+            <label for="totalEstabelecimentos" class="block text-sm font-medium text-tax-dark-gray mb-1">
+              Total de Estabelecimentos na subclasse CNAE
+            </label>
+            <input type="number" id="totalEstabelecimentos" placeholder="Informe o valor" class="w-full p-3 input-field">
+          </div>
+
+          <div>
+            <label for="taxaRotatividade" class="block text-sm font-medium text-tax-dark-gray mb-1">
+              Taxa Média de Rotatividade (%)
+            </label>
+            <input type="number" id="taxaRotatividade" placeholder="Informe o valor" class="w-full p-3 input-field">
+          </div>
+        </div>
+
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <button class="btn-primary" onclick="calcularIndices()">Calcular</button>
+          <button class="btn-secondary" onclick="document.getElementById('formFap').reset?.();">Limpar</button>
+        </div>
+
+        <div class="mt-6 bg-white rounded-lg p-4">
+          <div class="result text-tax-blue text-base" id="result"></div>
+        </div>
+      </div>
+
+      <!-- Painel do FAP (aparece após calcular) -->
+      <div class="p-6 sm:p-8 bg-white">
+        <div id="camposFap" class="hidden">
+          <h2 class="text-xl font-bold text-tax-blue mb-6">2. Percentis e FAP</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div>
+              <label for="ordemFrequencia" class="block text-sm font-medium text-tax-dark-gray mb-1">
+                Número Ordem Frequência
+              </label>
+              <input type="number" id="ordemFrequencia" placeholder="Informe o Número Rol dos Índices de Frequência" class="w-full p-3 input-field">
+            </div>
+
+            <div>
+              <label for="ordemGravidade" class="block text-sm font-medium text-tax-dark-gray mb-1">
+                Número Ordem Gravidade
+              </label>
+              <input type="number" id="ordemGravidade" placeholder="Informe o Número Rol dos Índices de Gravidade" class="w-full p-3 input-field">
+            </div>
+
+            <div>
+              <label for="ordemCusto" class="block text-sm font-medium text-tax-dark-gray mb-1">
+                Número Ordem Custo
+              </label>
+              <input type="number" id="ordemCusto" placeholder="Informe o Número Rol dos Índices de Custo" class="w-full p-3 input-field">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <button class="btn-primary" onclick="calcularFap()">Calcular FAP</button>
+            <button class="btn-secondary" onclick="abrirFormularioRelatorio()">Gerar Relatório do Cálculo</button>
+          </div>
+
+          <div class="bg-tax-bg-light rounded-lg p-4">
+            <div class="result text-tax-blue text-base" id="resultFap"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rodapé local -->
+    <footer class="text-center mt-8 text-sm text-gray-400">
+      <p>Simulador desenvolvido para fins de estimativa. Os valores podem variar.</p>
+    </footer>
+
+    <!-- WhatsApp fixo (mantido) -->
+    <a href="https://wa.me/5548996836949" target="_blank"
+       class="fixed bottom-5 right-5 bg-green-500 text-white rounded-full px-4 py-3 font-semibold shadow-lg z-50">
+      💬 Fale com um especialista
+    </a>
+
+    <!-- Bloco eBook (mantido, com leve ajuste visual) -->
+    <div class="mt-8 p-6 bg-blue-50 rounded-xl text-center shadow-sm">
+      <h3 class="text-xl font-bold text-tax-blue mb-2">🔍 Quer ir além?</h3>
+      <p class="text-base mb-4">
+        💡 Compre o <strong>eBook completo por R$ 149,00</strong> e descubra 11 erros comuns que podem estar majorando seu FAP indevidamente.
+      </p>
+      <a href="https://eduardocardosop.hotmart.host/descomplicando-a-contestacao-do-fap-11-passos-para-reduzir-custos-e-corrigir-inconsistencias-01babbea-fcfd-4b31-a0b3-be2ec1c869bf"
+         target="_blank"
+         class="inline-block btn-secondary w-auto">
+        👉 Adquirir eBook
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  function verificarCamposObrigatorios(campos) {
+    for (let campo of campos) {
+      if (!document.getElementById(campo).value) {
+        alert(`Por favor, preencha o campo: ${campo.replace(/([A-Z])/g, ' $1').trim()}`);
+        return false;
+      }
     }
-        
-function calcularIndices() {
-        const campos = ["cat", "b91", "b92", "b93", "b94", "massaSalarial", "mediaVinculos", "totalBeneficios"];
-        if (!verificarCamposObrigatorios(campos)) return;
+    return true;
+  }
 
-        const cat = parseFloat(document.getElementById("cat").value) || 0;
-        const b91 = parseFloat(document.getElementById("b91").value) || 0;
-        const b92 = parseFloat(document.getElementById("b92").value) || 0;
-        const b93 = parseFloat(document.getElementById("b93").value) || 0;
-        const b94 = parseFloat(document.getElementById("b94").value) || 0;
-        const massaSalarial = parseFloat(document.getElementById("massaSalarial").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
-        const mediaVinculos = parseFloat(document.getElementById("mediaVinculos").value) || 1;
-        const totalBeneficios = parseFloat(document.getElementById("totalBeneficios").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
+  function calcularIndices() {
+    const campos = ["cat", "b91", "b92", "b93", "b94", "massaSalarial", "mediaVinculos", "totalBeneficios"];
+    if (!verificarCamposObrigatorios(campos)) return;
 
-        const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
-        const indiceGravidade = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
-        const indiceCusto = (totalBeneficios / massaSalarial) * 1000;
+    const cat = parseFloat(document.getElementById("cat").value) || 0;
+    const b91 = parseFloat(document.getElementById("b91").value) || 0;
+    const b92 = parseFloat(document.getElementById("b92").value) || 0;
+    const b93 = parseFloat(document.getElementById("b93").value) || 0;
+    const b94 = parseFloat(document.getElementById("b94").value) || 0;
 
-        document.getElementById("result").innerHTML = `
-            <strong>Índice de Frequência:</strong> ${indiceFrequencia.toFixed(4)}<br>
-            <strong>Índice de Gravidade:</strong> ${indiceGravidade.toFixed(4)}<br>
-            <strong>Índice de Custo:</strong> ${indiceCusto.toFixed(4)}
-        `; // CORREÇÃO: crase de fechamento
+    const massaSalarial = parseFloat(
+      document.getElementById("massaSalarial").value.replace(/[R$.\s]/g, '').replace(',', '.')
+    ) || 0;
+    const mediaVinculos = parseFloat(document.getElementById("mediaVinculos").value) || 1;
+    const totalBeneficios = parseFloat(
+      document.getElementById("totalBeneficios").value.replace(/[R$.\s]/g, '').replace(',', '.')
+    ) || 0;
 
-        document.getElementById("camposFap").classList.remove("hidden");
+    const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
+    const indiceGravidade = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
+    const indiceCusto = (totalBeneficios / massaSalarial) * 1000;
+
+    document.getElementById("result").innerHTML = `
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+        <div>
+          <p class="text-sm text-tax-dark-gray">Índice de Frequência</p>
+          <p class="text-2xl font-bold text-tax-blue">${indiceFrequencia.toFixed(4)}</p>
+        </div>
+        <div>
+          <p class="text-sm text-tax-dark-gray">Índice de Gravidade</p>
+          <p class="text-2xl font-bold text-tax-blue">${indiceGravidade.toFixed(4)}</p>
+        </div>
+        <div>
+          <p class="text-sm text-tax-dark-gray">Índice de Custo</p>
+          <p class="text-2xl font-bold text-tax-blue">${indiceCusto.toFixed(4)}</p>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("camposFap").classList.remove("hidden");
+  }
+
+  function calcularFap() {
+    const campos = ["ordemFrequencia", "ordemGravidade", "ordemCusto", "totalEstabelecimentos", "taxaRotatividade"];
+    if (!verificarCamposObrigatorios(campos)) return;
+
+    const ordemFrequencia = parseFloat(document.getElementById("ordemFrequencia").value) || 0;
+    const ordemGravidade = parseFloat(document.getElementById("ordemGravidade").value) || 0;
+    const ordemCusto = parseFloat(document.getElementById("ordemCusto").value) || 0;
+    const totalEstabelecimentos = parseFloat(document.getElementById("totalEstabelecimentos").value) || 1;
+    const taxaRotatividade = parseFloat(document.getElementById("taxaRotatividade").value) || 0;
+
+    const percentilFrequencia = ((ordemFrequencia - 1) / (totalEstabelecimentos - 1)) * 100;
+    const percentilGravidade = ((ordemGravidade - 1) / (totalEstabelecimentos - 1)) * 100;
+    const percentilCusto = ((ordemCusto - 1) / (totalEstabelecimentos - 1)) * 100;
+
+    const indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
+    let fapCalculado = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
+
+    if (taxaRotatividade > 75 && fapCalculado < 1) {
+      fapCalculado = 1;
     }
 
-       function calcularFap() {
-        const campos = ["ordemFrequencia", "ordemGravidade", "ordemCusto", "totalEstabelecimentos", "taxaRotatividade"];
-        if (!verificarCamposObrigatorios(campos)) return;
+    document.getElementById("resultFap").innerHTML = `
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+        <div>
+          <p class="text-sm text-tax-dark-gray">% Frequência</p>
+          <p class="text-2xl font-bold text-tax-blue">${percentilFrequencia.toFixed(2)}%</p>
+        </div>
+        <div>
+          <p class="text-sm text-tax-dark-gray">% Gravidade</p>
+          <p class="text-2xl font-bold text-tax-blue">${percentilGravidade.toFixed(2)}%</p>
+        </div>
+        <div>
+          <p class="text-sm text-tax-dark-gray">% Custo</p>
+          <p class="text-2xl font-bold text-tax-blue">${percentilCusto.toFixed(2)}%</p>
+        </div>
+        <div>
+          <p class="text-sm text-tax-dark-gray">FAP Calculado</p>
+          <p class="text-2xl font-bold text-tax-blue">${fapCalculado.toFixed(4)}</p>
+        </div>
+      </div>
+    `;
+  }
 
-        const ordemFrequencia = parseFloat(document.getElementById("ordemFrequencia").value) || 0;
-        const ordemGravidade = parseFloat(document.getElementById("ordemGravidade").value) || 0;
-        const ordemCusto = parseFloat(document.getElementById("ordemCusto").value) || 0;
-        const totalEstabelecimentos = parseFloat(document.getElementById("totalEstabelecimentos").value) || 1;
-        const taxaRotatividade = parseFloat(document.getElementById("taxaRotatividade").value) || 0;
-
-        const percentilFrequencia = ((ordemFrequencia - 1) / (totalEstabelecimentos - 1)) * 100;
-        const percentilGravidade = ((ordemGravidade - 1) / (totalEstabelecimentos - 1)) * 100;
-        const percentilCusto = ((ordemCusto - 1) / (totalEstabelecimentos - 1)) * 100;
-
-        const indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
-
-        let fapCalculado = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
-
-        if (taxaRotatividade > 75 && fapCalculado < 1) {
-            fapCalculado = 1;
-        }
-
-        document.getElementById("resultFap").innerHTML = `
-            <strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(2)}%<br>
-            <strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(2)}%<br>
-            <strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(2)}%<br>
-            <strong>FAP Calculado:</strong> ${fapCalculado.toFixed(4)}
-        `; // CORREÇÃO: crase de fechamento
+  function formatarMoeda(element) {
+    let valor = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
+    element.value = valor ? `R$ ${parseFloat(valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : '';
+  }
+  function removerFormato(element) {
+    element.value = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
+  }
+  function validarNumero(element) {
+    const value = element.value.replace(',', '.');
+    if (isNaN(value) || value < 0) {
+      alert("Por favor, insira um número válido.");
+      element.value = '';
     }
+  }
 
-    function formatarMoeda(element) {
-        let valor = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
-        element.value = valor ? `R$ ${parseFloat(valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : '';
-    }
-
-    function removerFormato(element) {
-        element.value = element.value.replace(/[R$.\s]/g, '').replace(',', '.');
-    }
-
-    function validarNumero(element) {
-        const value = element.value.replace(',', '.');
-        if (isNaN(value) || value < 0) {
-            alert("Por favor, insira um número válido.");
-            element.value = '';
-        }
-    }
-function abrirFormularioRelatorio() {
+  function abrirFormularioRelatorio() {
     const cat = parseFloat(document.getElementById("cat").value) || 0;
     const b91 = parseFloat(document.getElementById("b91").value) || 0;
     const b92 = parseFloat(document.getElementById("b92").value) || 0;
@@ -224,81 +379,69 @@ function abrirFormularioRelatorio() {
     let indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
     let fapFinal = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
     if (taxaRotatividade > 75 && fapFinal < 1) {
-        fapFinal = 1;
+      fapFinal = 1;
     }
 
     const relatorio = `
-        <html>
-        <head>
-            <title>Relatório do Cálculo do FAP</title>
-            <style>
-                body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
-                h2 { color: #007BFF; }
-                .box { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #f9f9f9; margin-bottom: 20px; }
-                code { background-color: #eef; padding: 2px 4px; border-radius: 4px; }
-            </style>
-        </head>
-        <body>
-            <h2>Relatório de Cálculo do FAP</h2>
+      <html>
+      <head>
+        <title>Relatório do Cálculo do FAP</title>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
+          h2 { color: #007BFF; }
+          .box { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #f9f9f9; margin-bottom: 20px; }
+          code { background-color: #eef; padding: 2px 4px; border-radius: 4px; }
+        </style>
+      </head>
+      <body>
+        <h2>Relatório de Cálculo do FAP</h2>
 
-            <div class="box">
-                <h3>Índice de Frequência</h3>
-                <p><strong>Fórmula:</strong> <code>(B91 + B92 + B93 + B94 + CAT) / Média de Vínculos × 1000</code></p>
-                <p><strong>Valores:</strong> (${b91} + ${b92} + ${b93} + ${b94} + ${cat}) / ${mediaVinculos} × 1000</p>
-                <p><strong>Resultado:</strong> ${indiceFrequencia.toFixed(4)}</p>
-            </div>
+        <div class="box">
+          <h3>Índice de Frequência</h3>
+          <p><strong>Fórmula:</strong> <code>(B91 + B92 + B93 + B94 + CAT) / Média de Vínculos × 1000</code></p>
+          <p><strong>Valores:</strong> (${b91} + ${b92} + ${b93} + ${b94} + ${cat}) / ${mediaVinculos} × 1000</p>
+          <p><strong>Resultado:</strong> ${indiceFrequencia.toFixed(4)}</p>
+        </div>
 
-            <div class="box">
-                <h3>Índice de Gravidade</h3>
-                <p><strong>Fórmula:</strong> <code>((B91×0.1 + B92×0.3 + B93×0.5 + B94×0.1 + CAT×0.5) / Média de Vínculos) × 1000</code></p>
-                <p><strong>Valores:</strong> ((${b91}×0.1 + ${b92}×0.3 + ${b93}×0.5 + ${b94}×0.1 + ${cat}×0.5) / ${mediaVinculos}) × 1000</p>
-                <p><strong>Resultado:</strong> ${indiceGravidade.toFixed(4)}</p>
-            </div>
+        <div class="box">
+          <h3>Índice de Gravidade</h3>
+          <p><strong>Fórmula:</strong> <code>((B91×0.1 + B92×0.3 + B93×0.5 + B94×0.1 + CAT×0.5) / Média de Vínculos) × 1000</code></p>
+          <p><strong>Valores:</strong> ((${b91}×0.1 + ${b92}×0.3 + ${b93}×0.5 + ${b94}×0.1 + ${cat}×0.5) / ${mediaVinculos}) × 1000</p>
+          <p><strong>Resultado:</strong> ${indiceGravidade.toFixed(4)}</p>
+        </div>
 
-            <div class="box">
-                <h3>Índice de Custo</h3>
-                <p><strong>Fórmula:</strong> <code>(Total de Benefícios / Massa Salarial) × 1000</code></p>
-                <p><strong>Valores:</strong> (${totalBeneficios} / ${massaSalarial}) × 1000</p>
-                <p><strong>Resultado:</strong> ${indiceCusto.toFixed(4)}</p>
-            </div>
+        <div class="box">
+          <h3>Índice de Custo</h3>
+          <p><strong>Fórmula:</strong> <code>(Total de Benefícios / Massa Salarial) × 1000</code></p>
+          <p><strong>Valores:</strong> (${totalBeneficios} / ${massaSalarial}) × 1000</p>
+          <p><strong>Resultado:</strong> ${indiceCusto.toFixed(4)}</p>
+        </div>
 
-            <div class="box">
-                <h3>Percentis</h3>
-                <p><strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(2)}%</p>
-                <p><strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(2)}%</p>
-                <p><strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(2)}%</p>
-            </div>
+        <div class="box">
+          <h3>Percentis</h3>
+          <p><strong>Percentil de Frequência:</strong> ${percentilFrequencia.toFixed(2)}%</p>
+          <p><strong>Percentil de Gravidade:</strong> ${percentilGravidade.toFixed(2)}%</p>
+          <p><strong>Percentil de Custo:</strong> ${percentilCusto.toFixed(2)}%</p>
+        </div>
 
-            <div class="box">
-                <h3>Índice Composto e FAP</h3>
-                <p><strong>Fórmula do Índice Composto:</strong> <code>(0.5×Gravidade + 0.35×Frequência + 0.15×Custo) × 0.02</code></p>
-                <p><strong>Resultado do Índice Composto:</strong> ${indiceComposto.toFixed(4)}</p>
-                <p><strong>FAP Final:</strong> ${fapFinal.toFixed(4)}${taxaRotatividade > 75 && fapFinal === 1 ? ' (ajustado por rotatividade > 75%)' : ''}</p>
-            </div>
+        <div class="box">
+          <h3>Índice Composto e FAP</h3>
+          <p><strong>Fórmula do Índice Composto:</strong> <code>(0.5×Gravidade + 0.35×Frequência + 0.15×Custo) × 0.02</code></p>
+          <p><strong>Resultado do Índice Composto:</strong> ${indiceComposto.toFixed(4)}</p>
+          <p><strong>FAP Final:</strong> ${fapFinal.toFixed(4)}${taxaRotatividade > 75 && fapFinal === 1 ? ' (ajustado por rotatividade > 75%)' : ''}</p>
+        </div>
 
-            <p>Este relatório foi gerado automaticamente pelo site <strong>www.calculadorafap.com.br</strong></p>
-            <p><em>Desenvolvido por Eduardo Cardoso</em></p>
-        </body>
-        </html>
+        <p>Este relatório foi gerado automaticamente pelo site <strong>www.calculadorafap.com.br</strong></p>
+        <p><em>Desenvolvido por Eduardo Cardoso</em></p>
+      </body>
+      </html>
     `;
 
     const novaJanela = window.open('', '_blank');
     novaJanela.document.write(relatorio);
     novaJanela.document.close();
-}
+  }
 </script>
-    <a href="https://wa.me/5548996836949" target="_blank"
-   style="position: fixed; bottom: 20px; right: 20px; background-color: #25D366; color: white; border-radius: 50px; padding: 12px 18px; font-size: 14px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 1000;">
-  💬 Fale com um especialista
-</a>
-    <div style="margin-top: 50px; padding: 20px; background: #e6f7ff; border-radius: 10px;">
-  <h3 style="text-align: center;">🔍 Quer ir além?</h3>
-  <p style="text-align: center; font-size: 16px;">
-    💡 Compre o <strong>eBook completo por R$ 149,00</strong> e descubra 11 erros comuns que podem estar majorando seu FAP indevidamente.
-  </p>
- <p style="text-align: center;">
-    <a href="https://eduardocardosop.hotmart.host/descomplicando-a-contestacao-do-fap-11-passos-para-reduzir-custos-e-corrigir-inconsistencias-01babbea-fcfd-4b31-a0b3-be2ec1c869bf" target="_blank" style="padding: 10px 20px; background-color: #007BFF; color: white; border-radius: 5px; text-decoration: none;">👉 Adquirir eBook</a>
-  </p>
-</div>
+
 </body>
 </html>

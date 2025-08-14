@@ -145,8 +145,8 @@ layout: null
         </div>
 
         <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <button type="button" class="btn-primary" onclick="calcularIndices()">Calcular</button>
-          <button type="button" class="btn-secondary" onclick="location.reload()">Limpar</button>
+          <button id="btnCalcular" type="button" class="btn-primary" onclick="calcularIndices()">Calcular</button>
+          <button id="btnLimpar"   type="button" class="btn-secondary" onclick="location.reload()">Limpar</button>
         </div>
 
         <div class="mt-6 bg-white rounded-lg p-4">
@@ -159,7 +159,7 @@ layout: null
         <div id="camposFap" class="hidden">
           <h2 class="text-xl font-bold text-tax-blue mb-6">2. Percentis e FAP</h2>
 
-          <div class="grid grid-cols-1 md-grid-cols-3 md:grid-cols-3 gap-6 mb-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div>
               <label for="ordemFrequencia" class="block text-sm font-medium text-tax-dark-gray mb-1">Número Ordem Frequência (k)</label>
               <input type="number" id="ordemFrequencia" inputmode="numeric" placeholder="Posição no rol (1..N)" class="w-full p-3 input-field">
@@ -175,8 +175,8 @@ layout: null
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <button type="button" class="btn-primary" onclick="calcularFap()">Calcular FAP</button>
-            <button type="button" class="btn-secondary" onclick="abrirFormularioRelatorio()">Gerar Relatório do Cálculo</button>
+            <button id="btnCalcularFap" type="button" class="btn-primary" onclick="calcularFap()">Calcular FAP</button>
+            <button id="btnRelatorio"   type="button" class="btn-secondary" onclick="abrirFormularioRelatorio()">Gerar Relatório do Cálculo</button>
           </div>
 
           <div class="bg-tax-bg-light rounded-lg p-4">
@@ -242,97 +242,108 @@ layout: null
     }
   }
 
-  /* ===== Cálculo 1: Índices — idêntico ao antigo ===== */
+  /* ===== Cálculo 1: Índices — igual ao antigo ===== */
   function calcularIndices() {
-    const campos = ["cat", "b91", "b92", "b93", "b94", "massaSalarial", "mediaVinculos", "totalBeneficios"];
-    if (!verificarCamposObrigatorios(campos)) return;
+    try{
+      const campos = ["cat", "b91", "b92", "b93", "b94", "massaSalarial", "mediaVinculos", "totalBeneficios"];
+      if (!verificarCamposObrigatorios(campos)) return;
 
-    const cat  = parseFloat(document.getElementById("cat").value) || 0;
-    const b91  = parseFloat(document.getElementById("b91").value) || 0;
-    const b92  = parseFloat(document.getElementById("b92").value) || 0;
-    const b93  = parseFloat(document.getElementById("b93").value) || 0;
-    const b94  = parseFloat(document.getElementById("b94").value) || 0;
+      const cat  = parseFloat(document.getElementById("cat").value) || 0;
+      const b91  = parseFloat(document.getElementById("b91").value) || 0;
+      const b92  = parseFloat(document.getElementById("b92").value) || 0;
+      const b93  = parseFloat(document.getElementById("b93").value) || 0;
+      const b94  = parseFloat(document.getElementById("b94").value) || 0;
 
-    const massaSalarial = parseFloat(document.getElementById("massaSalarial").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
-    const mediaVinculos = parseFloat(document.getElementById("mediaVinculos").value) || 1;
-    const totalBeneficios = parseFloat(document.getElementById("totalBeneficios").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
+      const massaSalarial = parseFloat(document.getElementById("massaSalarial").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
+      const mediaVinculos = parseFloat(document.getElementById("mediaVinculos").value) || 1;
+      const totalBeneficios = parseFloat(document.getElementById("totalBeneficios").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
 
-    const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
-    const indiceGravidade  = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
-    const indiceCusto      = (totalBeneficios / massaSalarial) * 1000;
+      const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
+      const indiceGravidade  = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
+      const indiceCusto      = (totalBeneficios / massaSalarial) * 1000;
 
-    document.getElementById("result").innerHTML = `
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-        <div><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-2xl font-bold text-tax-blue">${indiceFrequencia.toFixed(4)}</p></div>
-        <div><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-2xl font-bold text-tax-blue">${indiceGravidade.toFixed(4)}</p></div>
-        <div><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-2xl font-bold text-tax-blue">${indiceCusto.toFixed(4)}</p></div>
-      </div>
-    `;
+      document.getElementById("result").innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+          <div><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-2xl font-bold text-tax-blue">${indiceFrequencia.toFixed(4)}</p></div>
+          <div><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-2xl font-bold text-tax-blue">${indiceGravidade.toFixed(4)}</p></div>
+          <div><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-2xl font-bold text-tax-blue">${indiceCusto.toFixed(4)}</p></div>
+        </div>
+      `;
 
-    document.getElementById("camposFap").classList.remove("hidden");
+      document.getElementById("camposFap").classList.remove("hidden");
+    }catch(err){
+      console.error(err);
+      flash("Erro ao calcular os índices. Revise os campos e tente novamente.");
+    }
   }
 
-  /* ===== Cálculo 2: Percentis + FAP — idêntico ao antigo ===== */
+  /* ===== Cálculo 2: Percentis + FAP — igual ao antigo ===== */
   function calcularFap() {
-    const campos = ["ordemFrequencia", "ordemGravidade", "ordemCusto", "totalEstabelecimentos", "taxaRotatividade"];
-    if (!verificarCamposObrigatorios(campos)) return;
+    try{
+      const campos = ["ordemFrequencia", "ordemGravidade", "ordemCusto", "totalEstabelecimentos", "taxaRotatividade"];
+      if (!verificarCamposObrigatorios(campos)) return;
 
-    const ordemFrequencia = parseFloat(document.getElementById("ordemFrequencia").value) || 0;
-    const ordemGravidade  = parseFloat(document.getElementById("ordemGravidade").value) || 0;
-    const ordemCusto      = parseFloat(document.getElementById("ordemCusto").value) || 0;
-    const totalEstabelecimentos = parseFloat(document.getElementById("totalEstabelecimentos").value) || 1;
-    const taxaRotatividade = parseFloat(document.getElementById("taxaRotatividade").value) || 0;
+      const ordemFrequencia = parseFloat(document.getElementById("ordemFrequencia").value) || 0;
+      const ordemGravidade  = parseFloat(document.getElementById("ordemGravidade").value) || 0;
+      const ordemCusto      = parseFloat(document.getElementById("ordemCusto").value) || 0;
+      const totalEstabelecimentos = parseFloat(document.getElementById("totalEstabelecimentos").value) || 1;
+      const taxaRotatividade = parseFloat(document.getElementById("taxaRotatividade").value) || 0;
 
-    const percentilFrequencia = ((ordemFrequencia - 1) / (totalEstabelecimentos - 1)) * 100;
-    const percentilGravidade  = ((ordemGravidade  - 1) / (totalEstabelecimentos - 1)) * 100;
-    const percentilCusto      = ((ordemCusto      - 1) / (totalEstabelecimentos - 1)) * 100;
+      const percentilFrequencia = ((ordemFrequencia - 1) / (totalEstabelecimentos - 1)) * 100;
+      const percentilGravidade  = ((ordemGravidade  - 1) / (totalEstabelecimentos - 1)) * 100;
+      const percentilCusto      = ((ordemCusto      - 1) / (totalEstabelecimentos - 1)) * 100;
 
-    const indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
+      const indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
 
-    let fapCalculado = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
-    if (taxaRotatividade > 75 && fapCalculado < 1) fapCalculado = 1;
+      let fapCalculado = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
+      if (taxaRotatividade > 75 && fapCalculado < 1) fapCalculado = 1;
 
-    document.getElementById("resultFap").innerHTML = `
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
-        <div><p class="text-sm text-tax-dark-gray">% Frequência</p><p class="text-2xl font-bold text-tax-blue">${percentilFrequencia.toFixed(2)}%</p></div>
-        <div><p class="text-sm text-tax-dark-gray">% Gravidade</p><p class="text-2xl font-bold text-tax-blue">${percentilGravidade.toFixed(2)}%</p></div>
-        <div><p class="text-sm text-tax-dark-gray">% Custo</p><p class="text-2xl font-bold text-tax-blue">${percentilCusto.toFixed(2)}%</p></div>
-        <div><p class="text-sm text-tax-dark-gray">FAP Calculado</p><p class="text-2xl font-bold text-tax-blue">${fapCalculado.toFixed(4)}</p></div>
-      </div>
-    `;
+      document.getElementById("resultFap").innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+          <div><p class="text-sm text-tax-dark-gray">% Frequência</p><p class="text-2xl font-bold text-tax-blue">${percentilFrequencia.toFixed(2)}%</p></div>
+          <div><p class="text-sm text-tax-dark-gray">% Gravidade</p><p class="text-2xl font-bold text-tax-blue">${percentilGravidade.toFixed(2)}%</p></div>
+          <div><p class="text-sm text-tax-dark-gray">% Custo</p><p class="text-2xl font-bold text-tax-blue">${percentilCusto.toFixed(2)}%</p></div>
+          <div><p class="text-sm text-tax-dark-gray">FAP Calculado</p><p class="text-2xl font-bold text-tax-blue">${fapCalculado.toFixed(4)}</p></div>
+        </div>
+      `;
+    }catch(err){
+      console.error(err);
+      flash("Erro ao calcular FAP. Revise os campos e tente novamente.");
+    }
   }
 
-  /* ===== Relatório — cálculo igual ao antigo + seção de fórmulas ===== */
+  /* ===== Relatório ===== */
   function abrirFormularioRelatorio() {
-    const cat  = parseFloat(document.getElementById("cat").value) || 0;
-    const b91  = parseFloat(document.getElementById("b91").value) || 0;
-    const b92  = parseFloat(document.getElementById("b92").value) || 0;
-    const b93  = parseFloat(document.getElementById("b93").value) || 0;
-    const b94  = parseFloat(document.getElementById("b94").value) || 0;
+    try{
+      const cat  = parseFloat(document.getElementById("cat").value) || 0;
+      const b91  = parseFloat(document.getElementById("b91").value) || 0;
+      const b92  = parseFloat(document.getElementById("b92").value) || 0;
+      const b93  = parseFloat(document.getElementById("b93").value) || 0;
+      const b94  = parseFloat(document.getElementById("b94").value) || 0;
 
-    const massaSalarial = parseFloat(document.getElementById("massaSalarial").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
-    const mediaVinculos = parseFloat(document.getElementById("mediaVinculos").value) || 1;
-    const totalBeneficios = parseFloat(document.getElementById("totalBeneficios").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
+      const massaSalarial = parseFloat(document.getElementById("massaSalarial").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
+      const mediaVinculos = parseFloat(document.getElementById("mediaVinculos").value) || 1;
+      const totalBeneficios = parseFloat(document.getElementById("totalBeneficios").value.replace(/[R$.\s]/g, '').replace(',', '.')) || 0;
 
-    const ordemFrequencia = parseFloat(document.getElementById("ordemFrequencia").value) || 0;
-    const ordemGravidade  = parseFloat(document.getElementById("ordemGravidade").value) || 0;
-    const ordemCusto      = parseFloat(document.getElementById("ordemCusto").value) || 0;
-    const totalEstabelecimentos = parseFloat(document.getElementById("totalEstabelecimentos").value) || 1;
-    const taxaRotatividade = parseFloat(document.getElementById("taxaRotatividade").value) || 0;
+      const ordemFrequencia = parseFloat(document.getElementById("ordemFrequencia").value) || 0;
+      const ordemGravidade  = parseFloat(document.getElementById("ordemGravidade").value) || 0;
+      const ordemCusto      = parseFloat(document.getElementById("ordemCusto").value) || 0;
+      const totalEstabelecimentos = parseFloat(document.getElementById("totalEstabelecimentos").value) || 1;
+      const taxaRotatividade = parseFloat(document.getElementById("taxaRotatividade").value) || 0;
 
-    const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
-    const indiceGravidade  = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
-    const indiceCusto      = (totalBeneficios / massaSalarial) * 1000;
+      const indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
+      const indiceGravidade  = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
+      const indiceCusto      = (totalBeneficios / massaSalarial) * 1000;
 
-    const percentilFrequencia = ((ordemFrequencia - 1) / (totalEstabelecimentos - 1)) * 100;
-    const percentilGravidade  = ((ordemGravidade  - 1) / (totalEstabelecimentos - 1)) * 100;
-    const percentilCusto      = ((ordemCusto      - 1) / (totalEstabelecimentos - 1)) * 100;
+      const percentilFrequencia = ((ordemFrequencia - 1) / (totalEstabelecimentos - 1)) * 100;
+      const percentilGravidade  = ((ordemGravidade  - 1) / (totalEstabelecimentos - 1)) * 100;
+      const percentilCusto      = ((ordemCusto      - 1) / (totalEstabelecimentos - 1)) * 100;
 
-    let indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
-    let fapFinal = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
-    if (taxaRotatividade > 75 && fapFinal < 1) fapFinal = 1;
+      let indiceComposto = ((0.5 * percentilGravidade) + (0.35 * percentilFrequencia) + (0.15 * percentilCusto)) * 0.02;
+      let fapFinal = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
+      if (taxaRotatividade > 75 && fapFinal < 1) fapFinal = 1;
 
-    const html = `
+      const html = `
       <!doctype html>
       <html lang="pt-BR"><head><meta charset="utf-8">
       <title>Relatório do Cálculo do FAP</title><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -383,7 +394,6 @@ layout: null
             </div>
           </section>
 
-          <!-- Fórmulas (inclui percentis, como você pediu) -->
           <section class="card p-5">
             <h2 class="text-lg font-bold mb-3">Fórmulas Utilizadas</h2>
             <ul class="space-y-2 text-sm text-tax-dark-gray">
@@ -401,11 +411,30 @@ layout: null
       </body></html>
     `;
 
-    const w = window.open('', '_blank');
-    w.document.open(); w.document.write(html); w.document.close();
+      const w = window.open('', '_blank');
+      w.document.open(); w.document.write(html); w.document.close();
+    }catch(err){
+      console.error(err);
+      flash("Erro ao gerar o relatório.");
+    }
   }
+
+  /* Expor no escopo global + listeners (redundância ao inline onclick) */
+  window.calcularIndices = calcularIndices;
+  window.calcularFap = calcularFap;
+  window.abrirFormularioRelatorio = abrirFormularioRelatorio;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const c  = document.getElementById('btnCalcular');
+    const cf = document.getElementById('btnCalcularFap');
+    const r  = document.getElementById('btnRelatorio');
+    const l  = document.getElementById('btnLimpar');
+    if (c)  c.addEventListener('click', calcularIndices);
+    if (cf) cf.addEventListener('click', calcularFap);
+    if (r)  r.addEventListener('click', abrirFormularioRelatorio);
+    if (l)  l.addEventListener('click', () => location.reload());
+  });
 </script>
 
 </body>
 </html>
-

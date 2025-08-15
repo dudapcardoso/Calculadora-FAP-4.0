@@ -28,9 +28,12 @@ layout: null
     .main-card{ background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1) }
     .input-field{ background:#F3F4F6;border:1px solid #D1D5DB;border-radius:.5rem;transition:all .2s;color:#152E3E }
     .input-field:focus{ border-color:#E2B874; box-shadow:0 0 0 2px rgba(226,184,116,.3); outline:none }
+
+    /* Navegação */
     .navtab{ padding:.5rem .9rem;border-radius:999px;border:1px solid transparent;color:#fff;background:rgba(255,255,255,.06) }
     .navtab:hover{ background:rgba(255,255,255,.12) }
     .navtab.is-active{ border-color:#E2B874;background:rgba(226,184,116,.12); color:#fff }
+
     .card{ background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1) }
     .pill{ display:inline-block; padding:.15rem .5rem; border-radius:999px; background:#F3F4F6; color:#152E3E; font-size:.75rem; font-weight:600 }
     .infocard{ background:#ffffff; border-radius: .75rem; padding:1rem; border:1px solid #EBEBEB; transition:transform .12s ease, box-shadow .12s ease }
@@ -40,6 +43,16 @@ layout: null
 </head>
 <body>
 
+<!-- NAV NO TOPO (igual ao impactos fap) -->
+<div class="bg-tax-blue">
+  <nav class="container mx-auto max-w-5xl flex justify-center gap-2 py-3">
+    <!-- ajuste os hrefs conforme os nomes REAIS dos arquivos -->
+    <a href="./index.html"                  class="navtab">Calculadora</a>
+    <a href="./impactos-fap.html"           class="navtab">Impactos do FAP</a>
+    <a href="./como-o-fap-e-calculado.html" class="navtab">Como o FAP é calculado</a>
+  </nav>
+</div>
+
 <section class="text-gray-800">
   <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-5xl">
 
@@ -48,14 +61,6 @@ layout: null
       <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Como o FAP é calculado</h1>
       <p class="mt-2 text-lg sm:text-xl text-tax-gold">Guia visual e interativo</p>
     </header>
-
-    <!-- NAV entre as 3 páginas -->
-    <nav class="flex justify-center gap-2 mb-8">
-      <!-- Ajuste os hrefs conforme os nomes reais dos arquivos -->
-      <a href="/index.html" class="navtab" data-tab="calc">Calculadora</a>
-      <a href="/impacto-fap.html" class="navtab" data-tab="impacto">Impacto do FAP</a>
-      <a href="/como-o-fap-e-calculado.html" class="navtab" data-tab="como" aria-current="page">Como o FAP é calculado</a>
-    </nav>
 
     <!-- HERO -->
     <section class="relative bg-tax-blue text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-lg overflow-hidden">
@@ -219,7 +224,7 @@ layout: null
 </section>
 
 <script>
-// ===== Helpers numéricos (iguais aos da calculadora) =====
+// ===== Helpers numéricos =====
 function br4(n){ return isFinite(n) ? Number(n).toFixed(4).replace('.', ',') : '—'; }
 function br2(n){ return isFinite(n) ? Number(n).toFixed(2).replace('.', ',') : '—'; }
 function brCurrency(n){ return isFinite(n) ? Number(n).toLocaleString('pt-BR', {style:'currency', currency:'BRL'}) : '—'; }
@@ -233,7 +238,6 @@ function parseBRLForCalc(str){
   var s = String(str).trim(); if(!s) return NaN;
   return parseFloat(s.replace(/[R$\s]/g,'').replace(/\./g,'').replace(',', '.'));
 }
-// máscara BRL
 function maskBRLInput(el){
   var raw = (el.value || '').toString().replace(/\D/g,'');
   if(raw.length === 0){ el.value=''; return; }
@@ -242,19 +246,21 @@ function maskBRLInput(el){
   el.value = 'R$ ' + val.toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2});
 }
 
-// ===== Navegação: marcar aba ativa automaticamente =====
-(function markActive(){
-  var links = document.querySelectorAll('nav .navtab');
-  links.forEach(function(a){
-    var same = a.getAttribute('href');
-    if(!same) return;
-    if (location.pathname.endsWith(same) || location.pathname === same){
-      a.classList.add('is-active');
-    }
-    // fallback para a aba "Como..." nesta página
-    if (a.dataset.tab === 'como') a.classList.add('is-active');
+// ===== Navegação: borda dourada na página ativa (robusto) =====
+document.addEventListener('DOMContentLoaded', function(){
+  var tabs = document.querySelectorAll('.navtab');
+
+  function norm(p){
+    try { p = new URL(p, location.href).pathname; } catch(e) { p = p || ''; }
+    return p.replace(/\/index\.html?$/i,'/').replace(/\/+$/,'');
+  }
+
+  var here = norm(location.pathname);
+  tabs.forEach(function(a){
+    var target = norm(a.getAttribute('href') || '');
+    if (target && here === target) a.classList.add('is-active');
   });
-})();
+});
 
 // ===== Mini-simulador ΔF, ΔG, ΔC =====
 var pesos = { B91:0.1, B92:0.3, B93:0.5, B94:0.1, CAT:0.5 };

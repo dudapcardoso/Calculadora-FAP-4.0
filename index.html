@@ -338,9 +338,9 @@ layout: null
 
       var html = ''
         + '<div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">'
-        +   '<div><p class="text-sm text-tax-dark-gray">% Frequência</p><p class="text-2xl font-bold text-tax-blue">' + br2(pFreq) + '%</p></div>'
-        +   '<div><p class="text-sm text-tax-dark-gray">% Gravidade</p><p class="text-2xl font-bold text-tax-blue">' + br2(pGrav) + '%</p></div>'
-        +   '<div><p class="text-sm text-tax-dark-gray">% Custo</p><p class="text-2xl font-bold text-tax-blue">' + br2(pCusto) + '%</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">% Frequência</p><p class="text-2xl font-bold text-tax-blue">' + br4(pFreq) + '%</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">% Gravidade</p><p class="text-2xl font-bold text-tax-blue">' + br4(pGrav) + '%</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">% Custo</p><p class="text-2xl font-bold text-tax-blue">' + br4(pCusto) + '%</p></div>'
         +   '<div><p class="text-sm text-tax-dark-gray">FAP Calculado</p><p class="text-2xl font-bold text-tax-blue">' + br4(fap) + '</p></div>'
         + '</div>'
         + (temBasePercentil ? '' : '<p class="text-xs text-red-600 mt-2">Observação: N (total de estabelecimentos) ≤ 1. Percentis exibidos como 0% para evitar divisão por zero.</p>');
@@ -426,9 +426,9 @@ layout: null
               + '</tbody></table></div>'
             + '<div class="card p-5"><h2 class="text-lg font-bold mb-4">Percentis e Composto</h2>'
               + '<table class="w-full text-sm mb-4"><tbody class="divide-y divide-tax-gray">'
-                + '<tr><td class="py-2">% Frequência</td><td class="py-2 text-right">' + br2(pFreq) + '%</td></tr>'
-                + '<tr><td class="py-2">% Gravidade</td><td class="py-2 text-right">' + br2(pGrav) + '%</td></tr>'
-                + '<tr><td class="py-2">% Custo</td><td class="py-2 text-right">' + br2(pCusto) + '%</td></tr>'
+                + '<tr><td class="py-2">% Frequência</td><td class="py-2 text-right">' + br4(pFreq) + '%</td></tr>'
+                + '<tr><td class="py-2">% Gravidade</td><td class="py-2 text-right">' + br4(pGrav) + '%</td></tr>'
+                + '<tr><td class="py-2">% Custo</td><td class="py-2 text-right">' + br4(pCusto) + '%</td></tr>'
                 + '<tr><td class="py-2 font-semibold">Índice Composto</td><td class="py-2 text-right font-semibold">' + br4(indiceComposto) + '</td></tr>'
                 + '<tr><td class="py-2 font-semibold">FAP Final</td><td class="py-2 text-right font-semibold">' + br4(fap) + ((taxaRot>75 && fap===1)?' <span class="text-xs text-tax-dark-gray">(ajustado por rotatividade > 75%)</span>':'') + '</td></tr>'
               + '</tbody></table>'
@@ -442,9 +442,9 @@ layout: null
               + '<li><strong>Índice de Custo (IC):</strong> <code>(Total de Benefícios / Massa Salarial) × 1000</code></li>'
               + '<li><strong>Percentis:</strong> <code>P = ((k − 1) / (N − 1)) × 100</code> (k = posição no rol; N = total).'
                 + '<div class="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-3">'
-                  + '<div class="p-3 bg-tax-bg-light rounded-lg"><div class="text-xs text-tax-dark-gray">Frequência</div><div class="text-sm"><code>k='+(ordemFrequencia||0)+', N='+(totalEstab||0)+'</code> ⇒ <strong>'+br2(pFreq)+'%</strong></div></div>'
-                  + '<div class="p-3 bg-tax-bg-light rounded-lg"><div class="text-xs text-tax-dark-gray">Gravidade</div><div class="text-sm"><code>k='+(ordemGravidade||0)+', N='+(totalEstab||0)+'</code> ⇒ <strong>'+br2(pGrav)+'%</strong></div></div>'
-                  + '<div class="p-3 bg-tax-bg-light rounded-lg"><div class="text-xs text-tax-dark-gray">Custo</div><div class="text-sm"><code>k='+(ordemCusto||0)+', N='+(totalEstab||0)+'</code> ⇒ <strong>'+br2(pCusto)+'%</strong></div></div>'
+                  + '<div class="p-3 bg-tax-bg-light rounded-lg"><div class="text-xs text-tax-dark-gray">Frequência</div><div class="text-sm"><code>k='+(ordemFrequencia||0)+', N='+(totalEstab||0)+'</code> ⇒ <strong>'+br4(pFreq)+'%</strong></div></div>'
+                  + '<div class="p-3 bg-tax-bg-light rounded-lg"><div class="text-xs text-tax-dark-gray">Gravidade</div><div class="text-sm"><code>k='+(ordemGravidade||0)+', N='+(totalEstab||0)+'</code> ⇒ <strong>'+br4(pGrav)+'%</strong></div></div>'
+                  + '<div class="p-3 bg-tax-bg-light rounded-lg"><div class="text-xs text-tax-dark-gray">Custo</div><div class="text-sm"><code>k='+(ordemCusto||0)+', N='+(totalEstab||0)+'</code> ⇒ <strong>'+br4(pCusto)+'%</strong></div></div>'
                 + '</div>'
               + '</li>'
               + '<li><strong>Índice Composto:</strong> <code>(0,5×P<sub>Grav</sub> + 0,35×P<sub>Freq</sub> + 0,15×P<sub>Custo</sub>) × 0,02</code></li>'
@@ -488,3 +488,4 @@ layout: null
 
 </body>
 </html>
+

@@ -40,12 +40,25 @@ layout: null
     .blob { position:absolute; filter: blur(40px); opacity:.25; pointer-events:none; }
     .addon { position:absolute; right:.75rem; top:50%; transform:translateY(-50%); color:#6B7280; font-weight:600; }
     #flash{display:none} #flash.show{display:block}
+
+    /* NAV tabs (mesmo visual das outras páginas) */
+    .navtab{ padding:.5rem .9rem;border-radius:999px;border:1px solid transparent;color:#fff;background:rgba(255,255,255,.06); display:inline-block }
+    .navtab:hover{ background:rgba(255,255,255,.12) }
+    .navtab.is-active{ border-color:#E2B874;background:rgba(226,184,116,.12); color:#fff }
   </style>
 </head>
 <body>
 
 <section id="calc-fap" class="text-gray-800">
   <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
+
+    <!-- NAV entre as 3 páginas (TOPO, antes do título) -->
+    <nav class="flex justify-center gap-2 mb-6">
+      <!-- use links RELATIVOS; mantenha os 3 arquivos na MESMA pasta -->
+      <a href="./index.html"                  class="navtab">Calculadora</a>
+      <a href="./impactos-fap.html"           class="navtab">Impactos do FAP</a>
+      <a href="./como-o-fap-e-calculado.html" class="navtab">Como o FAP é calculado</a>
+    </nav>
 
     <!-- Cabeçalho -->
     <header class="text-center mb-6">
@@ -440,7 +453,6 @@ layout: null
             + '</div>'
           + '</section>'
          + '<section class="space-y-6">'
-  // Box 1 — Explicativo
   + '<div class="card p-5">'
     + '<h2 class="text-lg font-bold mb-3">Entendendo o FAP</h2>'
     + '<p class="text-sm text-tax-dark-gray leading-relaxed">'
@@ -450,8 +462,6 @@ layout: null
       + 'Existem travas mínimas/máximas e regra de rotatividade: se a rotatividade &gt; 75% e o FAP ficar &lt; 1, ele é elevado para 1.'
     + '</p>'
   + '</div>'
-
-  // Box 2 — Fórmulas gerais
   + '<div class="card p-5">'
     + '<h2 class="text-lg font-bold mb-3">Fórmulas (gerais)</h2>'
     + '<ul class="space-y-2 text-sm text-tax-dark-gray">'
@@ -463,8 +473,6 @@ layout: null
       + '<li><strong>FAP final:</strong> <code>max(0,500, Composto)</code> com ajuste para 1,000 se rotatividade &gt; 75% e Composto &lt; 1</li>'
     + '</ul>'
   + '</div>'
-
-  // Box 3 — Fórmulas com seus dados (substituição numérica)
   + '<div class="card p-5">'
     + '<h2 class="text-lg font-bold mb-3">Fórmulas com seus dados</h2>'
     + '<ul class="space-y-2 text-sm text-tax-dark-gray">'
@@ -535,9 +543,25 @@ layout: null
     if(ms) ms.addEventListener('blur', function(){ maskBRLInput(ms); });
     if(tb) tb.addEventListener('blur', function(){ maskBRLInput(tb); });
   });
+
+  /* ===== Marca aba ativa na NAV (borda dourada) ===== */
+  document.addEventListener('DOMContentLoaded', function(){
+    var tabs = document.querySelectorAll('.navtab');
+
+    function norm(p){
+      try { p = new URL(p, location.href).pathname; } catch(e) { p = p || ''; }
+      return p.replace(/\/index\.html?$/i,'/').replace(/\/+$/,'');
+    }
+
+    var here = norm(location.pathname);
+    tabs.forEach(function(a){
+      var target = norm(a.getAttribute('href') || '');
+      if (target && here === target) a.classList.add('is-active');
+      // também considera "/" como index
+      if ((target === '' || target === '/') && (here === '' || here === '/')) a.classList.add('is-active');
+    });
+  });
 </script>
 
 </body>
 </html>
-
-

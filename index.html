@@ -39,6 +39,7 @@ layout: null
     .hidden{ display:none; }
     .blob { position:absolute; filter: blur(40px); opacity:.25; pointer-events:none; }
     .addon { position:absolute; right:.75rem; top:50%; transform:translateY(-50%); color:#6B7280; font-weight:600; }
+    .addon-left { position:absolute; left:.75rem; top:50%; transform:translateY(-50%); color:#6B7280; font-weight:600; } /* % à esquerda */
     #flash{display:none} #flash.show{display:block}
   </style>
 </head>
@@ -137,12 +138,12 @@ layout: null
             <input type="number" id="totalEstabelecimentos" inputmode="numeric" placeholder="Ex.: 1200" class="w-full p-3 input-field">
           </div>
 
-          <!-- Rotatividade em % -->
+          <!-- Rotatividade em % (símbolo à esquerda) -->
           <div class="relative">
             <label for="taxaRotatividade" class="block text-sm font-medium text-tax-dark-gray mb-1">Taxa Média de Rotatividade (%)</label>
             <input type="text" id="taxaRotatividade" inputmode="decimal" placeholder="Ex.: 18,5"
-                   class="w-full p-3 pr-10 input-field">
-            <span class="addon">%</span>
+                   class="w-full p-3 pl-10 input-field">
+            <span class="addon-left">%</span>
           </div>
         </div>
 
@@ -165,23 +166,17 @@ layout: null
             <div>
               <label for="ordemFrequencia" class="block text-sm font-medium text-tax-dark-gray mb-1">Número Ordem Frequência (k)</label>
               <input type="text" id="ordemFrequencia" inputmode="decimal" placeholder="Posição no rol (1..N)"
-       class="w-full p-3 input-field"
-       pattern="[0-9]+([,.][0-9]+)?"
-       oninput="this.value=this.value.replace(/[^0-9.,]/g,'')">
+                     class="w-full p-3 input-field" pattern="[0-9]+([,.][0-9]+)?" oninput="this.value=this.value.replace(/[^0-9.,]/g,'')">
             </div>
             <div>
               <label for="ordemGravidade" class="block text-sm font-medium text-tax-dark-gray mb-1">Número Ordem Gravidade (k)</label>
               <input type="text" id="ordemGravidade" inputmode="decimal" placeholder="Posição no rol (1..N)"
-       class="w-full p-3 input-field"
-       pattern="[0-9]+([,.][0-9]+)?"
-       oninput="this.value=this.value.replace(/[^0-9.,]/g,'')">
+                     class="w-full p-3 input-field" pattern="[0-9]+([,.][0-9]+)?" oninput="this.value=this.value.replace(/[^0-9.,]/g,'')">
             </div>
             <div>
               <label for="ordemCusto" class="block text-sm font-medium text-tax-dark-gray mb-1">Número Ordem Custo (k)</label>
               <input type="text" id="ordemCusto" inputmode="decimal" placeholder="Posição no rol (1..N)"
-       class="w-full p-3 input-field"
-       pattern="[0-9]+([,.][0-9]+)?"
-       oninput="this.value=this.value.replace(/[^0-9.,]/g,'')">
+                     class="w-full p-3 input-field" pattern="[0-9]+([,.][0-9]+)?" oninput="this.value=this.value.replace(/[^0-9.,]/g,'')">
             </div>
           </div>
 
@@ -291,8 +286,8 @@ layout: null
       var somaEventos   = (b91 + b92 + b93 + b94 + cat);
       var somaGravidade = (b91*0.1 + b92*0.3 + b93*0.5 + b94*0.1 + cat*0.5);
 
-      var indiceFrequencia = ((b91 + b92 + b93 + b94 + cat) / mediaVinculos) * 1000;
-      var indiceGravidade  = (((b91 * 0.1) + (b92 * 0.3) + (b93 * 0.5) + (b94 * 0.1) + (cat * 0.5)) / mediaVinculos) * 1000;
+      var indiceFrequencia = (somaEventos / mediaVinculos) * MULT;
+      var indiceGravidade  = (somaGravidade / mediaVinculos) * MULT;
       var indiceCusto      = (totalBeneficios / massaSalarial) * MULT;
 
       var html = ''
@@ -306,7 +301,6 @@ layout: null
         + '</div>';
       document.getElementById("result").innerHTML = html;
 
-      // mostra a etapa 2
       document.getElementById("camposFap").classList.remove('hidden');
     }catch(err){
       console.error(err); flash("Erro ao calcular os índices. Revise os campos e tente novamente.");
@@ -338,9 +332,9 @@ layout: null
 
       var html = ''
         + '<div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">'
-        +   '<div><p class="text-sm text-tax-dark-gray">% Frequência</p><p class="text-2xl font-bold text-tax-blue">' + br2(pFreq) + '%</p></div>'
-        +   '<div><p class="text-sm text-tax-dark-gray">% Gravidade</p><p class="text-2xl font-bold text-tax-blue">' + br2(pGrav) + '%</p></div>'
-        +   '<div><p class="text-sm text-tax-dark-gray">% Custo</p><p class="text-2xl font-bold text-tax-blue">' + br2(pCusto) + '%</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">% Frequência</p><p class="text-2xl font-bold text-tax-blue">' + br4(pFreq) + '%</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">% Gravidade</p><p class="text-2xl font-bold text-tax-blue">' + br4(pGrav) + '%</p></div>'
+        +   '<div><p class="text-sm text-tax-dark-gray">% Custo</p><p class="text-2xl font-bold text-tax-blue">' + br4(pCusto) + '%</p></div>'
         +   '<div><p class="text-sm text-tax-dark-gray">FAP Calculado</p><p class="text-2xl font-bold text-tax-blue">' + br4(fap) + '</p></div>'
         + '</div>'
         + (temBasePercentil ? '' : '<p class="text-xs text-red-600 mt-2">Observação: N (total de estabelecimentos) ≤ 1. Percentis exibidos como 0% para evitar divisão por zero.</p>');
@@ -350,7 +344,7 @@ layout: null
     }
   }
 
-  /* ===== Relatório (com MULT = 1000 e percentis) ===== */
+  /* ===== Relatório (cartão do FAP + fórmulas com dados + explicativo) ===== */
   function abrirFormularioRelatorio() {
     try{
       var cat = parseGeneric(document.getElementById("cat").value) || 0;
@@ -395,7 +389,9 @@ layout: null
       + '<script>tailwind.config={theme:{extend:{colors:{\"tax-blue\":\"#152E3E\",\"tax-gold\":\"#E2B874\",\"tax-gray\":\"#EBEBEB\",\"tax-dark-gray\":\"#6B7280\",\"tax-bg-light\":\"#F9FAFB\"}}}}<\/script>'
       + '<style>@media print{.no-print{display:none!important}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'
       + '.card{background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1)}'
-      + 'code{background:#F3F4F6;padding:.1rem .35rem;border-radius:.35rem}</style></head>'
+      + 'code{background:#F3F4F6;padding:.1rem .35rem;border-radius:.35rem}'
+      + '.muted{color:#6B7280}'
+      + '</style></head>'
       + '<body class="bg-tax-bg-light text-tax-blue">'
         + '<header class="bg-tax-blue text-white p-6 sm:p-8">'
           + '<div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">'
@@ -403,56 +399,117 @@ layout: null
             + '<button class="no-print bg-white text-tax-blue font-semibold px-4 py-2 rounded-md shadow" onclick="window.print()">Imprimir / Salvar PDF</button>'
           + '</div>'
         + '</header>'
+
         + '<main class="max-w-5xl mx-auto p-6 sm:p-8 space-y-8">'
-          + '<section class="grid grid-cols-1 sm:grid-cols-3 gap-6">'
-            + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-3xl font-bold">' + br4(indiceFrequencia) + '</p>'
-            + '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaEventos+' / '+mediaVinculos+') × 1000</p></div>'
-            + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-3xl font-bold">' + br4(indiceGravidade) + '</p>'
-            + '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaGravidade.toFixed(4)+' / '+mediaVinculos+') × 1000</p></div>'
-            + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-3xl font-bold">' + br4(indiceCusto) + '</p>'
-            + '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+totalBeneficios+' / '+massaSalarial+') × 1000</p></div>'
+
+          + '<section class="grid grid-cols-1 sm:grid-cols-4 gap-6">' // agora com 4 cards (inclui FAP)
+            + '<div class="card p-5 text-center"><p class="text-sm muted">Índice de Frequência</p><p class="text-3xl font-bold">' + br4(indiceFrequencia) + '</p>'
+            + '<p class="text-xs muted mt-1">('+somaEventos+' / '+mediaVinculos+') × 1000</p></div>'
+            + '<div class="card p-5 text-center"><p class="text-sm muted">Índice de Gravidade</p><p class="text-3xl font-bold">' + br4(indiceGravidade) + '</p>'
+            + '<p class="text-xs muted mt-1">('+somaGravidade.toFixed(4)+' / '+mediaVinculos+') × 1000</p></div>'
+            + '<div class="card p-5 text-center"><p class="text-sm muted">Índice de Custo</p><p class="text-3xl font-bold">' + br4(indiceCusto) + '</p>'
+            + '<p class="text-xs muted mt-1">('+totalBeneficios+' / '+massaSalarial+') × 1000</p></div>'
+            + '<div class="card p-5 text-center"><p class="text-sm muted">FAP Calculado</p><p class="text-3xl font-bold">' + br4(fap) + '</p>'
+            + (taxaRot>75 && fap===1 ? '<p class="text-xs muted mt-1">ajustado por rotatividade &gt; 75%</p>' : '<p class="text-xs muted mt-1">&nbsp;</p>')
+            + '</div>'
           + '</section>'
-          + '<section class="grid grid-cols-1 lg:grid-cols-2 gap-6">'
-            + '<div class="card p-5"><h2 class="text-lg font-bold mb-4">Entradas (Fatos Geradores)</h2>'
+
+          + '<section class="card p-5">'
+            + '<h2 class="text-lg font-bold mb-4">Entradas (Fatos Geradores)</h2>'
+            + '<div class="grid grid-cols-1 md:grid-cols-2 gap-6">'
               + '<table class="w-full text-sm"><tbody class="divide-y divide-tax-gray">'
                 + '<tr><td class="py-2">CAT</td><td class="py-2 text-right">' + br2(cat) + '</td></tr>'
                 + '<tr><td class="py-2">B91</td><td class="py-2 text-right">' + br2(b91) + '</td></tr>'
                 + '<tr><td class="py-2">B92</td><td class="py-2 text-right">' + br2(b92) + '</td></tr>'
                 + '<tr><td class="py-2">B93</td><td class="py-2 text-right">' + br2(b93) + '</td></tr>'
                 + '<tr><td class="py-2">B94</td><td class="py-2 text-right">' + br2(b94) + '</td></tr>'
-                + '<tr><td class="py-2">Massa Salarial</td><td class="py-2 text-right">' + brCurrency(massaSalarial) + '</td></tr>'
-                + '<tr><td class="py-2">Média de Vínculos</td><td class="py-2 text-right">' + br2(mediaVinculos) + '</td></tr>'
-                + '<tr><td class="py-2">Benefícios Pagos</td><td class="py-2 text-right">' + brCurrency(totalBeneficios) + '</td></tr>'
-              + '</tbody></table></div>'
-            + '<div class="card p-5"><h2 class="text-lg font-bold mb-4">Percentis e Composto</h2>'
-              + '<table class="w-full text-sm mb-4"><tbody class="divide-y divide-tax-gray">'
-                + '<tr><td class="py-2">% Frequência</td><td class="py-2 text-right">' + br2(pFreq) + '%</td></tr>'
-                + '<tr><td class="py-2">% Gravidade</td><td class="py-2 text-right">' + br2(pGrav) + '%</td></tr>'
-                + '<tr><td class="py-2">% Custo</td><td class="py-2 text-right">' + br2(pCusto) + '%</td></tr>'
-                + '<tr><td class="py-2 font-semibold">Índice Composto</td><td class="py-2 text-right font-semibold">' + br4(indiceComposto) + '</td></tr>'
-                + '<tr><td class="py-2 font-semibold">FAP Final</td><td class="py-2 text-right font-semibold">' + br4(fap) + ((taxaRot>75 && fap===1)?' <span class="text-xs text-tax-dark-gray">(ajustado por rotatividade > 75%)</span>':'') + '</td></tr>'
               + '</tbody></table>'
-              + (temBasePercentil ? '' : '<p class="text-xs text-red-600">Observação: N (total de estabelecimentos) ≤ 1.</p>')
+              + '<table class="w-full text-sm"><tbody class="divide-y divide-tax-gray">'
+                + '<tr><td class="py-2">Massa Salarial</td><td class="py-2 text-right">' + brCurrency(massaSalarial) + '</td></tr>'
+                + '<tr><td class="py-2">Média de Vínculos</td><td class="py-2 text-right">' + br4(mediaVinculos) + '</td></tr>'
+                + '<tr><td class="py-2">Benefícios Pagos</td><td class="py-2 text-right">' + brCurrency(totalBeneficios) + '</td></tr>'
+                + '<tr><td class="py-2">Nº Estabelecimentos (N)</td><td class="py-2 text-right">' + br2(totalEstab) + '</td></tr>'
+                + '<tr><td class="py-2">Rotatividade</td><td class="py-2 text-right">' + br4(taxaRot) + '%</td></tr>'
+              + '</tbody></table>'
             + '</div>'
           + '</section>'
-          + '<section class="card p-5"><h2 class="text-lg font-bold mb-3">Fórmulas Utilizadas</h2>'
-            + '<ul class="space-y-2 text-sm text-tax-dark-gray">'
-              + '<li><strong>Índice de Frequência (IF):</strong> <code>(B91 + B92 + B93 + B94 + CAT) / Média de Vínculos × 1000</code></li>'
-              + '<li><strong>Índice de Gravidade (IG):</strong> <code>((B91×0,1 + B92×0,3 + B93×0,5 + B94×0,1 + CAT×0,5) / Média de Vínculos) × 1000</code></li>'
-              + '<li><strong>Índice de Custo (IC):</strong> <code>(Total de Benefícios / Massa Salarial) × 1000</code></li>'
-              + '<li><strong>Percentis:</strong> <code>P = ((k − 1) / (N − 1)) × 100</code> (k = posição no rol; N = total).'
-                + '<div class="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-3">'
-                  + '<div class="p-3 bg-tax-bg-light rounded-lg"><div class="text-xs text-tax-dark-gray">Frequência</div><div class="text-sm"><code>k='+(ordemFrequencia||0)+', N='+(totalEstab||0)+'</code> ⇒ <strong>'+br2(pFreq)+'%</strong></div></div>'
-                  + '<div class="p-3 bg-tax-bg-light rounded-lg"><div class="text-xs text-tax-dark-gray">Gravidade</div><div class="text-sm"><code>k='+(ordemGravidade||0)+', N='+(totalEstab||0)+'</code> ⇒ <strong>'+br2(pGrav)+'%</strong></div></div>'
-                  + '<div class="p-3 bg-tax-bg-light rounded-lg"><div class="text-xs text-tax-dark-gray">Custo</div><div class="text-sm"><code>k='+(ordemCusto||0)+', N='+(totalEstab||0)+'</code> ⇒ <strong>'+br2(pCusto)+'%</strong></div></div>'
-                + '</div>'
-              + '</li>'
-              + '<li><strong>Índice Composto:</strong> <code>(0,5×P<sub>Grav</sub> + 0,35×P<sub>Freq</sub> + 0,15×P<sub>Custo</sub>) × 0,02</code></li>'
-              + '<li><strong>Regra de Rotatividade:</strong> se <code>Rotatividade &gt; 75%</code> e <code>FAP &lt; 1</code>, então <code>FAP = 1</code>.</li>'
-            + '</ul>'
+
+          + '<section class="card p-5">'
+            + '<h2 class="text-lg font-bold mb-2">Percentis e Índice Composto</h2>'
+            + '<div class="grid grid-cols-1 md:grid-cols-2 gap-6">'
+              + '<table class="w-full text-sm mb-4"><tbody class="divide-y divide-tax-gray">'
+                + '<tr><td class="py-2">% Frequência</td><td class="py-2 text-right">' + br4(pFreq) + '%</td></tr>'
+                + '<tr><td class="py-2">% Gravidade</td><td class="py-2 text-right">' + br4(pGrav) + '%</td></tr>'
+                + '<tr><td class="py-2">% Custo</td><td class="py-2 text-right">' + br4(pCusto) + '%</td></tr>'
+              + '</tbody></table>'
+              + '<table class="w-full text-sm"><tbody class="divide-y divide-tax-gray">'
+                + '<tr><td class="py-2 font-semibold">Índice Composto</td><td class="py-2 text-right font-semibold">' + br4(indiceComposto) + '</td></tr>'
+                + '<tr><td class="py-2 font-semibold">FAP Final</td><td class="py-2 text-right font-semibold">' + br4(fap) + (taxaRot>75 && fap===1 ? ' <span class="text-xs muted">(ajustado por rotatividade &gt; 75%)</span>' : '') + '</td></tr>'
+              + '</tbody></table>'
+            + '</div>'
           + '</section>'
-          + '<p class="text-center text-xs text-tax-dark-gray">Gerado por calculadorafap.com.br</p>'
-        + '</main>'
+
+          <!-- Explicativo curto -->
+          + '<section class="card p-5">'
+            + '<h2 class="text-lg font-bold mb-3">Como o FAP é calculado</h2>'
+            + '<p class="text-sm leading-relaxed muted">O Fator Acidentário de Prevenção (FAP) é um multiplicador aplicado à alíquota do RAT, variando de <strong>0,5000</strong> a <strong>2,0000</strong>. '
+            + 'Ele deriva de um <em>índice composto</em> que pondera os percentis de desempenho da empresa dentro da sua subclasse CNAE: '
+            + '<strong>50%</strong> para Gravidade, <strong>35%</strong> para Frequência e <strong>15%</strong> para Custo. '
+            + 'O índice composto é então multiplicado por <strong>0,02</strong>; se o resultado for menor que 0,5, adota-se <strong>0,5</strong> (piso). '
+            + 'Se a <strong>rotatividade &gt; 75%</strong> e o FAP ficar abaixo de 1, o valor é ajustado para <strong>1,0000</strong>.</p>'
+          + '</section>'
+
+          <!-- Fórmulas: geral + com seus dados -->
+          + '<section class="card p-5">'
+            + '<h2 class="text-lg font-bold mb-4">Fórmulas Utilizadas</h2>'
+            + '<div class="space-y-4 text-sm">'
+              + '<div>'
+                + '<h3 class="font-semibold mb-1">Índice de Frequência (IF)</h3>'
+                + '<div class="p-3 bg-tax-bg-light rounded-lg">'
+                  + '<div class="mb-1"><span class="font-semibold">Geral:</span> <code>(B91 + B92 + B93 + B94 + CAT) / MV × 1000</code></div>'
+                  + '<div><span class="font-semibold">Com seus dados:</span> <code>(' + br2(b91) + ' + ' + br2(b92) + ' + ' + br2(b93) + ' + ' + br2(b94) + ' + ' + br2(cat) + ') / ' + br4(mediaVinculos) + ' × 1000 = ' + br4(indiceFrequencia) + '</code></div>'
+                + '</div>'
+              + '</div>'
+
+              + '<div>'
+                + '<h3 class="font-semibold mb-1">Índice de Gravidade (IG)</h3>'
+                + '<div class="p-3 bg-tax-bg-light rounded-lg">'
+                  + '<div class="mb-1"><span class="font-semibold">Geral:</span> <code>((B91×0,1 + B92×0,3 + B93×0,5 + B94×0,1 + CAT×0,5) / MV) × 1000</code></div>'
+                  + '<div><span class="font-semibold">Com seus dados:</span> <code>((' + br2(b91) + '×0,1 + ' + br2(b92) + '×0,3 + ' + br2(b93) + '×0,5 + ' + br2(b94) + '×0,1 + ' + br2(cat) + '×0,5) / ' + br4(mediaVinculos) + ') × 1000 = ' + br4(indiceGravidade) + '</code></div>'
+                + '</div>'
+              + '</div>'
+
+              + '<div>'
+                + '<h3 class="font-semibold mb-1">Índice de Custo (IC)</h3>'
+                + '<div class="p-3 bg-tax-bg-light rounded-lg">'
+                  + '<div class="mb-1"><span class="font-semibold">Geral:</span> <code>(Benefícios / Massa Salarial) × 1000</code></div>'
+                  + '<div><span class="font-semibold">Com seus dados:</span> <code>(' + brCurrency(totalBeneficios) + ' / ' + brCurrency(massaSalarial) + ') × 1000 = ' + br4(indiceCusto) + '</code></div>'
+                + '</div>'
+              + '</div>'
+
+              + '<div>'
+                + '<h3 class="font-semibold mb-1">Percentis</h3>'
+                + '<div class="p-3 bg-tax-bg-light rounded-lg space-y-1">'
+                  + '<div><code>P = ((k − 1) / (N − 1)) × 100</code></div>'
+                  + '<div><code>P<sub>Freq</sub> = ((' + br4(ordemFrequencia) + ' − 1) / (' + br2(totalEstab) + ' − 1)) × 100 = ' + br4(pFreq) + '%</code></div>'
+                  + '<div><code>P<sub>Grav</sub> = ((' + br4(ordemGravidade) + ' − 1) / (' + br2(totalEstab) + ' − 1)) × 100 = ' + br4(pGrav) + '%</code></div>'
+                  + '<div><code>P<sub>Custo</sub> = ((' + br4(ordemCusto) + ' − 1) / (' + br2(totalEstab) + ' − 1)) × 100 = ' + br4(pCusto) + '%</code></div>'
+                + '</div>'
+              + '</div>'
+
+              + '<div>'
+                + '<h3 class="font-semibold mb-1">Índice Composto e FAP</h3>'
+                + '<div class="p-3 bg-tax-bg-light rounded-lg space-y-1">'
+                  + '<div><span class="font-semibold">Geral:</span> <code>(0,5×P<sub>Grav</sub> + 0,35×P<sub>Freq</sub> + 0,15×P<sub>Custo</sub>) × 0,02</code></div>'
+                  + '<div><span class="font-semibold">Com seus dados:</span> <code>(0,5×' + br4(pGrav) + ' + 0,35×' + br4(pFreq) + ' + 0,15×' + br4(pCusto) + ') × 0,02 = ' + br4(indiceComposto) + '</code></div>'
+                  + '<div><span class="font-semibold">FAP:</span> <code>max(0,5, ' + br4(indiceComposto) + ')' + (taxaRot>75 ? ' ⇒ regra de rotatividade aplicada se FAP &lt; 1' : '') + ' ⇒ ' + br4(fap) + '</code></div>'
+                + '</div>'
+              + '</div>'
+            + '</div>'
+          + '</section>'
+
+          <p class="text-center text-xs muted">Gerado por calculadorafap.com.br</p>
+        </main>'
       + '</body></html>';
 
       var w = window.open('', '_blank');
@@ -488,9 +545,3 @@ layout: null
 
 </body>
 </html>
-
-
-
-
-
-

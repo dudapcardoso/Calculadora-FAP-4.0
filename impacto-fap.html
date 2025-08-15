@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <title>Calculadora de Impacto FAP x RAT</title>
+  <title>Como o FAP é calculado — Guia visual e interativo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Tailwind apenas nesta página -->
@@ -25,33 +25,35 @@
 
   <!-- Estilos do menu e da página -->
   <style>
-    .navtab{ padding:.5rem .9rem;border-radius:999px;border:1px solid transparent;color:#fff;background:rgba(255,255,255,.06); display:inline-block }
+    html,body{ margin:0; padding:0 } /* remove espaço branco no topo */
+    .navtab{
+      padding:.5rem .9rem; border-radius:999px; border:1px solid transparent;
+      color:#fff; background:rgba(255,255,255,.06); display:inline-block
+    }
     .navtab:hover{ background:rgba(255,255,255,.12) }
-    .navtab.is-active{ border-color:#E2B874;background:rgba(226,184,116,.12); color:#fff }
+    .navtab.is-active{ border-color:#E2B874; background:rgba(226,184,116,.12); color:#fff }
 
     #calc-impacto-fap { background-color: #152E3E; }
     #calc-impacto-fap .main-card{
-      background:#fff;border-radius:.75rem;
-      box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),
-                 0 4px 6px -4px rgb(0 0 0 / .1)
+      background:#fff; border-radius:.75rem;
+      box-shadow:0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1)
     }
     #calc-impacto-fap .input-field{
-      background:#F3F4F6;border:1px solid #D1D5DB;
-      border-radius:.5rem;transition:all .2s ease-in-out;color:#152E3E
+      background:#F3F4F6; border:1px solid #D1D5DB;
+      border-radius:.5rem; transition:all .2s ease-in-out; color:#152E3E
     }
     #calc-impacto-fap .input-field:focus,
     #calc-impacto-fap .input-field:focus-within{
-      border-color:#E2B874;
-      box-shadow:0 0 0 2px rgba(226,184,116,.3);outline:none
+      border-color:#E2B874; box-shadow:0 0 0 2px rgba(226,184,116,.3); outline:none
     }
     #calc-impacto-fap input[type=number]::-webkit-inner-spin-button,
-    #calc-impacto-fap input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
-    #calc-impacto-fap input[type=number]{-moz-appearance:textfield}
+    #calc-impacto-fap input[type=number]::-webkit-outer-spin-button{ -webkit-appearance:none; margin:0 }
+    #calc-impacto-fap input[type=number]{ -moz-appearance:textfield }
   </style>
 </head>
 <body class="bg-tax-blue">
 
-  <!-- NAV entre as 3 páginas (wrapper com fundo azul para visibilidade) -->
+  <!-- NAV entre as 3 páginas -->
   <div class="bg-tax-blue">
     <nav class="container mx-auto max-w-4xl flex justify-center gap-2 py-3">
       <!-- use links RELATIVOS; os três arquivos devem estar na MESMA pasta -->
@@ -64,11 +66,13 @@
   <section id="calc-impacto-fap" class="text-gray-800">
     <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
 
+      <!-- TÍTULO -->
       <header class="text-center mb-10">
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Calculadora de Impacto</h1>
-        <p class="mt-2 text-lg sm:text-xl text-tax-gold">FAP x RAT</p>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Como o FAP é calculado</h1>
+        <p class="mt-2 text-lg sm:text-xl text-tax-gold">Guia visual e interativo</p>
       </header>
 
+      <!-- (conteúdo existente da página permanece) -->
       <div class="main-card overflow-hidden">
         <div class="p-6 sm:p-8 bg-tax-bg-light border-b border-tax-gray">
           <h2 class="text-xl font-bold text-tax-blue mb-6">1. Insira os dados da sua empresa</h2>
@@ -131,21 +135,21 @@
     </div>
   </section>
 
-  <!-- Script do menu: marca a aba ativa (funciona com links relativos) -->
+  <!-- Script do menu: marca a aba ativa (robusto para subpastas) -->
   <script>
     document.addEventListener('DOMContentLoaded', function(){
       var tabs = document.querySelectorAll('.navtab');
 
       function norm(p){
-        try { p = new URL(p, location.origin).pathname; } catch(e) { p = p || ''; }
+        try { p = new URL(p, location.href).pathname; }  // usa a URL atual como base
+        catch(e) { p = p || ''; }
         return p.replace(/\/index\.html?$/i,'/').replace(/\/+$/,'');
       }
 
       var here = norm(location.pathname);
       tabs.forEach(function(a){
         var target = norm(a.getAttribute('href') || '');
-        if (!target) return;
-        if (here === target) a.classList.add('is-active');
+        if (target && here === target) a.classList.add('is-active');
       });
     });
   </script>
@@ -176,7 +180,6 @@
       input.value = numberValue.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
     function parseFap(str){
-      // aceita vírgula ou ponto
       if (typeof str !== 'string') return 0;
       return parseFloat(str.replace(/\./g,'').replace(',', '.')) || 0;
     }
@@ -198,16 +201,9 @@
       impactoTotalOutput.textContent = formatToCurrencyDisplay(impacto26Meses);
     }
 
-    // Eventos
     ratInput.addEventListener('input', calcularImpacto);
-    fapInput.addEventListener('input', function(e){
-      // normaliza vírgula/ponto visualmente opcional
-      // (deixa como o usuário digitar; só normalizamos no parse)
-      calcularImpacto();
-    });
+    fapInput.addEventListener('input', () => calcularImpacto());
     folhaInput.addEventListener('input', (e) => { formatCurrencyInput(e); calcularImpacto(); });
-
-    // Inicializa
     document.addEventListener('DOMContentLoaded', calcularImpacto);
   </script>
 

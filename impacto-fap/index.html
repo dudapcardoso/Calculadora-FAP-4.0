@@ -1,39 +1,10 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <!-- NAV entre as 3 páginas -->
-<nav class="flex justify-center gap-2 mb-8">
-  <a href="/index" class="navtab">Calculadora</a>
-  <a href="/impactos-fap" class="navtab">Impactos do FAP</a>
-  <a href="/como-o-fap-e-calculado" class="navtab">Como o FAP é calculado</a>
-</nav>
-
-<!-- Estilos mínimos (se já não existem na página) -->
-<style>
-  .navtab{ padding:.5rem .9rem;border-radius:999px;border:1px solid transparent;color:#fff;background:rgba(255,255,255,.06) }
-  .navtab:hover{ background:rgba(255,255,255,.12) }
-  .navtab.is-active{ border-color:#E2B874;background:rgba(226,184,116,.12); color:#fff }
-</style>
-
-<script>
-// Marca o link ativo conforme a URL
-(function(){
-  var tabs = document.querySelectorAll('.navtab');
-  tabs.forEach(function(a){
-    var href = a.getAttribute('href'); if(!href) return;
-    if (location.pathname.endsWith(href) || location.pathname === href){
-      a.classList.add('is-active');
-    }
-    // fallback para index em "/"
-    if ((href.endsWith('/index.html') || href === '/index.html') && (location.pathname === '/' || location.pathname === '')){
-      a.classList.add('is-active');
-    }
-  });
-})();
-</script>
   <meta charset="utf-8">
   <title>Calculadora de Impacto FAP x RAT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <!-- Tailwind apenas nesta página -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -51,7 +22,13 @@
       }
     }
   </script>
+
+  <!-- Estilos mínimos do menu -->
   <style>
+    .navtab{ padding:.5rem .9rem;border-radius:999px;border:1px solid transparent;color:#fff;background:rgba(255,255,255,.06) }
+    .navtab:hover{ background:rgba(255,255,255,.12) }
+    .navtab.is-active{ border-color:#E2B874;background:rgba(226,184,116,.12); color:#fff }
+
     #calc-impacto-fap { background-color: #152E3E; }
     #calc-impacto-fap .main-card{
       background:#fff;border-radius:.75rem;
@@ -73,6 +50,14 @@
   </style>
 </head>
 <body>
+
+<!-- NAV entre as 3 páginas (AGORA NO BODY) -->
+<nav class="flex justify-center gap-2 mb-8 mt-4">
+  <!-- Ajuste os href conforme seu hosting. Se estiver tudo na mesma pasta, use ./arquivo.html -->
+  <a href="/index.html"                 class="navtab">Calculadora</a>
+  <a href="/impactos-fap.html"          class="navtab">Impactos do FAP</a>
+  <a href="/como-o-fap-e-calculado.html" class="navtab">Como o FAP é calculado</a>
+</nav>
 
 <section id="calc-impacto-fap" class="text-gray-800">
   <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
@@ -142,7 +127,31 @@
   </div>
 </section>
 
+<!-- Script do menu (executa depois do DOM) -->
 <script>
+  document.addEventListener('DOMContentLoaded', function(){
+    var tabs = document.querySelectorAll('.navtab');
+    var path = location.pathname.replace(/\/+$/, ''); // remove barra final
+    tabs.forEach(function(a){
+      var href = a.getAttribute('href') || '';
+      var target = href.replace(/\/+$/, '');
+      if (!target) return;
+
+      // Se você trocar para links relativos ("./index.html"), também funciona:
+      // normaliza só o final do caminho
+      if (path.endsWith(target)) a.classList.add('is-active');
+
+      // Home ativa em "/" também
+      if ((target === '/index.html' || target === 'index.html') &&
+          (path === '' || path === '/' )) {
+        a.classList.add('is-active');
+      }
+    });
+  });
+</script>
+
+<script>
+  // ===== Cálculo Impacto FAP x RAT =====
   const ratInput = document.getElementById('rat');
   const fapInput = document.getElementById('fap');
   const folhaInput = document.getElementById('folha');
@@ -177,16 +186,4 @@
     const custoMinimo = folha * ((rat * fapMinimo) / 100);
     const impacto26Meses = (custoAtual - custoMinimo) * 26;
 
-    ratAjustadoOutput.textContent = `${ratAjustado.toFixed(4).replace('.', ',')}%`;
-    custoMinimoOutput.textContent = formatToCurrencyDisplay(custoMinimo);
-    custoAtualOutput.textContent = formatToCurrencyDisplay(custoAtual);
-    impactoTotalOutput.textContent = formatToCurrencyDisplay(impacto26Meses);
-  }
-  ratInput.addEventListener('input', calcularImpacto);
-  fapInput.addEventListener('input', calcularImpacto);
-  folhaInput.addEventListener('input', (e) => { formatCurrencyInput(e); calcularImpacto(); });
-  window.onload = calcularImpacto;
-</script>
-
-</body>
-</html>
+    ratAjustadoOutput.te

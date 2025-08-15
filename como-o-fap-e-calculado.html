@@ -1,0 +1,292 @@
+---
+layout: null
+---
+
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Como o FAP é calculado – Guia interativo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google AdSense (opcional) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2064027217812464" crossorigin="anonymous"></script>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: {
+        'tax-blue':'#152E3E','tax-gold':'#E2B874','tax-gray':'#EBEBEB',
+        'tax-dark-gray':'#6B7280','tax-bg-light':'#F9FAFB'
+      }
+    }}}
+  </script>
+
+  <style>
+    body { background:#152E3E; }
+    .main-card{ background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1) }
+    .input-field{ background:#F3F4F6;border:1px solid #D1D5DB;border-radius:.5rem;transition:all .2s;color:#152E3E }
+    .input-field:focus{ border-color:#E2B874; box-shadow:0 0 0 2px rgba(226,184,116,.3); outline:none }
+    .navtab{ padding:.5rem .9rem;border-radius:999px;border:1px solid transparent;color:#fff;background:rgba(255,255,255,.06) }
+    .navtab:hover{ background:rgba(255,255,255,.12) }
+    .navtab.is-active{ border-color:#E2B874;background:rgba(226,184,116,.12); color:#fff }
+    .card{ background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1) }
+    .pill{ display:inline-block; padding:.15rem .5rem; border-radius:999px; background:#F3F4F6; color:#152E3E; font-size:.75rem; font-weight:600 }
+    .infocard{ background:#ffffff; border-radius: .75rem; padding:1rem; border:1px solid #EBEBEB; transition:transform .12s ease, box-shadow .12s ease }
+    .infocard:hover{ transform:translateY(-2px); box-shadow:0 8px 20px -8px rgb(0 0 0 / .2) }
+    .addon { position:absolute; right:.75rem; top:50%; transform:translateY(-50%); color:#6B7280; font-weight:600; }
+  </style>
+</head>
+<body>
+
+<section class="text-gray-800">
+  <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-5xl">
+
+    <!-- Cabeçalho -->
+    <header class="text-center mb-4">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Como o FAP é calculado</h1>
+      <p class="mt-2 text-lg sm:text-xl text-tax-gold">Guia visual e interativo</p>
+    </header>
+
+    <!-- NAV entre as 3 páginas -->
+    <nav class="flex justify-center gap-2 mb-8">
+      <!-- Ajuste os hrefs conforme os nomes reais dos arquivos -->
+      <a href="/index.html" class="navtab" data-tab="calc">Calculadora</a>
+      <a href="/impactos-fap.html" class="navtab" data-tab="impactos">Impactos do FAP</a>
+      <a href="/como-o-fap-e-calculado.html" class="navtab" data-tab="como" aria-current="page">Como o FAP é calculado</a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="relative bg-tax-blue text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-lg overflow-hidden">
+      <div class="absolute -top-10 -left-10 w-40 h-40 bg-tax-gold rounded-full opacity-30 blur-2xl"></div>
+      <div class="absolute -bottom-10 -right-12 w-36 h-36 bg-white rounded-full opacity-20 blur-2xl"></div>
+      <div class="relative">
+        <h2 class="text-2xl sm:text-3xl font-extrabold leading-tight">Da fórmula ao índice final</h2>
+        <p class="mt-3 text-tax-gold">O FAP nasce de um composto ponderado por <span class="font-semibold">Gravidade</span>, <span class="font-semibold">Frequência</span> e <span class="font-semibold">Custo</span>, ranqueado por percentis na sua subclasse e reescalonado para o intervalo 0,500–2,000.</p>
+      </div>
+    </section>
+
+    <!-- Conteúdo -->
+    <div class="main-card p-6 sm:p-8 space-y-10">
+
+      <!-- Infográfico (cards expansíveis) -->
+      <section>
+        <h3 class="text-xl font-bold text-tax-blue mb-4">Os 3 pilares do composto</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <details class="infocard group" open>
+            <summary class="cursor-pointer list-none flex items-center justify-between">
+              <div class="font-semibold text-tax-blue">Frequência <span class="pill ml-2">“quantos eventos”</span></div>
+              <span class="text-tax-dark-gray group-open:rotate-180 transition-transform">⌄</span>
+            </summary>
+            <div class="mt-3 text-sm text-tax-dark-gray leading-relaxed">
+              Soma de eventos (CAT, B91, B92, B93, B94) relativa aos vínculos médios do biênio.<br>
+              <span class="pill mt-2">IF = (B91 + B92 + B93 + B94 + CAT) / Vínculos × 1000</span>
+            </div>
+          </details>
+
+          <details class="infocard group">
+            <summary class="cursor-pointer list-none flex items-center justify-between">
+              <div class="font-semibold text-tax-blue">Gravidade <span class="pill ml-2">“quão grave”</span></div>
+              <span class="text-tax-dark-gray group-open:rotate-180 transition-transform">⌄</span>
+            </summary>
+            <div class="mt-3 text-sm text-tax-dark-gray leading-relaxed">
+              Pondera severidade dos tipos de benefício.<br>
+              <span class="pill mt-2">IG = (B91×0,1 + B92×0,3 + B93×0,5 + B94×0,1 + CAT×0,5) / Vínculos × 1000</span>
+            </div>
+          </details>
+
+          <details class="infocard group">
+            <summary class="cursor-pointer list-none flex items-center justify-between">
+              <div class="font-semibold text-tax-blue">Custo <span class="pill ml-2">“quanto custou”</span></div>
+              <span class="text-tax-dark-gray group-open:rotate-180 transition-transform">⌄</span>
+            </summary>
+            <div class="mt-3 text-sm text-tax-dark-gray leading-relaxed">
+              Proporção dos benefícios pagos frente à massa salarial.<br>
+              <span class="pill mt-2">IC = Benefícios / Massa Salarial × 1000</span>
+            </div>
+          </details>
+        </div>
+
+        <div class="mt-5 text-sm text-tax-dark-gray">
+          Depois, os índices são ranqueados por percentis na subclasse (k/N) e combinados:<br>
+          <span class="pill">Composto = (0,5×P<sub>G</sub> + 0,35×P<sub>F</sub> + 0,15×P<sub>C</sub>) × 0,02</span><br>
+          O FAP final é o composto travado em 0,500–2,000 (com regra de rotatividade: se &gt; 75% e FAP &lt; 1, então FAP = 1).
+        </div>
+      </section>
+
+      <!-- Mini simulador de sensibilidades -->
+      <section>
+        <h3 class="text-xl font-bold text-tax-blue mb-4">Simule o efeito de +1 evento</h3>
+        <p class="text-sm text-tax-dark-gray mb-4">Veja como um único evento desloca seus índices antes do ranking por percentis.</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="card p-5">
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-tax-dark-gray mb-1">Vínculos médios do biênio</label>
+                <input id="simVinc" type="text" inputmode="decimal" placeholder="Ex.: 250,5" class="w-full p-3 input-field">
+              </div>
+
+              <div class="relative">
+                <label class="block text-sm font-medium text-tax-dark-gray mb-1">Massa salarial do biênio (R$)</label>
+                <input id="simMassa" type="text" inputmode="decimal" placeholder="R$ 10.000.000,00" class="w-full p-3 input-field">
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-tax-dark-gray mb-1">Tipo de evento</label>
+                <select id="simTipo" class="w-full p-3 input-field">
+                  <option value="B91">B91 – Incapacidade temporária</option>
+                  <option value="B92">B92 – Aposentadoria por incapacidade</option>
+                  <option value="B93">B93 – Pensão por morte</option>
+                  <option value="B94">B94 – Auxílio-acidente</option>
+                  <option value="CAT">CAT – Comunicação de acidente</option>
+                </select>
+              </div>
+
+              <div class="relative">
+                <label class="block text-sm font-medium text-tax-dark-gray mb-1">Custo do evento (R$) <span class="text-xs text-tax-dark-gray">(opcional)</span></label>
+                <input id="simCusto" type="text" inputmode="decimal" placeholder="R$ 25.000,00" class="w-full p-3 input-field">
+              </div>
+
+              <button id="btnSimular" class="w-full bg-tax-blue text-white rounded-md py-3 font-semibold hover:brightness-110">Calcular sensibilidades</button>
+            </div>
+          </div>
+
+          <div class="card p-5">
+            <h4 class="font-semibold text-tax-blue mb-3">Pesos considerados</h4>
+            <ul class="text-sm text-tax-dark-gray space-y-2">
+              <li><span class="pill mr-2">B91</span> w = 0,1</li>
+              <li><span class="pill mr-2">B92</span> w = 0,3</li>
+              <li><span class="pill mr-2">B93</span> w = 0,5</li>
+              <li><span class="pill mr-2">B94</span> w = 0,1</li>
+              <li><span class="pill mr-2">CAT</span> w = 0,5</li>
+            </ul>
+            <p class="text-xs text-tax-dark-gray mt-3">Observação: os pesos acima seguem a mesma regra usada na calculadora desta aplicação.</p>
+          </div>
+
+          <div class="card p-5">
+            <h4 class="font-semibold text-tax-blue mb-3">Resultado</h4>
+            <div id="simOut" class="text-sm text-tax-blue space-y-2">
+              <p>ΔF = —</p>
+              <p>ΔG = —</p>
+              <p>ΔC = —</p>
+              <p class="text-tax-dark-gray text-xs mt-3">Valores em pontos “por mil” para IF/IG e em “por mil” para IC (antes de ranking por percentis).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dicas rápidas -->
+      <section>
+        <h3 class="text-xl font-bold text-tax-blue mb-3">Onde atuar primeiro</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="infocard">
+            <div class="font-semibold text-tax-blue mb-1">Casos graves (B92/B93/B94)</div>
+            <p class="text-sm text-tax-dark-gray">Erros de nexo custam caro em G. Auditar laudos, NTEP e CAT tem o maior ROI.</p>
+          </div>
+          <div class="infocard">
+            <div class="font-semibold text-tax-blue mb-1">Reclassificação B91 → B31</div>
+            <p class="text-sm text-tax-dark-gray">Quando cabível, remove evento do FAP: derruba F, zera C e reduz G.</p>
+          </div>
+          <div class="infocard">
+            <div class="font-semibold text-tax-blue mb-1">Higienização de CAT</div>
+            <p class="text-sm text-tax-dark-gray">CAT indevida aumenta F e vira porta para B91. Padronize emissões e retificações.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Rodapé / CTA -->
+    <footer class="text-center mt-8 text-sm text-gray-300">
+      <p>Conteúdo educativo — valores finais dependem dos dados do biênio e da subclasse.</p>
+    </footer>
+
+    <a href="https://wa.me/5548996836949" target="_blank"
+       class="fixed bottom-5 right-5 bg-green-500 text-white rounded-full px-4 py-3 font-semibold shadow-lg z-50">
+      💬 Fale com um especialista
+    </a>
+
+    <div class="mt-8 p-6 bg-blue-50 rounded-xl text-center shadow-sm">
+      <h3 class="text-xl font-bold text-tax-blue mb-2">🔍 Quer ir além?</h3>
+      <p class="text-base mb-4">💡 Compre o <strong>eBook completo por R$ 149,00</strong> e descubra 11 erros comuns que podem estar majorando seu FAP indevidamente.</p>
+      <a href="https://eduardocardosop.hotmart.host/descomplicando-a-contestacao-do-fap-11-passos-para-reduzir-custos-e-corrigir-inconsistencias-01babbea-fcfd-4b31-a0b3-be2ec1c869bf"
+         target="_blank" class="inline-block bg-tax-gold text-tax-blue rounded-md px-4 py-2 font-semibold hover:brightness-105">👉 Adquirir eBook</a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+// ===== Helpers numéricos (iguais aos da calculadora) =====
+function br4(n){ return isFinite(n) ? Number(n).toFixed(4).replace('.', ',') : '—'; }
+function br2(n){ return isFinite(n) ? Number(n).toFixed(2).replace('.', ',') : '—'; }
+function brCurrency(n){ return isFinite(n) ? Number(n).toLocaleString('pt-BR', {style:'currency', currency:'BRL'}) : '—'; }
+function parseGeneric(str){
+  if(str === null || str === undefined) return NaN;
+  var s = String(str).trim(); if(!s) return NaN;
+  return parseFloat(s.replace(/\./g,'').replace(',', '.'));
+}
+function parseBRLForCalc(str){
+  if(str === null || str === undefined) return NaN;
+  var s = String(str).trim(); if(!s) return NaN;
+  return parseFloat(s.replace(/[R$\s]/g,'').replace(/\./g,'').replace(',', '.'));
+}
+// máscara BRL
+function maskBRLInput(el){
+  var raw = (el.value || '').toString().replace(/\D/g,'');
+  if(raw.length === 0){ el.value=''; return; }
+  var cents = parseInt(raw,10); if(!isFinite(cents)){ el.value=''; return; }
+  var val = (cents / 100);
+  el.value = 'R$ ' + val.toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+// ===== Navegação: marcar aba ativa automaticamente =====
+(function markActive(){
+  var links = document.querySelectorAll('nav .navtab');
+  links.forEach(function(a){
+    var same = a.getAttribute('href');
+    if(!same) return;
+    if (location.pathname.endsWith(same) || location.pathname === same){
+      a.classList.add('is-active');
+    }
+    // fallback para a aba "Como..." nesta página
+    if (a.dataset.tab === 'como') a.classList.add('is-active');
+  });
+})();
+
+// ===== Mini-simulador ΔF, ΔG, ΔC =====
+var pesos = { B91:0.1, B92:0.3, B93:0.5, B94:0.1, CAT:0.5 };
+
+document.getElementById('btnSimular').addEventListener('click', function(){
+  var V = parseGeneric(document.getElementById('simVinc').value);
+  var M = parseBRLForCalc(document.getElementById('simMassa').value);
+  var tipo = document.getElementById('simTipo').value;
+  var custo = parseBRLForCalc(document.getElementById('simCusto').value);
+
+  if(!isFinite(V) || V<=0){ alert('Informe Vínculos médios válidos.'); return; }
+  if(document.getElementById('simMassa').value.trim() && (!isFinite(M) || M<=0)){ alert('Massa salarial inválida.'); return; }
+
+  var w = pesos[tipo] || 0;
+  var MULT = 1000;
+
+  var dF = (1 / V) * MULT;
+  var dG = (w / V) * MULT;
+  var dC = (isFinite(M) && M>0 && isFinite(custo)) ? (custo / M) * MULT : NaN;
+
+  var out = document.getElementById('simOut');
+  out.innerHTML = ''
+    + '<p>ΔF = <strong>' + br4(dF) + '</strong></p>'
+    + '<p>ΔG = <strong>' + br4(dG) + '</strong> <span class="text-tax-dark-gray">(peso ' + w.toString().replace('.',',') + ')</span></p>'
+    + '<p>ΔC = <strong>' + (isFinite(dC) ? br4(dC) : '—') + '</strong> '
+    +   '<span class="text-tax-dark-gray">' + (isFinite(dC)? '' : '(informe Massa e Custo para ΔC)') + '</span></p>';
+});
+
+// máscara BRL onblur
+document.getElementById('simMassa').addEventListener('blur', function(){ maskBRLInput(this); });
+document.getElementById('simCusto').addEventListener('blur', function(){ maskBRLInput(this); });
+</script>
+
+</body>
+</html>

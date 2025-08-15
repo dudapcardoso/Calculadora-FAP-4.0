@@ -1,6 +1,36 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+  <!-- NAV entre as 3 páginas -->
+<nav class="flex justify-center gap-2 mb-8">
+  <a href="/index" class="navtab">Calculadora</a>
+  <a href="/impactos-fap" class="navtab">Impactos do FAP</a>
+  <a href="/como-o-fap-e-calculado" class="navtab">Como o FAP é calculado</a>
+</nav>
+
+<!-- Estilos mínimos (se já não existem na página) -->
+<style>
+  .navtab{ padding:.5rem .9rem;border-radius:999px;border:1px solid transparent;color:#fff;background:rgba(255,255,255,.06) }
+  .navtab:hover{ background:rgba(255,255,255,.12) }
+  .navtab.is-active{ border-color:#E2B874;background:rgba(226,184,116,.12); color:#fff }
+</style>
+
+<script>
+// Marca o link ativo conforme a URL
+(function(){
+  var tabs = document.querySelectorAll('.navtab');
+  tabs.forEach(function(a){
+    var href = a.getAttribute('href'); if(!href) return;
+    if (location.pathname.endsWith(href) || location.pathname === href){
+      a.classList.add('is-active');
+    }
+    // fallback para index em "/"
+    if ((href.endsWith('/index.html') || href === '/index.html') && (location.pathname === '/' || location.pathname === '')){
+      a.classList.add('is-active');
+    }
+  });
+})();
+</script>
   <meta charset="utf-8">
   <title>Calculadora de Impacto FAP x RAT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">

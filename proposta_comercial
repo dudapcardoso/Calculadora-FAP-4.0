@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Proposta Comercial — Contestação FAP 2026 | ROIT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'tax-blue':'#152E3E',
+            'tax-gold':'#E2B874',
+            'tax-gray':'#EBEBEB',
+            'tax-dark-gray':'#6B7280',
+            'tax-bg-light':'#F9FAFB'
+          },
+          boxShadow: { 'soft': '0 6px 24px rgba(0,0,0,0.08)' },
+          borderRadius: { '2xl': '1rem' }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body { scroll-behavior: smooth; background:#F9FAFB; }
+    .num{font-variant-numeric: tabular-nums;}
+
+    /* Garantir que azul e dourado saiam na impressão */
+    header, .bg-tax-blue, .bg-gold,
+    .gold-bar, .dot, .gold-bullet {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important; /* legacy */
+    }
+
+    .gold-bar {
+      height: 4px; background: #E2B874; width: 80px; border-radius: 9999px;
+    }
+    .section-title { display:flex; align-items:center; gap:.75rem; }
+    .section-title .dot{
+      width:.8rem; height:.8rem; border-radius:9999px; background:#E2B874; box-shadow:0 0 0 3px rgba(226,184,116,.25);
+    }
+
+    /* Impressão */
+    @media print {
+      /* força cores de fundo em todos os elementos */
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+      #toolbar, .no-print { display: none !important; }
+      header, main, footer { box-shadow: none !important; }
+      .card { break-inside: avoid; }
+      body { background: white; }
+      .page { page-break-after: always; }
+      .no-break { page-break-inside: avoid; }
+
+      /* define a página A4 e margens */
+      @page { size: A4; margin: 12mm; }
+
+      /* reforça o dourado nos bullets mesmo que o browser tente ignorar */
+      .gold-bullet { background-color:#E2B874 !important; }
+      .dot { background-color:#E2B874 !important; box-shadow:0 0 0 3px rgba(226,184,116,.25) !important; }
+      .gold-bar { background-color:#E2B874 !important; }
+      .bg-tax-blue { background-color:#152E3E !important; }
+    }
+  </style>
+</head>
+<body class="text-tax-blue">
+  <!-- Top toolbar (edição rápida) -->
+  <div id="toolbar" class="bg-white/80 backdrop-blur sticky top-0 z-50 border-b border-tax-gray">
+    <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-3">
+      <label class="text-sm">Empresa:
+        <input id="inputEmpresa" type="text" class="ml-2 px-3 py-1 rounded-lg border border-tax-gray focus:outline-none focus:ring-2 focus:ring-tax-gold"
+               placeholder="Nome da Empresa"/>
+      </label>
+      <label class="text-sm">CNPJ:
+        <input id="inputCNPJ" type="text" class="ml-2 px-3 py-1 rounded-lg border border-tax-gray focus:outline-none focus:ring-2 focus:ring-tax-gold"
+               placeholder="00.000.000/0000-00"/>
+      </label>
+      <button onclick="window.print()"
+              class="ml-auto px-4 py-2 rounded-xl bg-tax-gold text-tax-blue font-medium hover:opacity-90 transition shadow-soft">
+        Imprimir / Salvar PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="bg-tax-blue text-white">
+    <div class="max-w-6xl mx-auto px-6 py-10">
+      <h1 class="text-3xl md:text-4xl font-bold">Proposta Comercial — Contestação FAP 2026</h1>
+      <p class="mt-2 text-tax-gray">Consultoria previdenciária com automação proprietária e acompanhamento integral.</p>
+      <div class="gold-bar mt-5"></div>
+    </div>
+  </header>
+
+  <!-- Identificação do cliente -->
+  <section class="bg-white">
+    <div class="max-w-6xl mx-auto px-6 py-6 grid sm:grid-cols-2 gap-4">
+      <div class="rounded-2xl border border-tax-gray p-4 card">
+        <p class="text-sm text-tax-dark-gray">Cliente</p>
+        <p id="empresaView" class="font-semibold text-lg">[Nome da Empresa]</p>
+      </div>
+      <div class="rounded-2xl border border-tax-gray p-4 card">
+        <p class="text-sm text-tax-dark-gray">CNPJ</p>
+        <p id="cnpjView" class="font-semibold text-lg">[00.000.000/0000-00]</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conteúdo -->
+  <main class="max-w-6xl mx-auto px-6 py-8 space-y-6">
+    <!-- 1. Contexto -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title">
+        <span class="dot"></span><h2 class="text-xl font-semibold">1. Contexto</h2>
+      </div>
+      <p class="mt-3 leading-relaxed">
+        O <strong>Fator Acidentário de Prevenção (FAP)</strong> é um índice aplicado sobre a alíquota do
+        Risco Ambiental do Trabalho (RAT), impactando diretamente o custo previdenciário da folha de pagamentos.
+        Erros na composição do FAP podem resultar em <strong>majorações indevidas</strong> da alíquota.
+        A <strong>ROIT</strong> identifica tais inconsistências e realiza a <strong>contestação administrativa</strong>
+        dentro do prazo legal (01 a 30 de novembro de 2025).
+      </p>
+    </section>
+
+    <!-- 2. Escopo -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title">
+        <span class="dot"></span><h2 class="text-xl font-semibold">2. Escopo do Serviço</h2>
+      </div>
+      <ul class="mt-3 leading-relaxed ml-1 space-y-3">
+        <li class="flex gap-3">
+          <span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
+          <span><strong>Análise detalhada</strong> do FAP 2026 divulgado pela Previdência Social;</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
+          <span><strong>Revisão técnica</strong> com apoio de <em>automação proprietária</em>, cruzando FAPWeb e eSocial;</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
+          <span><strong>Protocolo</strong> da contestação administrativa no sistema oficial do FAP;</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
+          <span><strong>Acompanhamento integral</strong> do processo: respostas em 1ª, 2ª e 3ª instâncias, se necessário;</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
+          <span>
+            <strong>Operacionalização do crédito em caso de deferimento</strong>, incluindo:
+            <ul class="list-disc ml-6 mt-2 space-y-1">
+              <li>Retificação das obrigações acessórias;</li>
+              <li>Habilitação do crédito junto à Receita Federal;</li>
+              <li><strong>Realização do processo de restituição e/ou compensação</strong>.</li>
+            </ul>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 3. O que a automação verifica -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title">
+        <span class="dot"></span><h2 class="text-xl font-semibold">3. O que nossa automação verifica</h2>
+      </div>
+      <p class="mt-3 leading-relaxed">
+        A automação proprietária da ROIT executa validações avançadas cruzando o FAPWeb com eventos do eSocial,
+        permitindo identificar cenários que passariam despercebidos em análise exclusivamente manual:
+      </p>
+      <div class="mt-3 grid md:grid-cols-2 gap-3">
+        <div class="rounded-xl border border-tax-gray p-4">
+          <h3 class="font-semibold mb-1 text-tax-blue">Bases e Métricas</h3>
+          <p class="text-sm leading-relaxed text-tax-dark-gray">
+            Diferenças relevantes em <strong>massa salarial</strong>, <strong>vínculos</strong> e <strong>rotatividade</strong>.
+          </p>
+        </div>
+        <div class="rounded-xl border border-tax-gray p-4">
+          <h3 class="font-semibold mb-1 text-tax-blue">Ocorrências e Benefícios</h3>
+          <p class="text-sm leading-relaxed text-tax-dark-gray">
+            Possíveis inconsistências em <strong>CATs</strong> e <strong>benefícios</strong> associados.
+          </p>
+        </div>
+        <div class="rounded-xl border border-tax-gray p-4">
+          <h3 class="font-semibold mb-1 text-tax-blue">Afastamentos</h3>
+          <p class="text-sm leading-relaxed text-tax-dark-gray">
+            Situações de <strong>afastamentos</strong> ou ocorrências que não deveriam impactar o índice.
+          </p>
+        </div>
+        <div class="rounded-xl border border-tax-gray p-4">
+          <h3 class="font-semibold mb-1 text-tax-blue">Enquadramentos</h3>
+          <p class="text-sm leading-relaxed text-tax-dark-gray">
+            <strong>Divergências de enquadramento</strong> que possam elevar indevidamente a alíquota.
+          </p>
+        </div>
+      </div>
+      <p class="mt-3 leading-relaxed">
+        Esse conjunto de verificações eleva a precisão da análise e <strong>aumenta as chances de êxito</strong> na contestação.
+      </p>
+    </section>
+
+    <!-- 4. Análise bônus -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title">
+        <span class="dot"></span><h2 class="text-xl font-semibold">4. Análise Bônus Gratuita</h2>
+      </div>
+      <p class="mt-3 leading-relaxed">
+        Além da contestação do FAP, a ROIT oferece, sem custo adicional, uma <strong>análise bônus</strong> da folha:
+      </p>
+      <ul class="mt-3 leading-relaxed ml-1 space-y-2">
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Checagem da <strong>correta aplicação das alíquotas</strong> incidentes sobre a folha;</span></li>
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Identificação de <strong>oportunidades de recuperação</strong> de tributos pagos indevidamente;</span></li>
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Mapeamento de <strong>passivos ocultos</strong> com potencial risco futuro.</span></li>
+      </ul>
+      <p class="mt-3 text-tax-dark-gray">
+        A análise é 100% gratuita e <strong>não obriga</strong> a implementação das sugestões.
+      </p>
+    </section>
+
+    <!-- 5. Prazos -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title">
+        <span class="dot"></span><h2 class="text-xl font-semibold">5. Prazos</h2>
+      </div>
+      <ul class="mt-3 leading-relaxed ml-1 space-y-2">
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Divulgação oficial do FAP 2026: <strong>30/09/2025</strong>;</span></li>
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Período para contestação: <strong>01/11 a 30/11/2025</strong>;</span></li>
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>A análise e a contestação serão concluídas <strong>dentro do prazo legal</strong>.</span></li>
+      </ul>
+    </section>
+
+    <!-- 6. Honorários -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title">
+        <span class="dot"></span><h2 class="text-xl font-semibold">6. Modelo de Honorários</h2>
+      </div>
+      <p class="mt-3 leading-relaxed">
+        A proposta contempla uma <strong>taxa inicial fixa</strong> por CNPJ e <strong>honorários de êxito escalonados</strong>.
+        Os honorários de êxito incidem somente após o <strong>deferimento da contestação com redução do índice</strong>.
+      </p>
+
+      <!-- Tabela 1 -->
+      <div class="mt-4 overflow-x-auto rounded-xl border border-tax-gray">
+        <table class="w-full text-sm">
+          <thead class="bg-tax-blue text-white">
+            <tr>
+              <th class="p-3 text-left">Itens</th>
+              <th class="p-3 text-left">Condição</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b">
+              <td class="p-3 font-semibold">Taxa inicial fixa</td>
+              <td class="p-3">R$ 2.000,00 por CNPJ analisado</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tabela 2 -->
+      <h3 class="mt-6 font-semibold">Escalonamento do êxito</h3>
+      <div class="mt-2 overflow-x-auto rounded-xl border border-tax-gray">
+        <table class="w-full text-sm">
+          <thead class="bg-gradient-to-r from-tax-blue to-[#1F3E55] text-white">
+            <tr>
+              <th class="p-3 text-left">Faixa de Economia Obtida</th>
+              <th class="p-3 text-left">Percentual</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b"><td class="p-3">Até R$ 500.000,00</td><td class="p-3">20%</td></tr>
+            <tr class="border-b"><td class="p-3">De R$ 500.001 a R$ 1.000.000</td><td class="p-3">15%</td></tr>
+            <tr class="border-b"><td class="p-3">De R$ 1.000.001 a R$ 5.000.000</td><td class="p-3">10%</td></tr>
+            <tr><td class="p-3">Acima de R$ 5.000.000</td><td class="p-3">5%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 7. Atestado de conformidade -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title">
+        <span class="dot"></span><h2 class="text-xl font-semibold">7. Atestado de Conformidade</h2>
+      </div>
+      <p class="mt-3 leading-relaxed">
+        Como resultado da análise, a ROIT emite, sempre que aplicável, um <strong>Atestado de Conformidade do FAP</strong>.
+        O documento certifica que determinados aspectos — ou mesmo a totalidade do índice — encontram-se em conformidade com a legislação.
+        Funciona como <strong>laudo técnico</strong> utilizável em auditorias e processos de governança, evidenciando que o FAP foi revisado com profundidade e validado.
+      </p>
+    </section>
+
+    <!-- 8. Benefícios -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title">
+        <span class="dot"></span><h2 class="text-xl font-semibold">8. Benefícios</h2>
+      </div>
+      <ul class="mt-3 leading-relaxed ml-1 space-y-2">
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Redução de encargos</strong> previdenciários em caso de deferimento;</span></li>
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Automação exclusiva</strong>, com precisão e agilidade;</span></li>
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Time especializado</strong> em previdenciário e contencioso administrativo;</span></li>
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Entrega formal: <strong>contestação</strong> e/ou <strong>atestado de conformidade</strong>;</span></li>
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Análise bônus gratuita</strong> da folha.</span></li>
+      </ul>
+    </section>
+
+    <!-- 9. Próximos passos -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title">
+        <span class="dot"></span><h2 class="text-xl font-semibold">9. Próximos Passos</h2>
+      </div>
+      <p class="mt-3 leading-relaxed"><strong>Para início do trabalho, solicitamos:</strong></p>
+      <ul class="leading-relaxed ml-1 space-y-2">
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Procuração eletrônica no e-CAC</strong> em nome da ROIT;</span></li>
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Procuração eletrônica no portal FAPWeb</strong>;</span></li>
+        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Pagamento da taxa inicial</strong> de R$ 2.000,00 por CNPJ.</span></li>
+      </ul>
+      <p class="mt-4 text-tax-dark-gray">
+        <span id="empresaView2">[Nome da Empresa]</span> poderá acompanhar todo o processo, enquanto a ROIT operacionaliza as etapas administrativas até a decisão final.
+      </p>
+    </section>
+  </main>
+
+  <footer class="py-10">
+    <div class="max-w-6xl mx-auto px-6 text-tax-dark-gray text-sm">
+      <p>&copy; 2025 ROIT — Proposta FAP 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const empresaIn = $("inputEmpresa"), cnpjIn = $("inputCNPJ");
+    const empresaViews = [$("empresaView"), $("empresaView2")];
+    const cnpjView = $("cnpjView");
+
+    function apply() {
+      const emp = empresaIn.value?.trim() || "[Nome da Empresa]";
+      const cnpj = cnpjIn.value?.trim() || "[00.000.000/0000-00]";
+      empresaViews.forEach(el => el.textContent = emp);
+      cnpjView.textContent = cnpj;
+      localStorage.setItem("propFAP_empresa", emp);
+      localStorage.setItem("propFAP_cnpj", cnpj);
+    }
+    (function restore(){
+      const emp = localStorage.getItem("propFAP_empresa") || "";
+      const cnpj = localStorage.getItem("propFAP_cnpj") || "";
+      if(emp) empresaIn.value = emp;
+      if(cnpj) cnpjIn.value = cnpj;
+      apply();
+    })();
+    empresaIn.addEventListener("input", apply);
+    cnpjIn.addEventListener("input", apply);
+  </script>
+</body>
+</html>

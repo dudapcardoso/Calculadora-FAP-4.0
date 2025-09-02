@@ -44,6 +44,9 @@
       display:inline-block; flex-shrink:0;
       box-shadow:0 0 0 2px rgba(226,184,116,.25);
     }
+    /* bullets pretos padrão */
+    .ul-default { list-style: disc; padding-left: 1.25rem; margin-top: .5rem; }
+    .ul-default > li { display: list-item; }
 
     /* Cabeçalho com logo absoluto */
     header.proposta-header {
@@ -125,7 +128,7 @@
 
   <!-- Conteúdo -->
   <main class="max-w-6xl mx-auto px-6 py-8 space-y-6">
-    <!-- Exemplo de seção -->
+    <!-- Contexto -->
     <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
       <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">1. Contexto</h2></div>
       <p class="mt-3 leading-relaxed">
@@ -137,7 +140,85 @@
       </p>
     </section>
 
-    <!-- demais seções (Escopo, Automação, Entregas, Honorários, Próximos passos) iguais ao modelo anterior -->
+    <!-- Escopo -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">2. Escopo do Serviço</h2></div>
+      <ul class="ul-default">
+        <li><strong>Análise retroativa</strong> dos FAPs dos últimos 5 anos com automação proprietária ROIT.</li>
+        <li>Identificação de inconsistências relevantes (vínculos, massa salarial, rotatividade, CATs e benefícios).</li>
+        <li><strong>Relatórios técnicos</strong> com achados e documentação suporte para instrução processual.</li>
+        <li><strong>Fundamentação de contestações</strong> em 2ª e 3ª instâncias administrativas.</li>
+        <li><strong>Material técnico</strong> para embasar ação judicial, se a empresa assim decidir.</li>
+      </ul>
+    </section>
+
+    <!-- Automação -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">3. O que nossa automação verifica</h2></div>
+      <p class="mt-3 leading-relaxed">
+        A automação proprietária da ROIT cruza dados de FAPWeb e eSocial para revelar <strong>inconsistências materiais</strong> que
+        normalmente passam despercebidas em análises manuais. Em nível resumido, validamos:
+      </p>
+      <ul class="ul-default">
+        <li>Diferenças em <strong>massa salarial</strong>, <strong>vínculos</strong> e <strong>rotatividade</strong>.</li>
+        <li>Inconsistências em <strong>CATs</strong> e <strong>benefícios</strong> vinculados.</li>
+        <li>Casos de <strong>afastamentos</strong> que não deveriam impactar o índice.</li>
+        <li><strong>Divergências de enquadramento</strong> potencialmente elevando a alíquota.</li>
+      </ul>
+    </section>
+
+    <!-- Entregas -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">4. Entregas</h2></div>
+      <ul class="ul-default">
+        <li>Relatório técnico consolidado por ano (últimos 5 anos).</li>
+        <li>Memoriais e documentos suporte para 2ª e 3ª instâncias.</li>
+        <li>Sumário executivo para embasamento de ação judicial.</li>
+      </ul>
+    </section>
+
+    <!-- Honorários -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">5. Honorários</h2></div>
+      <p class="mt-3 leading-relaxed">Estrutura de valores para a análise retroativa e eventual judicialização:</p>
+      <div class="mt-4 overflow-x-auto rounded-xl border border-tax-gray">
+        <table class="w-full text-sm">
+          <thead class="text-white" style="background:#11212C;">
+            <tr>
+              <th class="p-3 text-left">Item</th>
+              <th class="p-3 text-left">Valor</th>
+              <th class="p-3 text-left">Observações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b">
+              <td class="p-3 font-semibold">Análise retroativa (últimos 5 anos)</td>
+              <td class="p-3"><span id="valorAnaliseView">R$ 20.000,00</span></td>
+              <td class="p-3">Valor fixo para execução integral da análise com automação e relatório técnico.</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-semibold">Inicial de ação judicial (opcional)</td>
+              <td class="p-3"><span id="valorInicialView">R$ 8.500,00</span></td>
+              <td class="p-3">Aplicável caso a empresa opte por ajuizar ação; conforme contrato padrão ROIT.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Próximos passos -->
+    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
+      <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">6. Próximos Passos</h2></div>
+      <p class="mt-3 leading-relaxed"><strong>Para início do trabalho, solicitamos:</strong></p>
+      <ul class="ul-default">
+        <li><strong>Procuração eletrônica no e-CAC</strong> em nome da ROIT;</li>
+        <li><strong>Procuração eletrônica no portal FAPWeb</strong>;</li>
+        <li>Confirmação de contratação e pagamento do valor fixo da análise (<span id="valorAnaliseView2">R$ 20.000,00</span>).</li>
+      </ul>
+      <p class="mt-4 text-tax-dark-gray">
+        <span id="empresaView2">[Nome da Empresa]</span> contará com acompanhamento próximo da ROIT durante toda a execução, inclusive na preparação de materiais para instâncias superiores e judicial.
+      </p>
+    </section>
   </main>
 
   <footer class="py-10">
@@ -154,10 +235,10 @@
     const analiseIn   = $("inputValorAnalise");
     const inicialIn   = $("inputValorInicial");
 
-    const empresaViews = [$("empresaView")];
+    const empresaViews = [$("empresaView"), $("empresaView2")];
     const cnpjView     = $("cnpjView");
-    const valorAnaliseViews = [document.getElementById("valorAnaliseView"), document.getElementById("valorAnaliseView2")];
-    const valorInicialView  = document.getElementById("valorInicialView");
+    const valorAnaliseViews = [$("valorAnaliseView"), $("valorAnaliseView2")];
+    const valorInicialView  = $("valorInicialView");
 
     function setText(el, value){ if(el) el.textContent = value; }
 

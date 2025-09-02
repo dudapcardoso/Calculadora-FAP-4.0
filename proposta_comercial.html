@@ -11,7 +11,6 @@
       theme: {
         extend: {
           colors: {
-            'tax-blue':'#152E3E',
             'tax-gold':'#E2B874',
             'tax-gray':'#EBEBEB',
             'tax-dark-gray':'#6B7280',
@@ -24,15 +23,20 @@
     }
   </script>
   <style>
-    html, body { scroll-behavior: smooth; background:#F9FAFB; }
+    :root{
+      /* azul mais escuro (ajustado para casar com o fundo do logo) */
+      --brand-blue: #06142A; /* ajuste fino aqui se quiser (#051024, #07162B, etc.) */
+    }
+    html, body { scroll-behavior: smooth; background:#F9FAFB; color: var(--brand-blue); }
     .num{font-variant-numeric: tabular-nums;}
 
-    /* Garante azul e dourado na impressão */
-    header, .bg-tax-blue, .bg-gold, .gold-bar, .dot, .gold-bullet {
+    /* elementos que precisam sair com cor no PDF */
+    header, .bg-brand, .gold-bar, .dot, .gold-bullet, .bg-table-head {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
 
+    .bg-brand { background: var(--brand-blue); }
     .gold-bar { height: 4px; background: #E2B874; width: 80px; border-radius: 9999px; }
     .section-title { display:flex; align-items:center; gap:.75rem; }
     .section-title .dot{
@@ -40,64 +44,79 @@
       box-shadow:0 0 0 3px rgba(226,184,116,.25);
     }
 
+    /* Cabeçalho com logo absoluto que não interfere no fluxo do texto */
+    header.proposta-header {
+      position: relative;
+      background: var(--brand-blue);
+      color: #fff;
+      /* reserva de espaço vertical para não sobrepor o título */
+      padding-top: 88px; /* ~altura do logo + respiro; ajuste fino se quiser */
+    }
+    .proposta-header .brand-logo {
+      position: absolute; top: 16px; left: 24px; z-index: 1;
+      width: 180px; height: auto; pointer-events: none;
+      -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+    }
+
     /* Impressão */
     @media print {
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-      #toolbar, .no-print { display: none !important; }
+      #toolbar { display: none !important; }
       header, main, footer { box-shadow: none !important; }
       .card { break-inside: avoid; }
       body { background: white; }
-      .page { page-break-after: always; }
       .no-break { page-break-inside: avoid; }
       @page { size: A4; margin: 12mm; }
+
+      /* reforços de cor */
       .gold-bullet { background-color:#E2B874 !important; }
       .dot { background-color:#E2B874 !important; }
       .gold-bar { background-color:#E2B874 !important; }
-      .bg-tax-blue { background-color:#152E3E !important; }
+      .bg-brand { background-color: var(--brand-blue) !important; }
     }
   </style>
 </head>
-<body class="text-tax-blue">
+<body>
   <!-- Top toolbar (edição rápida) -->
-  <div id="toolbar" class="bg-white/80 backdrop-blur sticky top-0 z-50 border-b border-tax-gray">
-    <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-3">
+  <div id="toolbar" class="bg-white/80 backdrop-blur sticky top-0 z-50 border-b border-[color:var(--brand-blue)]/10">
+    <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-3 text-[color:var(--brand-blue)]">
       <label class="text-sm">Empresa:
-        <input id="inputEmpresa" type="text" class="ml-2 px-3 py-1 rounded-lg border border-tax-gray focus:outline-none focus:ring-2 focus:ring-tax-gold"
+        <input id="inputEmpresa" type="text" class="ml-2 px-3 py-1 rounded-lg border border-[color:var(--brand-blue)]/20 focus:outline-none focus:ring-2 focus:ring-[#E2B874]"
                placeholder="Nome da Empresa"/>
       </label>
       <label class="text-sm">CNPJ:
-        <input id="inputCNPJ" type="text" class="ml-2 px-3 py-1 rounded-lg border border-tax-gray focus:outline-none focus:ring-2 focus:ring-tax-gold"
+        <input id="inputCNPJ" type="text" class="ml-2 px-3 py-1 rounded-lg border border-[color:var(--brand-blue)]/20 focus:outline-none focus:ring-2 focus:ring-[#E2B874]"
                placeholder="00.000.000/0000-00"/>
       </label>
       <button onclick="window.print()"
-              class="ml-auto px-4 py-2 rounded-xl bg-tax-gold text-tax-blue font-medium hover:opacity-90 transition shadow-soft">
+              class="ml-auto px-4 py-2 rounded-xl bg-[#E2B874] text-[color:var(--brand-blue)] font-medium hover:opacity-90 transition shadow-soft">
         Imprimir / Salvar PDF
       </button>
     </div>
   </div>
 
-  <!-- Header com logo -->
- <header class="relative bg-[#0A1E37] text-white">
-  <div class="max-w-6xl mx-auto px-6 py-10 pl-52 relative">
-    <h1 class="text-3xl md:text-4xl font-bold">Proposta Comercial — Contestação FAP 2026</h1>
-    <p class="mt-2 text-tax-gray">Consultoria previdenciária com automação proprietária e acompanhamento integral.</p>
-    <div class="gold-bar mt-5"></div>
-  </div>
-  <!-- Logo no canto superior esquerdo -->
-  <div class="absolute top-4 left-6">
-    <img src="https://raw.githubusercontent.com/dudapcardoso/Calculadora-FAP-4.0/main/Logo%20ROIT.png"
-         alt="ROIT" class="w-44 h-auto"/>
-  </div>
-</header>
+  <!-- Header (logo absoluto no canto superior esquerdo) -->
+  <header class="proposta-header">
+    <!-- Logo "fora do fluxo", não mexe no texto -->
+    <img class="brand-logo"
+         src="https://raw.githubusercontent.com/dudapcardoso/Calculadora-FAP-4.0/main/Logo%20ROIT.png"
+         alt="ROIT">
+
+    <div class="max-w-6xl mx-auto px-6 pb-8">
+      <h1 class="text-3xl md:text-4xl font-bold">Proposta Comercial — Contestação FAP 2026</h1>
+      <p class="mt-2 text-[#C8D0D8]">Consultoria previdenciária com automação proprietária e acompanhamento integral.</p>
+      <div class="gold-bar mt-5"></div>
+    </div>
+  </header>
 
   <!-- Identificação do cliente -->
   <section class="bg-white">
     <div class="max-w-6xl mx-auto px-6 py-6 grid sm:grid-cols-2 gap-4">
-      <div class="rounded-2xl border border-tax-gray p-4 card">
+      <div class="rounded-2xl border border-[color:var(--brand-blue)]/15 p-4 card">
         <p class="text-sm text-tax-dark-gray">Cliente</p>
         <p id="empresaView" class="font-semibold text-lg">[Nome da Empresa]</p>
       </div>
-      <div class="rounded-2xl border border-tax-gray p-4 card">
+      <div class="rounded-2xl border border-[color:var(--brand-blue)]/15 p-4 card">
         <p class="text-sm text-tax-dark-gray">CNPJ</p>
         <p id="cnpjView" class="font-semibold text-lg">[00.000.000/0000-00]</p>
       </div>
@@ -160,26 +179,26 @@
         permitindo identificar cenários que passariam despercebidos em análise exclusivamente manual:
       </p>
       <div class="mt-3 grid md:grid-cols-2 gap-3">
-        <div class="rounded-xl border border-tax-gray p-4">
-          <h3 class="font-semibold mb-1 text-tax-blue">Bases e Métricas</h3>
+        <div class="rounded-xl border border-[color:var(--brand-blue)]/15 p-4">
+          <h3 class="font-semibold mb-1" style="color:var(--brand-blue)">Bases e Métricas</h3>
           <p class="text-sm leading-relaxed text-tax-dark-gray">
             Diferenças relevantes em <strong>massa salarial</strong>, <strong>vínculos</strong> e <strong>rotatividade</strong>.
           </p>
         </div>
-        <div class="rounded-xl border border-tax-gray p-4">
-          <h3 class="font-semibold mb-1 text-tax-blue">Ocorrências e Benefícios</h3>
+        <div class="rounded-xl border border-[color:var(--brand-blue)]/15 p-4">
+          <h3 class="font-semibold mb-1" style="color:var(--brand-blue)">Ocorrências e Benefícios</h3>
           <p class="text-sm leading-relaxed text-tax-dark-gray">
             Possíveis inconsistências em <strong>CATs</strong> e <strong>benefícios</strong> associados.
           </p>
         </div>
-        <div class="rounded-xl border border-tax-gray p-4">
-          <h3 class="font-semibold mb-1 text-tax-blue">Afastamentos</h3>
+        <div class="rounded-xl border border-[color:var(--brand-blue)]/15 p-4">
+          <h3 class="font-semibold mb-1" style="color:var(--brand-blue)">Afastamentos</h3>
           <p class="text-sm leading-relaxed text-tax-dark-gray">
             Situações de <strong>afastamentos</strong> ou ocorrências que não deveriam impactar o índice.
           </p>
         </div>
-        <div class="rounded-xl border border-tax-gray p-4">
-          <h3 class="font-semibold mb-1 text-tax-blue">Enquadramentos</h3>
+        <div class="rounded-xl border border-[color:var(--brand-blue)]/15 p-4">
+          <h3 class="font-semibold mb-1" style="color:var(--brand-blue)">Enquadramentos</h3>
           <p class="text-sm leading-relaxed text-tax-dark-gray">
             <strong>Divergências de enquadramento</strong> que possam elevar indevidamente a alíquota.
           </p>
@@ -225,9 +244,9 @@
       </p>
 
       <!-- Tabela 1 -->
-      <div class="mt-4 overflow-x-auto rounded-xl border border-tax-gray">
+      <div class="mt-4 overflow-x-auto rounded-xl border border-[color:var(--brand-blue)]/15">
         <table class="w-full text-sm">
-          <thead class="bg-tax-blue text-white">
+          <thead class="bg-brand text-white">
             <tr>
               <th class="p-3 text-left">Itens</th>
               <th class="p-3 text-left">Condição</th>
@@ -243,10 +262,10 @@
       </div>
 
       <!-- Tabela 2 -->
-      <h3 class="mt-6 font-semibold">Escalonamento do êxito</h3>
-      <div class="mt-2 overflow-x-auto rounded-xl border border-tax-gray">
+      <h3 class="mt-6 font-semibold" style="color:var(--brand-blue)">Escalonamento do êxito</h3>
+      <div class="mt-2 overflow-x-auto rounded-xl border border-[color:var(--brand-blue)]/15">
         <table class="w-full text-sm">
-          <thead class="bg-gradient-to-r from-tax-blue to-[#1F3E55] text-white">
+          <thead class="text-white" style="background: linear-gradient(90deg, var(--brand-blue), #1F3E55);">
             <tr>
               <th class="p-3 text-left">Faixa de Economia Obtida</th>
               <th class="p-3 text-left">Percentual</th>
@@ -315,7 +334,7 @@
       const emp = empresaIn.value?.trim() || "[Nome da Empresa]";
       const cnpj = cnpjIn.value?.trim() || "[00.000.000/0000-00]";
       empresaViews.forEach(el => el.textContent = emp);
-      cnpjView.textContent = cnpj;
+      if(cnpjView) cnpjView.textContent = cnpj;
       localStorage.setItem("propFAP_empresa", emp);
       localStorage.setItem("propFAP_cnpj", cnpj);
     }

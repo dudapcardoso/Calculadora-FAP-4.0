@@ -24,13 +24,12 @@
   </script>
   <style>
     :root{
-      /* azul mais escuro (ajuste fino se quiser) */
       --brand-blue: #06142A;
     }
     html, body { scroll-behavior: smooth; background:#F9FAFB; color: var(--brand-blue); }
     .num{font-variant-numeric: tabular-nums;}
 
-    /* elementos que precisam sair com cor no PDF */
+    /* garantir cor no PDF */
     header, .bg-brand, .gold-bar, .dot, .gold-bullet, .bg-table-head {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
@@ -44,20 +43,23 @@
       box-shadow:0 0 0 3px rgba(226,184,116,.25);
     }
 
-    /* ---- FORÇA BULLETS PRETOS (nativos) NAS LISTAS QUE USAM list-disc ---- */
-    ul.list-disc { list-style: disc !important; padding-left: 1.25rem; margin-top: .25rem; }
-    ul.list-disc > li { display: list-item !important; }
-
-    /* Classe utilitária extra, caso queira usar bullets pretos em outras listas */
-    .ul-default { list-style: disc; padding-left: 1.25rem; margin-top: .25rem; }
+    /* bullets nativos pretos */
+    .ul-default { list-style: disc; padding-left: 1.25rem; margin-top: .5rem; }
     .ul-default > li { display: list-item; }
 
-    /* Cabeçalho com logo absoluto que não interfere no fluxo do texto */
+    /* força bullets em ul.list-disc mesmo com resets */
+    ul.list-disc { list-style: disc !important; padding-left: 1.25rem; }
+    ul.list-disc > li { display: list-item !important; }
+
+    /* bullet dourado (onde você quiser manter) */
+    .gold-bullet { width:.6rem; height:.6rem; border-radius:9999px; background:#E2B874; display:inline-block; flex-shrink:0; box-shadow:0 0 0 2px rgba(226,184,116,.25); }
+
+    /* header com logo absoluto */
     header.proposta-header {
       position: relative;
       background: var(--brand-blue);
       color: #fff;
-      padding-top: 88px; /* ~altura do logo + respiro */
+      padding-top: 88px;
     }
     .proposta-header .brand-logo {
       position: absolute; top: 16px; left: 24px; z-index: 1;
@@ -65,7 +67,6 @@
       -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
     }
 
-    /* Impressão */
     @media print {
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
       #toolbar { display: none !important; }
@@ -74,8 +75,6 @@
       body { background: white; }
       .no-break { page-break-inside: avoid; }
       @page { size: A4; margin: 12mm; }
-
-      /* reforços de cor */
       .gold-bullet { background-color:#E2B874 !important; }
       .dot { background-color:#E2B874 !important; }
       .gold-bar { background-color:#E2B874 !important; }
@@ -84,31 +83,24 @@
   </style>
 </head>
 <body>
-  <!-- Top toolbar (edição rápida) -->
+  <!-- Toolbar -->
   <div id="toolbar" class="bg-white/80 backdrop-blur sticky top-0 z-50 border-b border-[color:var(--brand-blue)]/10">
     <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-3 text-[color:var(--brand-blue)]">
       <label class="text-sm">Empresa:
-        <input id="inputEmpresa" type="text" class="ml-2 px-3 py-1 rounded-lg border border-[color:var(--brand-blue)]/20 focus:outline-none focus:ring-2 focus:ring-[#E2B874]"
-               placeholder="Nome da Empresa"/>
+        <input id="inputEmpresa" type="text" class="ml-2 px-3 py-1 rounded-lg border border-[color:var(--brand-blue)]/20 focus:outline-none focus:ring-2 focus:ring-[#E2B874]" placeholder="Nome da Empresa"/>
       </label>
       <label class="text-sm">CNPJ:
-        <input id="inputCNPJ" type="text" class="ml-2 px-3 py-1 rounded-lg border border-[color:var(--brand-blue)]/20 focus:outline-none focus:ring-2 focus:ring-[#E2B874]"
-               placeholder="00.000.000/0000-00"/>
+        <input id="inputCNPJ" type="text" class="ml-2 px-3 py-1 rounded-lg border border-[color:var(--brand-blue)]/20 focus:outline-none focus:ring-2 focus:ring-[#E2B874]" placeholder="00.000.000/0000-00"/>
       </label>
-      <button onclick="window.print()"
-              class="ml-auto px-4 py-2 rounded-xl bg-[#E2B874] text-[color:var(--brand-blue)] font-medium hover:opacity-90 transition shadow-soft">
-        Imprimir
+      <button onclick="window.print()" class="ml-auto px-4 py-2 rounded-xl bg-[#E2B874] text-[color:var(--brand-blue)] font-medium hover:opacity-90 transition shadow-soft">
+        Imprimir / Salvar PDF
       </button>
     </div>
   </div>
 
-  <!-- Header (logo absoluto no canto superior esquerdo) -->
+  <!-- Header -->
   <header class="proposta-header" style="background-color:#11212C;">
-    <!-- Logo -->
-    <img class="brand-logo"
-         src="https://raw.githubusercontent.com/dudapcardoso/Calculadora-FAP-4.0/main/Logo%20ROIT.png"
-         alt="ROIT">
-
+    <img class="brand-logo" src="https://raw.githubusercontent.com/dudapcardoso/Calculadora-FAP-4.0/main/Logo%20ROIT.png" alt="ROIT">
     <div class="max-w-6xl mx-auto px-6 pb-8">
       <h1 class="text-3xl md:text-4xl font-bold">Proposta Comercial — Contestação FAP 2026</h1>
       <p class="mt-2 text-[#C8D0D8]">Consultoria previdenciária com automação proprietária e acompanhamento integral.</p>
@@ -116,7 +108,7 @@
     </div>
   </header>
 
-  <!-- Identificação do cliente -->
+  <!-- Identificação -->
   <section class="bg-white">
     <div class="max-w-6xl mx-auto px-6 py-6 grid sm:grid-cols-2 gap-4">
       <div class="rounded-2xl border border-[color:var(--brand-blue)]/15 p-4 card">
@@ -136,39 +128,25 @@
     <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
       <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">1. Contexto</h2></div>
       <p class="mt-3 leading-relaxed">
-        O <strong>Fator Acidentário de Prevenção (FAP)</strong> é um índice aplicado sobre a alíquota do
-        Risco Ambiental do Trabalho (RAT), impactando diretamente o custo previdenciário da folha de pagamentos.
-        Erros na composição do FAP podem resultar em <strong>majorações indevidas</strong> da alíquota.
-        A <strong>ROIT</strong> identifica tais inconsistências e realiza a <strong>contestação administrativa</strong>
+        O <strong>Fator Acidentário de Prevenção (FAP)</strong> é um índice aplicado sobre a alíquota do Risco Ambiental do Trabalho (RAT), impactando diretamente o custo previdenciário da folha de pagamentos.
+        Erros na composição do FAP podem resultar em <strong>majorações indevidas</strong> da alíquota. A <strong>ROIT</strong> identifica tais inconsistências e realiza a <strong>contestação administrativa</strong>
         dentro do prazo legal (01 a 30 de novembro de 2025).
       </p>
     </section>
 
-    <!-- 2. Escopo -->
+    <!-- 2. Escopo (mantém bullets dourados) -->
     <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
       <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">2. Escopo do Serviço</h2></div>
       <ul class="mt-3 leading-relaxed ml-1 space-y-3">
+        <li class="flex gap-3"><span class="gold-bullet mt-2"></span><span><strong>Análise detalhada</strong> do FAP 2026 divulgado pela Previdência Social;</span></li>
+        <li class="flex gap-3"><span class="gold-bullet mt-2"></span><span><strong>Revisão técnica</strong> com apoio de <em>automação proprietária</em>, cruzando FAPWeb e eSocial;</span></li>
+        <li class="flex gap-3"><span class="gold-bullet mt-2"></span><span><strong>Protocolo</strong> da contestação administrativa no sistema oficial do FAP;</span></li>
+        <li class="flex gap-3"><span class="gold-bullet mt-2"></span><span><strong>Acompanhamento integral</strong> do processo: respostas em 1ª, 2ª e 3ª instâncias, se necessário;</span></li>
         <li class="flex gap-3">
-          <span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
-          <span><strong>Análise detalhada</strong> do FAP 2026 divulgado pela Previdência Social;</span>
-        </li>
-        <li class="flex gap-3">
-          <span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
-          <span><strong>Revisão técnica</strong> com apoio de <em>automação proprietária</em>, cruzando FAPWeb e eSocial;</span>
-        </li>
-        <li class="flex gap-3">
-          <span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
-          <span><strong>Protocolo</strong> da contestação administrativa no sistema oficial do FAP;</span>
-        </li>
-        <li class="flex gap-3">
-          <span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
-          <span><strong>Acompanhamento integral</strong> do processo: respostas em 1ª, 2ª e 3ª instâncias, se necessário;</span>
-        </li>
-        <li class="flex gap-3">
-          <span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
+          <span class="gold-bullet mt-2"></span>
           <span>
             <strong>Operacionalização do crédito em caso de deferimento</strong>, incluindo:
-            <!-- LISTA COM BULLETS PRETOS (nativos) -->
+            <!-- bullets pretos na lista aninhada -->
             <ul class="list-disc ml-6 mt-2 space-y-1">
               <li>Retificação das obrigações acessórias;</li>
               <li>Habilitação do crédito junto à Receita Federal;</li>
@@ -179,92 +157,68 @@
       </ul>
     </section>
 
-    <!-- 3. O que a automação verifica -->
+    <!-- 3. O que a automação verifica (texto + cards, sem lista principal) -->
     <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
       <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">3. O que nossa automação verifica</h2></div>
       <p class="mt-3 leading-relaxed">
-        A automação proprietária da ROIT executa validações avançadas cruzando o FAPWeb com eventos do eSocial,
-        permitindo identificar cenários que passariam despercebidos em análise exclusivamente manual:
+        A automação proprietária da ROIT executa validações avançadas cruzando o FAPWeb com eventos do eSocial, permitindo identificar cenários que passariam despercebidos em análise exclusivamente manual:
       </p>
       <div class="mt-3 grid md:grid-cols-2 gap-3">
         <div class="rounded-xl border border-[color:var(--brand-blue)]/15 p-4">
           <h3 class="font-semibold mb-1" style="color:var(--brand-blue)">Bases e Métricas</h3>
-          <p class="text-sm leading-relaxed text-tax-dark-gray">
-            Diferenças relevantes em <strong>massa salarial</strong>, <strong>vínculos</strong> e <strong>rotatividade</strong>.
-          </p>
+          <p class="text-sm leading-relaxed text-tax-dark-gray">Diferenças relevantes em <strong>massa salarial</strong>, <strong>vínculos</strong> e <strong>rotatividade</strong>.</p>
         </div>
         <div class="rounded-xl border border-[color:var(--brand-blue)]/15 p-4">
           <h3 class="font-semibold mb-1" style="color:var(--brand-blue)">Ocorrências e Benefícios</h3>
-          <p class="text-sm leading-relaxed text-tax-dark-gray">
-            Possíveis inconsistências em <strong>CATs</strong> e <strong>benefícios</strong> associados.
-          </p>
+          <p class="text-sm leading-relaxed text-tax-dark-gray">Possíveis inconsistências em <strong>CATs</strong> e <strong>benefícios</strong> associados.</p>
         </div>
         <div class="rounded-xl border border-[color:var(--brand-blue)]/15 p-4">
           <h3 class="font-semibold mb-1" style="color:var(--brand-blue)">Afastamentos</h3>
-          <p class="text-sm leading-relaxed text-tax-dark-gray">
-            Situações de <strong>afastamentos</strong> ou ocorrências que não deveriam impactar o índice.
-          </p>
+          <p class="text-sm leading-relaxed text-tax-dark-gray">Situações de <strong>afastamentos</strong> ou ocorrências que não deveriam impactar o índice.</p>
         </div>
         <div class="rounded-xl border border-[color:var(--brand-blue)]/15 p-4">
           <h3 class="font-semibold mb-1" style="color:var(--brand-blue)">Enquadramentos</h3>
-          <p class="text-sm leading-relaxed text-tax-dark-gray">
-            <strong>Divergências de enquadramento</strong> que possam elevar indevidamente a alíquota.
-          </p>
+          <p class="text-sm leading-relaxed text-tax-dark-gray"><strong>Divergências de enquadramento</strong> que possam elevar indevidamente a alíquota.</p>
         </div>
       </div>
-      <p class="mt-3 leading-relaxed">
-        Esse conjunto de verificações eleva a precisão da análise e <strong>aumenta as chances de êxito</strong> na contestação.
-      </p>
+      <p class="mt-3 leading-relaxed">Esse conjunto de verificações eleva a precisão da análise e <strong>aumenta as chances de êxito</strong> na contestação.</p>
     </section>
 
-    <!-- 4. Análise bônus -->
+    <!-- 4. Análise bônus (AGORA COM BULLETS PRETOS) -->
     <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
       <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">4. Análise Bônus Gratuita</h2></div>
-      <p class="mt-3 leading-relaxed">
-        Além da contestação do FAP, a ROIT oferece, sem custo adicional, uma <strong>análise bônus</strong> da folha:
-      </p>
-      <ul class="mt-3 leading-relaxed ml-1 space-y-2">
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Checagem da <strong>correta aplicação das alíquotas</strong> incidentes sobre a folha;</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Identificação de <strong>oportunidades de recuperação</strong> de tributos pagos indevidamente;</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Mapeamento de <strong>passivos ocultos</strong> com potencial risco futuro.</span></li>
+      <p class="mt-3 leading-relaxed">Além da contestação do FAP, a ROIT oferece, sem custo adicional, uma <strong>análise bônus</strong> da folha:</p>
+      <ul class="ul-default">
+        <li>Checagem da <strong>correta aplicação das alíquotas</strong> incidentes sobre a folha;</li>
+        <li>Identificação de <strong>oportunidades de recuperação</strong> de tributos pagos indevidamente;</li>
+        <li>Mapeamento de <strong>passivos ocultos</strong> com potencial risco futuro.</li>
       </ul>
-      <p class="mt-3 text-tax-dark-gray">
-        A análise é 100% gratuita e <strong>não obriga</strong> a implementação das sugestões.
-      </p>
+      <p class="mt-3 text-tax-dark-gray">A análise é 100% gratuita e <strong>não obriga</strong> a implementação das sugestões.</p>
     </section>
 
-    <!-- 5. Prazos -->
+    <!-- 5. Prazos (AGORA COM BULLETS PRETOS) -->
     <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
       <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">5. Prazos</h2></div>
-      <ul class="mt-3 leading-relaxed ml-1 space-y-2">
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Divulgação oficial do FAP 2026: <strong>30/09/2025</strong>;</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Período para contestação: <strong>01/11 a 30/11/2025</strong>;</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>A análise e a contestação serão concluídas <strong>dentro do prazo legal</strong>.</span></li>
+      <ul class="ul-default">
+        <li>Divulgação oficial do FAP 2026: <strong>30/09/2025</strong>;</li>
+        <li>Período para contestação: <strong>01/11 a 30/11/2025</strong>;</li>
+        <li>A análise e a contestação serão concluídas <strong>dentro do prazo legal</strong>.</li>
       </ul>
     </section>
 
     <!-- 6. Honorários -->
     <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
       <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">6. Modelo de Honorários</h2></div>
-      <p class="mt-3 leading-relaxed">
-        A proposta contempla uma <strong>taxa inicial fixa</strong> por CNPJ e <strong>honorários de êxito escalonados</strong>.
-        Os honorários de êxito incidem somente após o <strong>deferimento da contestação com redução do índice</strong>.
-      </p>
+      <p class="mt-3 leading-relaxed">A proposta contempla uma <strong>taxa inicial fixa</strong> por CNPJ e <strong>honorários de êxito escalonados</strong>. Os honorários de êxito incidem somente após o <strong>deferimento da contestação com redução do índice</strong>.</p>
 
       <!-- Tabela 1 -->
       <div class="mt-4 overflow-x-auto rounded-xl border border-[color:var(--brand-blue)]/15">
         <table class="w-full text-sm">
           <thead class="bg-brand text-white">
-            <tr>
-              <th class="p-3 text-left">Itens</th>
-              <th class="p-3 text-left">Condição</th>
-            </tr>
+            <tr><th class="p-3 text-left">Itens</th><th class="p-3 text-left">Condição</th></tr>
           </thead>
           <tbody>
-            <tr class="border-b">
-              <td class="p-3 font-semibold">Taxa inicial fixa</td>
-              <td class="p-3">R$ 2.000,00 por CNPJ analisado</td>
-            </tr>
+            <tr class="border-b"><td class="p-3 font-semibold">Taxa inicial fixa</td><td class="p-3">R$ 2.000,00 por CNPJ analisado</td></tr>
           </tbody>
         </table>
       </div>
@@ -274,10 +228,7 @@
       <div class="mt-2 overflow-x-auto rounded-xl border border-[color:var(--brand-blue)]/15">
         <table class="w-full text-sm">
           <thead class="text-white" style="background: linear-gradient(90deg, var(--brand-blue), #1F3E55);">
-            <tr>
-              <th class="p-3 text-left">Faixa de Economia Obtida</th>
-              <th class="p-3 text-left">Percentual</th>
-            </tr>
+            <tr><th class="p-3 text-left">Faixa de Economia Obtida</th><th class="p-3 text-left">Percentual</th></tr>
           </thead>
           <tbody>
             <tr class="border-b"><td class="p-3">Até R$ 500.000,00</td><td class="p-3">20%</td></tr>
@@ -293,36 +244,32 @@
     <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
       <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">7. Atestado de Conformidade</h2></div>
       <p class="mt-3 leading-relaxed">
-        Como resultado da análise, a ROIT emite, sempre que aplicável, um <strong>Atestado de Conformidade do FAP</strong>.
-        O documento certifica que determinados aspectos — ou mesmo a totalidade do índice — encontram-se em conformidade com a legislação.
-        Funciona como <strong>laudo técnico</strong> utilizável em auditorias e processos de governança, evidenciando que o FAP foi revisado com profundidade e validado.
+        Como resultado da análise, a ROIT emite, sempre que aplicável, um <strong>Atestado de Conformidade do FAP</strong>. O documento certifica que determinados aspectos — ou mesmo a totalidade do índice — encontram-se em conformidade com a legislação. Funciona como <strong>laudo técnico</strong> utilizável em auditorias e processos de governança, evidenciando que o FAP foi revisado com profundidade e validado.
       </p>
     </section>
 
-    <!-- 8. Benefícios -->
+    <!-- 8. Benefícios (AGORA COM BULLETS PRETOS) -->
     <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
       <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">8. Benefícios</h2></div>
-      <ul class="mt-3 leading-relaxed ml-1 space-y-2">
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Redução de encargos</strong> previdenciários em caso de deferimento;</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Automação exclusiva</strong>, com precisão e agilidade;</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Time especializado</strong> em previdenciário e contencioso administrativo;</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Entrega formal: <strong>contestação</strong> e/ou <strong>atestado de conformidade</strong>;</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Análise bônus gratuita</strong> da folha.</span></li>
+      <ul class="ul-default">
+        <li><strong>Redução de encargos</strong> previdenciários em caso de deferimento;</li>
+        <li><strong>Automação exclusiva</strong>, com precisão e agilidade;</li>
+        <li><strong>Time especializado</strong> em previdenciário e contencioso administrativo;</li>
+        <li>Entrega formal: <strong>contestação</strong> e/ou <strong>atestado de conformidade</strong>;</li>
+        <li><strong>Análise bônus gratuita</strong> da folha.</li>
       </ul>
     </section>
 
-    <!-- 9. Próximos passos -->
+    <!-- 9. Próximos passos (AGORA COM BULLETS PRETOS) -->
     <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
       <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">9. Próximos Passos</h2></div>
       <p class="mt-3 leading-relaxed"><strong>Para início do trabalho, solicitamos:</strong></p>
-      <ul class="leading-relaxed ml-1 space-y-2">
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Procuração eletrônica no e-CAC</strong> em nome da ROIT;</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Procuração eletrônica no portal FAPWeb</strong>;</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Pagamento da taxa inicial</strong> de R$ 2.000,00 por CNPJ.</span></li>
+      <ul class="ul-default">
+        <li><strong>Procuração eletrônica no e-CAC</strong> em nome da ROIT;</li>
+        <li><strong>Procuração eletrônica no portal FAPWeb</strong>;</li>
+        <li><strong>Pagamento da taxa inicial</strong> de R$ 2.000,00 por CNPJ.</li>
       </ul>
-      <p class="mt-4 text-tax-dark-gray">
-        <span id="empresaView2">[Nome da Empresa]</span> poderá acompanhar todo o processo, enquanto a ROIT operacionaliza as etapas administrativas até a decisão final.
-      </p>
+      <p class="mt-4 text-tax-dark-gray"><span id="empresaView2">[Nome da Empresa]</span> poderá acompanhar todo o processo, enquanto a ROIT operacionaliza as etapas administrativas até a decisão final.</p>
     </section>
   </main>
 

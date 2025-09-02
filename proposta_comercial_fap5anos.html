@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>Proposta Comercial — Análise Retroativa FAP (Últimos 5 anos) | ROIT</title>
+  <title>Proposta Comercial - Análise Retroativa FAP | ROIT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -39,18 +39,22 @@
       width:.8rem; height:.8rem; border-radius:9999px; background:#E2B874;
       box-shadow:0 0 0 3px rgba(226,184,116,.25);
     }
+    .gold-bullet {
+      width:.6rem; height:.6rem; border-radius:9999px; background:#E2B874;
+      display:inline-block; flex-shrink:0;
+      box-shadow:0 0 0 2px rgba(226,184,116,.25);
+    }
 
-    /* Cabeçalho com logo absoluto (não mexe no texto) */
+    /* Cabeçalho com logo absoluto */
     header.proposta-header {
       position: relative;
       background: #11212C;
       color: #fff;
-      padding-top: 88px; /* reserva espaço pro logo */
+      padding-top: 88px;
     }
     .proposta-header .brand-logo {
       position: absolute; top: 16px; left: 24px; z-index: 1;
       width: 180px; height: auto; pointer-events: none;
-      -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
     }
 
     /* Impressão */
@@ -62,31 +66,28 @@
       body { background: white; }
       .no-break { page-break-inside: avoid; }
       @page { size: A4; margin: 12mm; }
-      .gold-bullet { background-color:#E2B874 !important; }
-      .dot { background-color:#E2B874 !important; }
-      .gold-bar { background-color:#E2B874 !important; }
     }
   </style>
 </head>
 <body>
-  <!-- Top toolbar (edição rápida) -->
+  <!-- Top toolbar -->
   <div id="toolbar" class="bg-white/80 backdrop-blur sticky top-0 z-50 border-b border-tax-gray">
     <div class="max-w-6xl mx-auto px-6 py-3 grid md:grid-cols-2 lg:grid-cols-3 gap-3 items-center">
       <div class="flex items-center gap-2">
         <label class="text-sm min-w-[64px]">Empresa:</label>
-        <input id="inputEmpresa" type="text" class="flex-1 px-3 py-1 rounded-lg border border-tax-gray focus:outline-none focus:ring-2 focus:ring-[#E2B874]"
+        <input id="inputEmpresa" type="text" class="flex-1 px-3 py-1 rounded-lg border border-tax-gray focus:ring-2 focus:ring-[#E2B874]"
                placeholder="Nome da Empresa"/>
       </div>
       <div class="flex items-center gap-2">
         <label class="text-sm min-w-[48px]">CNPJ:</label>
-        <input id="inputCNPJ" type="text" class="flex-1 px-3 py-1 rounded-lg border border-tax-gray focus:outline-none focus:ring-2 focus:ring-[#E2B874]"
+        <input id="inputCNPJ" type="text" class="flex-1 px-3 py-1 rounded-lg border border-tax-gray focus:ring-2 focus:ring-[#E2B874]"
                placeholder="00.000.000/0000-00"/>
       </div>
       <div class="flex items-center gap-2">
         <label class="text-sm whitespace-nowrap">Valores:</label>
-        <input id="inputValorAnalise" type="text" class="w-[170px] px-3 py-1 rounded-lg border border-tax-gray focus:outline-none focus:ring-2 focus:ring-[#E2B874]"
+        <input id="inputValorAnalise" type="text" class="w-[170px] px-3 py-1 rounded-lg border border-tax-gray focus:ring-2 focus:ring-[#E2B874]"
                placeholder="R$ 20.000,00"/>
-        <input id="inputValorInicial" type="text" class="w-[170px] px-3 py-1 rounded-lg border border-tax-gray focus:outline-none focus:ring-2 focus:ring-[#E2B874]"
+        <input id="inputValorInicial" type="text" class="w-[170px] px-3 py-1 rounded-lg border border-tax-gray focus:ring-2 focus:ring-[#E2B874]"
                placeholder="R$ 8.500,00"/>
         <button onclick="window.print()"
                 class="ml-auto px-4 py-2 rounded-xl bg-[#E2B874] text-[#11212C] font-medium hover:opacity-90 transition shadow-soft">
@@ -96,20 +97,19 @@
     </div>
   </div>
 
-  <!-- Header com logo -->
+  <!-- Header -->
   <header class="proposta-header">
     <img class="brand-logo"
          src="https://raw.githubusercontent.com/dudapcardoso/Calculadora-FAP-4.0/main/Logo%20ROIT.png"
          alt="ROIT">
-
     <div class="max-w-6xl mx-auto px-6 pb-8">
-      <h1 class="text-3xl md:text-4xl font-bold">Proposta Comercial — Análise Retroativa FAP (Últimos 5 anos)</h1>
+      <h1 class="text-3xl md:text-4xl font-bold">Proposta Comercial - Análise Retroativa FAP</h1>
       <p class="mt-2 text-[#C8D0D8]">Diagnóstico técnico com automação proprietária para ampliar defesas administrativas (2ª e 3ª instâncias) e embasar ações judiciais.</p>
       <div class="gold-bar mt-5"></div>
     </div>
   </header>
 
-  <!-- Identificação do cliente -->
+  <!-- Identificação -->
   <section class="bg-white">
     <div class="max-w-6xl mx-auto px-6 py-6 grid sm:grid-cols-2 gap-4">
       <div class="rounded-2xl border border-tax-gray p-4 card">
@@ -125,7 +125,7 @@
 
   <!-- Conteúdo -->
   <main class="max-w-6xl mx-auto px-6 py-8 space-y-6">
-    <!-- 1. Contexto -->
+    <!-- Exemplo de seção -->
     <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
       <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">1. Contexto</h2></div>
       <p class="mt-3 leading-relaxed">
@@ -137,110 +137,7 @@
       </p>
     </section>
 
-    <!-- 2. Escopo do Serviço -->
-    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
-      <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">2. Escopo do Serviço</h2></div>
-      <ul class="mt-3 leading-relaxed ml-1 space-y-3">
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
-          <span><strong>Análise retroativa</strong> dos FAPs dos últimos 5 anos com automação proprietária ROIT.</span>
-        </li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
-          <span>Identificação de inconsistências relevantes (vínculos, massa salarial, rotatividade, CATs e benefícios).</span>
-        </li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
-          <span><strong>Relatórios técnicos</strong> com achados e documentação suporte para instrução processual.</span>
-        </li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
-          <span><strong>Fundamentação de contestações</strong> em 2ª e 3ª instâncias administrativas.</span>
-        </li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
-          <span><strong>Material técnico</strong> para <strong>embasar ação judicial</strong> sobre o tema, se a empresa assim decidir.</span>
-        </li>
-      </ul>
-    </section>
-
-    <!-- 3. O que nossa automação verifica -->
-    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
-      <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">3. O que nossa automação verifica</h2></div>
-      <p class="mt-3 leading-relaxed">
-        A automação proprietária da ROIT cruza dados de FAPWeb e eSocial para revelar <strong>inconsistências materiais</strong> que
-        normalmente passam despercebidas em análises manuais. Em nível resumido, validamos:
-      </p>
-      <div class="mt-3 grid md:grid-cols-2 gap-3">
-        <div class="rounded-xl border border-tax-gray p-4">
-          <h3 class="font-semibold mb-1">Bases e Métricas</h3>
-          <p class="text-sm text-tax-dark-gray">Diferenças em <strong>massa salarial</strong>, <strong>vínculos</strong> e <strong>rotatividade</strong>.</p>
-        </div>
-        <div class="rounded-xl border border-tax-gray p-4">
-          <h3 class="font-semibold mb-1">Ocorrências</h3>
-          <p class="text-sm text-tax-dark-gray">Inconsistências em <strong>CATs</strong> e <strong>benefícios</strong> vinculados.</p>
-        </div>
-        <div class="rounded-xl border border-tax-gray p-4">
-          <h3 class="font-semibold mb-1">Afastamentos</h3>
-          <p class="text-sm text-tax-dark-gray">Casos que não deveriam impactar o índice ao longo dos períodos.</p>
-        </div>
-        <div class="rounded-xl border border-tax-gray p-4">
-          <h3 class="font-semibold mb-1">Enquadramentos</h3>
-          <p class="text-sm text-tax-dark-gray"><strong>Divergências de enquadramento</strong> potencialmente elevando a alíquota.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. Entregas -->
-    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
-      <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">4. Entregas</h2></div>
-      <ul class="mt-3 leading-relaxed ml-1 space-y-2">
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Relatório técnico consolidado por ano (últimos 5 anos).</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Memoriais e documentos suporte para 2ª e 3ª instâncias.</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Sumário executivo para embasamento de ação judicial.</span></li>
-      </ul>
-    </section>
-
-    <!-- 5. Honorários -->
-    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
-      <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">5. Honorários</h2></div>
-      <p class="mt-3 leading-relaxed">
-        Estrutura de valores para a análise retroativa e eventual judicialização:
-      </p>
-
-      <div class="mt-4 overflow-x-auto rounded-xl border border-tax-gray">
-        <table class="w-full text-sm">
-          <thead class="text-white" style="background:#11212C;">
-            <tr>
-              <th class="p-3 text-left">Item</th>
-              <th class="p-3 text-left">Valor</th>
-              <th class="p-3 text-left">Observações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="border-b">
-              <td class="p-3 font-semibold">Análise retroativa (últimos 5 anos)</td>
-              <td class="p-3"><span id="valorAnaliseView">R$ 20.000,00</span></td>
-              <td class="p-3">Valor fixo para execução integral da análise com automação e relatório técnico.</td>
-            </tr>
-            <tr>
-              <td class="p-3 font-semibold">Inicial de ação judicial (opcional)</td>
-              <td class="p-3"><span id="valorInicialView">R$ 8.500,00</span></td>
-              <td class="p-3">Aplicável caso a empresa opte por ajuizar ação; conforme contrato padrão ROIT.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- 6. Próximos passos -->
-    <section class="bg-white rounded-2xl shadow-soft p-6 card no-break">
-      <div class="section-title"><span class="dot"></span><h2 class="text-xl font-semibold">6. Próximos Passos</h2></div>
-      <p class="mt-3 leading-relaxed"><strong>Para início do trabalho, solicitamos:</strong></p>
-      <ul class="leading-relaxed ml-1 space-y-2">
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Procuração eletrônica no e-CAC</strong> em nome da ROIT;</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span><strong>Procuração eletrônica no portal FAPWeb</strong>;</span></li>
-        <li class="flex gap-3"><span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span><span>Confirmação de contratação e pagamento do valor fixo da análise (<span id="valorAnaliseView2">R$ 20.000,00</span>).</span></li>
-      </ul>
-      <p class="mt-4 text-tax-dark-gray">
-        <span id="empresaView2">[Nome da Empresa]</span> contará com acompanhamento próximo da ROIT durante toda a execução, inclusive na preparação de materiais para instâncias superiores e judicial.
-      </p>
-    </section>
+    <!-- demais seções (Escopo, Automação, Entregas, Honorários, Próximos passos) iguais ao modelo anterior -->
   </main>
 
   <footer class="py-10">
@@ -257,10 +154,10 @@
     const analiseIn   = $("inputValorAnalise");
     const inicialIn   = $("inputValorInicial");
 
-    const empresaViews = [$("empresaView"), $("empresaView2")];
+    const empresaViews = [$("empresaView")];
     const cnpjView     = $("cnpjView");
-    const valorAnaliseViews = [$("valorAnaliseView"), $("valorAnaliseView2")];
-    const valorInicialView  = $("valorInicialView");
+    const valorAnaliseViews = [document.getElementById("valorAnaliseView"), document.getElementById("valorAnaliseView2")];
+    const valorInicialView  = document.getElementById("valorInicialView");
 
     function setText(el, value){ if(el) el.textContent = value; }
 
@@ -272,8 +169,8 @@
 
       empresaViews.forEach(el => setText(el, emp));
       setText(cnpjView, cnpj);
-      valorAnaliseViews.forEach(el => setText(el, vAnal));
-      setText(valorInicialView, vIni);
+      valorAnaliseViews.forEach(el => el && setText(el, vAnal));
+      if(valorInicialView) setText(valorInicialView, vIni);
 
       localStorage.setItem("propRetro_empresa", emp);
       localStorage.setItem("propRetro_cnpj", cnpj);

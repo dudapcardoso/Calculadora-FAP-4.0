@@ -24,8 +24,8 @@
   </script>
   <style>
     :root{
-      /* azul mais escuro (ajustado para casar com o fundo do logo) */
-      --brand-blue: #06142A; /* ajuste fino aqui se quiser (#051024, #07162B, etc.) */
+      /* azul mais escuro (ajuste fino se quiser) */
+      --brand-blue: #06142A;
     }
     html, body { scroll-behavior: smooth; background:#F9FAFB; color: var(--brand-blue); }
     .num{font-variant-numeric: tabular-nums;}
@@ -44,13 +44,20 @@
       box-shadow:0 0 0 3px rgba(226,184,116,.25);
     }
 
+    /* ---- FORÇA BULLETS PRETOS (nativos) NAS LISTAS QUE USAM list-disc ---- */
+    ul.list-disc { list-style: disc !important; padding-left: 1.25rem; margin-top: .25rem; }
+    ul.list-disc > li { display: list-item !important; }
+
+    /* Classe utilitária extra, caso queira usar bullets pretos em outras listas */
+    .ul-default { list-style: disc; padding-left: 1.25rem; margin-top: .25rem; }
+    .ul-default > li { display: list-item; }
+
     /* Cabeçalho com logo absoluto que não interfere no fluxo do texto */
     header.proposta-header {
       position: relative;
       background: var(--brand-blue);
       color: #fff;
-      /* reserva de espaço vertical para não sobrepor o título */
-      padding-top: 88px; /* ~altura do logo + respiro; ajuste fino se quiser */
+      padding-top: 88px; /* ~altura do logo + respiro */
     }
     .proposta-header .brand-logo {
       position: absolute; top: 16px; left: 24px; z-index: 1;
@@ -96,7 +103,7 @@
   </div>
 
   <!-- Header (logo absoluto no canto superior esquerdo) -->
- <header class="proposta-header" style="background-color:#11212C;">
+  <header class="proposta-header" style="background-color:#11212C;">
     <!-- Logo -->
     <img class="brand-logo"
          src="https://raw.githubusercontent.com/dudapcardoso/Calculadora-FAP-4.0/main/Logo%20ROIT.png"
@@ -161,6 +168,7 @@
           <span class="gold-bullet mt-2 w-2 h-2 rounded-full"></span>
           <span>
             <strong>Operacionalização do crédito em caso de deferimento</strong>, incluindo:
+            <!-- LISTA COM BULLETS PRETOS (nativos) -->
             <ul class="list-disc ml-6 mt-2 space-y-1">
               <li>Retificação das obrigações acessórias;</li>
               <li>Habilitação do crédito junto à Receita Federal;</li>

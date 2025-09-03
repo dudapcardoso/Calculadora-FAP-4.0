@@ -23,135 +23,238 @@
     }
   </script>
 
-  <!-- Estilos do menu e da página -->
+  <!-- Estilos da página -->
   <style>
-    html,body{ margin:0; padding:0 } /* remove espaço branco no topo */
-    .navtab{
-      padding:.5rem .9rem; border-radius:999px; border:1px solid transparent;
-      color:#fff; background:rgba(255,255,255,.06); display:inline-block
+    html,body{ margin:0; padding:0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    
+    #calc-impacto-fap { 
+      background: #f6f6f6;
+      min-height: 100vh;
     }
-    .navtab:hover{ background:rgba(255,255,255,.12) }
-    .navtab.is-active{ border-color:#E2B874; background:rgba(226,184,116,.12); color:#fff }
-
-    #calc-impacto-fap { background-color: #152E3E; }
+    
+    .header {
+      background: #152e3e;
+      padding: 2rem 0;
+      margin-bottom: 0;
+    }
+    
+    .golden-stripe {
+      background: #dba958;
+      height: 6px;
+      width: 100%;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo-image {
+      height: 50px;
+      width: auto;
+      max-width: 200px;
+    }
+    
     #calc-impacto-fap .main-card{
-      background:#fff; border-radius:.75rem;
-      box-shadow:0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1)
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
     }
+    
     #calc-impacto-fap .input-field{
-      background:#F3F4F6; border:1px solid #D1D5DB;
-      border-radius:.5rem; transition:all .2s ease-in-out; color:#152E3E
+      background: #ffffff;
+      border: 2px solid #d1d5db;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      color: #374151;
+      font-weight: 500;
+      padding: 14px 18px;
     }
+    
     #calc-impacto-fap .input-field:focus,
     #calc-impacto-fap .input-field:focus-within{
-      border-color:#E2B874; box-shadow:0 0 0 2px rgba(226,184,116,.3); outline:none
+      border-color: #152e3e;
+      box-shadow: 0 0 0 3px rgba(21, 46, 62, 0.1);
+      outline: none;
+      background: #ffffff;
     }
+    
+    #calc-impacto-fap .input-field:hover {
+      border-color: #9ca3af;
+    }
+    
     #calc-impacto-fap input[type=number]::-webkit-inner-spin-button,
-    #calc-impacto-fap input[type=number]::-webkit-outer-spin-button{ -webkit-appearance:none; margin:0 }
-    #calc-impacto-fap input[type=number]{ -moz-appearance:textfield }
+    #calc-impacto-fap input[type=number]::-webkit-outer-spin-button{ 
+      -webkit-appearance: none; 
+      margin: 0 
+    }
+    
+    #calc-impacto-fap input[type=number]{ 
+      -moz-appearance: textfield 
+    }
+    
+    .section-header {
+      background: #f3f4f6;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .result-card {
+      background: #152e3e;
+      border-radius: 16px;
+      border: 1px solid #152e3e;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .metric-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      border: 1px solid #f3f4f6;
+      transition: all 0.2s ease;
+    }
+    
+    .metric-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .label {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    .help-text {
+      color: #6b7280;
+      font-size: 12px;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+    
+    .title-gradient {
+      color: #152e3e;
+    }
+    
+
   </style>
 </head>
-<body class="bg-tax-blue">
+<body>
 
-  <!-- NAV entre as 3 páginas -->
-  <div class="bg-tax-blue">
-    <nav class="container mx-auto max-w-4xl flex justify-center gap-2 py-3">
-      <!-- use links RELATIVOS; os três arquivos devem estar na MESMA pasta -->
-      <a href="./index.html"                  class="navtab">Calculadora</a>
-      <a href="./impacto-fap.html"           class="navtab">Impacto do FAP</a>
-      <a href="./como-o-fap-e-calculado.html" class="navtab">Como o FAP é calculado</a>
-    </nav>
+
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="container mx-auto px-6">
+      <!-- LOGO, TÍTULO E NAVEGAÇÃO -->
+      <div class="flex items-center justify-between py-4">
+        <!-- LOGO -->
+        <div class="logo-container">
+          <img src="http://www.reformatributaria.com/wp-content/uploads/2025/09/Logo-ROIT-branca-e-dourada.png" alt="ROIT" class="logo-image">
+        </div>
+        
+        <!-- TÍTULO CENTRALIZADO -->
+        <div class="title-container text-center flex-1">
+          <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">Calcule o Impacto do FAP Majorado</h1>
+          <p class="text-sm text-gray-300 mt-1">Simule o impacto financeiro do FAP majorado na sua empresa</p>
+        </div>
+        
+        <!-- INDICADOR DIREITA -->
+        <div class="text-right">
+          <p class="text-sm text-gray-300">Calculadora FAP</p>
+        </div>
+      </div>
+    </div>
   </div>
+  
+  <!-- TARJA DOURADA -->
+  <div class="golden-stripe"></div>
 
   <section id="calc-impacto-fap" class="text-gray-800">
-    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
+    <div class="container mx-auto p-6 sm:p-8 md:p-12 max-w-5xl" style="margin-top: 2rem;">
 
-      <!-- TÍTULO -->
-      <header class="text-center mb-10">
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Calcule o Impacto do FAP Majorado</h1>
-      </header>
-
-      <!-- (conteúdo existente da página permanece) -->
+      <!-- CARD PRINCIPAL -->
       <div class="main-card overflow-hidden">
-        <div class="p-6 sm:p-8 bg-tax-bg-light border-b border-tax-gray">
-          <h2 class="text-xl font-bold text-tax-blue mb-6">1. Insira os dados da sua empresa</h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- SEÇÃO DE INPUTS -->
+        <div class="section-header p-8 sm:p-10">
+          <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
+            <span class="bg-yellow-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">1</span>
+            Insira os dados da sua empresa
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <label for="rat" class="block text-sm font-medium text-tax-dark-gray mb-1">Alíquota RAT (%)</label>
-              <select id="rat" class="w-full p-3 input-field">
+              <label for="rat" class="label">Alíquota RAT (%)</label>
+              <select id="rat" class="w-full input-field">
                 <option value="1">1% (Leve)</option>
                 <option value="2">2% (Médio)</option>
                 <option value="3">3% (Grave)</option>
               </select>
+              <p class="help-text">Selecione o risco da sua atividade</p>
             </div>
             <div>
-              <label for="fap" class="block text-sm font-medium text-tax-dark-gray mb-1">Índice FAP Atual</label>
-              <input type="text" id="fap" value="1,0000" inputmode="decimal" placeholder="1,0000" class="w-full p-3 input-field">
-              <p class="text-xs text-tax-dark-gray mt-1">Use vírgula: ex. 0,7500</p>
+              <label for="fap" class="label">Índice FAP Atual</label>
+              <input type="text" id="fap" value="1,0000" inputmode="decimal" placeholder="1,0000" class="w-full input-field">
+              <p class="help-text">Use vírgula: ex. 0,7500</p>
             </div>
             <div>
-              <label for="folha" class="block text-sm font-medium text-tax-dark-gray mb-1">Folha de Pagamento Mensal</label>
+              <label for="folha" class="label">Folha de Pagamento Mensal</label>
               <div class="relative">
-                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-tax-dark-gray pointer-events-none">R$</span>
-                <input type="text" id="folha" inputmode="decimal" placeholder="50.000,00" class="w-full p-3 pl-10 text-right input-field">
+                <span class="absolute inset-y-0 left-0 pl-5 flex items-center text-gray-500 pointer-events-none font-medium">R$</span>
+                <input type="text" id="folha" inputmode="decimal" placeholder="50.000,00" class="w-full pl-12 text-right input-field">
               </div>
-              <p class="text-xs text-tax-dark-gray mt-1">Informe a folha média em reais</p>
+              <p class="help-text">Informe a folha média em reais</p>
             </div>
           </div>
         </div>
 
-        <div class="p-6 sm:p-8 bg-white">
-          <h2 class="text-xl font-bold text-tax-blue mb-8">2. Analise o Resultado</h2>
+        <!-- SEÇÃO DE RESULTADOS -->
+        <div class="p-8 sm:p-10 bg-white">
+          <h2 class="text-2xl font-bold text-gray-800 mb-10 flex items-center">
+            <span class="bg-yellow-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">2</span>
+            Analise o Resultado
+          </h2>
 
-          <div class="bg-tax-blue rounded-lg p-6 text-center mb-8">
-            <p class="text-lg font-semibold text-white">Custo Adicional em 26 Meses</p>
-            <p class="text-sm text-tax-gray mb-3">(Diferença entre seu FAP atual e o FAP mínimo)</p>
-            <p id="impacto-total" class="text-4xl sm:text-5xl font-bold text-tax-gold">R$ 0,00</p>
+          <!-- CARD DE IMPACTO TOTAL -->
+          <div class="result-card p-8 text-center mb-10">
+            <p class="text-xl font-semibold text-white mb-2">Custo Adicional em 26 Meses</p>
+            <p class="text-blue-100 mb-6 opacity-90">(Diferença entre seu FAP atual e o FAP mínimo)</p>
+            <p id="impacto-total" class="text-5xl sm:text-6xl font-bold text-white">R$ 0,00</p>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div>
-              <p class="text-sm text-tax-dark-gray">RAT Ajustado</p>
-              <p id="rat-ajustado" class="text-2xl font-bold text-tax-blue">1,0000%</p>
+          <!-- MÉTRICAS -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div class="metric-card">
+              <p class="text-sm text-gray-600 mb-3 font-medium">RAT Ajustado</p>
+              <p id="rat-ajustado" class="text-3xl font-bold text-gray-800">1,0000%</p>
             </div>
-            <div>
-              <p class="text-sm text-tax-dark-gray">Custo Mensal (FAP Atual)</p>
-              <p id="custo-atual" class="text-2xl font-bold text-red-600">R$ 0,00</p>
+            <div class="metric-card">
+              <p class="text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Atual)</p>
+              <p id="custo-minimo" class="text-3xl font-bold text-red-600">R$ 0,00</p>
             </div>
-            <div>
-              <p class="text-sm text-tax-dark-gray">Custo Mensal (FAP Mínimo)</p>
-              <p id="custo-minimo" class="text-2xl font-bold text-green-600">R$ 0,00</p>
+            <div class="metric-card">
+              <p class="text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Mínimo)</p>
+              <p id="custo-atual" class="text-3xl font-bold text-green-600">R$ 0,00</p>
             </div>
           </div>
-          <p class="mt-8 text-center text-xs text-gray-500">*Estimativa considerando 24 salários + 2x décimo terceiro.</p>
+          
+          <p class="text-center text-sm text-gray-500 bg-gray-50 rounded-lg p-4 max-w-2xl mx-auto">
+            *Estimativa considerando 24 salários + 2x décimo terceiro.
+          </p>
         </div>
       </div>
 
-      <footer class="text-center mt-8 text-sm text-gray-300">
-        <p>Simulador desenvolvido para fins de estimativa. Os valores podem variar.</p>
+      <!-- FOOTER -->
+      <footer class="text-center p-6">
+        <p class="text-gray-500">Simulador desenvolvido para fins de estimativa. Os valores podem variar.</p>
       </footer>
 
     </div>
   </section>
 
-  <!-- Script do menu: marca a aba ativa (robusto para subpastas) -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function(){
-      var tabs = document.querySelectorAll('.navtab');
 
-      function norm(p){
-        try { p = new URL(p, location.href).pathname; }  // usa a URL atual como base
-        catch(e) { p = p || ''; }
-        return p.replace(/\/index\.html?$/i,'/').replace(/\/+$/,'');
-      }
-
-      var here = norm(location.pathname);
-      tabs.forEach(function(a){
-        var target = norm(a.getAttribute('href') || '');
-        if (target && here === target) a.classList.add('is-active');
-      });
-    });
-  </script>
 
   <!-- Cálculo Impacto FAP x RAT -->
   <script>

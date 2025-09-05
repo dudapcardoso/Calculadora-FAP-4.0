@@ -34,8 +34,14 @@
     
     .header {
       background: #152e3e;
-      padding: 2rem 0;
+      padding: 1rem 0;
       margin-bottom: 0;
+    }
+    
+    @media (min-width: 768px) {
+      .header {
+        padding: 2rem 0;
+      }
     }
     
     .golden-stripe {
@@ -50,9 +56,16 @@
     }
     
     .logo-image {
-      height: 50px;
+      height: 40px;
       width: auto;
-      max-width: 200px;
+      max-width: 150px;
+    }
+    
+    @media (min-width: 768px) {
+      .logo-image {
+        height: 45px;
+        max-width: 200px;
+      }
     }
     
     #calc-impacto-fap .main-card{
@@ -71,6 +84,7 @@
       color: #374151;
       font-weight: 500;
       padding: 14px 18px;
+      font-size: 16px; /* Previne zoom em iOS */
     }
     
     #calc-impacto-fap .input-field:focus,
@@ -110,15 +124,20 @@
     .metric-card {
       background: #ffffff;
       border-radius: 12px;
-      padding: 24px;
+      padding: 20px;
       box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
       border: 1px solid #f3f4f6;
       transition: all 0.2s ease;
     }
     
+    @media (min-width: 768px) {
+      .metric-card {
+        padding: 24px;
+      }
+    }
+    
     .metric-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
     
     .label {
@@ -139,6 +158,54 @@
       color: #152e3e;
     }
     
+    /* Responsividade para mobile */
+    @media (max-width: 767px) {
+      .header .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      
+      .title-container h1 {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+      }
+      
+      .title-container p {
+        font-size: 0.75rem;
+      }
+      
+      #calc-impacto-fap .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin-top: 1rem;
+      }
+      
+      .section-header {
+        padding: 1.5rem;
+      }
+      
+      .section-header h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .result-card {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .result-card p:last-child {
+        font-size: 2.5rem;
+      }
+      
+      .metric-card {
+        padding: 1.25rem;
+      }
+      
+      .metric-card p:last-child {
+        font-size: 1.5rem;
+      }
+    }
 
   </style>
 </head>
@@ -150,21 +217,21 @@
   <div class="header">
     <div class="container mx-auto px-6">
       <!-- LOGO, TÍTULO E NAVEGAÇÃO -->
-      <div class="flex items-center justify-between py-4">
+      <div class="flex flex-col sm:flex-row items-center justify-between py-4 gap-4">
         <!-- LOGO -->
         <div class="logo-container">
           <img src="http://www.reformatributaria.com/wp-content/uploads/2025/09/Logo-ROIT-branca-e-dourada.png" alt="ROIT" class="logo-image">
         </div>
         
         <!-- TÍTULO CENTRALIZADO -->
-        <div class="title-container text-center flex-1">
-          <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">Calcule o Impacto do FAP Majorado</h1>
-          <p class="text-sm text-gray-300 mt-1">Simule o impacto financeiro do FAP majorado na sua empresa</p>
+        <div class="title-container text-center flex-1 order-3 sm:order-2">
+          <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white">Calcule o Impacto do FAP Majorado</h1>
+          <p class="text-xs sm:text-sm text-gray-300 mt-1">Simule o impacto financeiro do FAP majorado na sua empresa</p>
         </div>
         
         <!-- INDICADOR DIREITA -->
-        <div class="text-right">
-          <p class="text-sm text-gray-300">Calculadora FAP</p>
+        <div class="text-center sm:text-right order-2 sm:order-3">
+          <p class="text-xs sm:text-sm text-gray-300">Calculadora FAP</p>
         </div>
       </div>
     </div>
@@ -174,17 +241,17 @@
   <div class="golden-stripe"></div>
 
   <section id="calc-impacto-fap" class="text-gray-800">
-    <div class="container mx-auto p-6 sm:p-8 md:p-12 max-w-5xl" style="margin-top: 2rem;">
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 lg:p-12 max-w-5xl">
 
       <!-- CARD PRINCIPAL -->
       <div class="main-card overflow-hidden">
         <!-- SEÇÃO DE INPUTS -->
-        <div class="section-header p-8 sm:p-10">
-          <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
-            <span class="bg-yellow-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">1</span>
+        <div class="section-header p-4 sm:p-6 md:p-8 lg:p-10">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-6 sm:mb-8 flex items-center">
+            <span class="bg-yellow-600 text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">1</span>
             Insira os dados da sua empresa
           </h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             <div>
               <label for="rat" class="label">Alíquota RAT (%)</label>
               <select id="rat" class="w-full input-field">
@@ -211,44 +278,44 @@
         </div>
 
         <!-- SEÇÃO DE RESULTADOS -->
-        <div class="p-8 sm:p-10 bg-white">
-          <h2 class="text-2xl font-bold text-gray-800 mb-10 flex items-center">
-            <span class="bg-yellow-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">2</span>
+        <div class="p-4 sm:p-6 md:p-8 lg:p-10">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-8 sm:mb-10 flex items-center">
+            <span class="bg-yellow-600 text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">2</span>
             Analise o Resultado
           </h2>
 
           <!-- CARD DE IMPACTO TOTAL -->
-          <div class="result-card p-8 text-center mb-10">
-            <p class="text-xl font-semibold text-white mb-2">Custo Adicional em 26 Meses</p>
-            <p class="text-blue-100 mb-6 opacity-90">(Diferença entre seu FAP atual e o FAP mínimo)</p>
-            <p id="impacto-total" class="text-5xl sm:text-6xl font-bold text-white">R$ 0,00</p>
+          <div class="result-card p-4 sm:p-6 md:p-8 text-center mb-8 sm:mb-10">
+            <p class="text-lg sm:text-xl font-semibold text-white mb-2">Custo Adicional em 26 Meses</p>
+            <p class="text-blue-100 mb-4 sm:mb-6 opacity-90 text-sm sm:text-base">(Diferença entre seu FAP atual e o FAP mínimo)</p>
+            <p id="impacto-total" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white">R$ 0,00</p>
           </div>
 
           <!-- MÉTRICAS -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-8">
             <div class="metric-card">
-              <p class="text-sm text-gray-600 mb-3 font-medium">RAT Ajustado</p>
-              <p id="rat-ajustado" class="text-3xl font-bold text-gray-800">1,0000%</p>
+              <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">RAT Ajustado</p>
+              <p id="rat-ajustado" class="text-2xl sm:text-3xl font-bold text-gray-800">1,0000%</p>
             </div>
             <div class="metric-card">
-              <p class="text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Atual)</p>
-              <p id="custo-minimo" class="text-3xl font-bold text-red-600">R$ 0,00</p>
+              <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Atual)</p>
+              <p id="custo-minimo" class="text-2xl sm:text-3xl font-bold text-red-600">R$ 0,00</p>
             </div>
-            <div class="metric-card">
-              <p class="text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Mínimo)</p>
-              <p id="custo-atual" class="text-3xl font-bold text-green-600">R$ 0,00</p>
+            <div class="metric-card sm:col-span-2 lg:col-span-1">
+              <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Mínimo)</p>
+              <p id="custo-atual" class="text-2xl sm:text-3xl font-bold text-green-600">R$ 0,00</p>
             </div>
           </div>
           
-          <p class="text-center text-sm text-gray-500 bg-gray-50 rounded-lg p-4 max-w-2xl mx-auto">
+          <p class="text-center text-xs sm:text-sm text-gray-500 bg-gray-50 rounded-lg p-3 sm:p-4 max-w-2xl mx-auto">
             *Estimativa considerando 24 salários + 2x décimo terceiro.
           </p>
         </div>
       </div>
 
       <!-- FOOTER -->
-      <footer class="text-center p-6">
-        <p class="text-gray-500">Simulador desenvolvido para fins de estimativa. Os valores podem variar.</p>
+      <footer class="text-center p-4 sm:p-6">
+        <p class="text-gray-500 text-sm">Simulador desenvolvido para fins de estimativa. Os valores podem variar.</p>
       </footer>
 
     </div>

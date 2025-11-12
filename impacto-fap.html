@@ -23,229 +23,70 @@
     }
   </script>
 
-  <!-- Estilos da página -->
+  <!-- Estilos -->
   <style>
-    html,body{ margin:0; padding:0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    
-    #calc-impacto-fap { 
-      background: #f6f6f6;
-      min-height: 100vh;
+    html,body{ margin:0; padding:0; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
+    #calc-impacto-fap{ background:#f6f6f6; min-height:100vh; }
+    .header{ background:#152e3e; padding:1rem 0; margin-bottom:0; }
+    @media(min-width:768px){ .header{ padding:2rem 0; } }
+    .golden-stripe{ background:#dba958; height:6px; width:100%; }
+    .logo-container{ display:flex; align-items:center; }
+    .logo-image{ height:40px; width:auto; max-width:150px; }
+    @media(min-width:768px){ .logo-image{ height:45px; max-width:200px; } }
+    #calc-impacto-fap .main-card{ background:#fff; border-radius:16px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); border:1px solid #e5e7eb; overflow:hidden; }
+    #calc-impacto-fap .input-field{ background:#fff; border:2px solid #d1d5db; border-radius:12px; transition:all .2s ease; color:#374151; font-weight:500; padding:14px 18px; font-size:16px; }
+    #calc-impacto-fap .input-field:focus,#calc-impacto-fap .input-field:focus-within{ border-color:#152e3e; box-shadow:0 0 0 3px rgba(21,46,62,0.1); outline:none; background:#fff; }
+    #calc-impacto-fap .input-field:hover{ border-color:#9ca3af; }
+    #calc-impacto-fap input[type=number]::-webkit-inner-spin-button,#calc-impacto-fap input[type=number]::-webkit-outer-spin-button{ -webkit-appearance:none; margin:0; }
+    #calc-impacto-fap input[type=number]{ -moz-appearance:textfield; }
+    .section-header{ background:#f3f4f6; border-bottom:1px solid #e5e7eb; }
+    .result-card{ background:#152e3e; border-radius:16px; border:1px solid #152e3e; box-shadow:0 10px 15px -3px rgba(0,0,0,0.1); }
+    .metric-card{ background:#fff; border-radius:12px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.1); border:1px solid #f3f4f6; transition:all .2s ease; }
+    @media(min-width:768px){ .metric-card{ padding:24px; } }
+    .metric-card:hover{ transform:translateY(-2px); }
+    .label{ font-weight:600; color:#374151; margin-bottom:8px; font-size:14px; }
+    .help-text{ color:#6b7280; font-size:12px; margin-top:6px; font-weight:500; }
+    @media(max-width:767px){
+      .header .container{ padding-left:1rem; padding-right:1rem; }
+      .title-container h1{ font-size:1.25rem; line-height:1.75rem; }
+      .title-container p{ font-size:.75rem; }
+      #calc-impacto-fap .container{ padding-left:1rem; padding-right:1rem; margin-top:1rem; }
+      .section-header{ padding:1.5rem; }
+      .section-header h2{ font-size:1.25rem; margin-bottom:1.5rem; }
+      .result-card{ padding:1.5rem; margin-bottom:1.5rem; }
+      .result-card p:last-child{ font-size:2.5rem; }
+      .metric-card{ padding:1.25rem; }
+      .metric-card p:last-child{ font-size:1.5rem; }
     }
-    
-    .header {
-      background: #152e3e;
-      padding: 1rem 0;
-      margin-bottom: 0;
-    }
-    
-    @media (min-width: 768px) {
-      .header {
-        padding: 2rem 0;
-      }
-    }
-    
-    .golden-stripe {
-      background: #dba958;
-      height: 6px;
-      width: 100%;
-    }
-    
-    .logo-container {
-      display: flex;
-      align-items: center;
-    }
-    
-    .logo-image {
-      height: 40px;
-      width: auto;
-      max-width: 150px;
-    }
-    
-    @media (min-width: 768px) {
-      .logo-image {
-        height: 45px;
-        max-width: 200px;
-      }
-    }
-    
-    #calc-impacto-fap .main-card{
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      border: 1px solid #e5e7eb;
-      overflow: hidden;
-    }
-    
-    #calc-impacto-fap .input-field{
-      background: #ffffff;
-      border: 2px solid #d1d5db;
-      border-radius: 12px;
-      transition: all 0.2s ease;
-      color: #374151;
-      font-weight: 500;
-      padding: 14px 18px;
-      font-size: 16px; /* Previne zoom em iOS */
-    }
-    
-    #calc-impacto-fap .input-field:focus,
-    #calc-impacto-fap .input-field:focus-within{
-      border-color: #152e3e;
-      box-shadow: 0 0 0 3px rgba(21, 46, 62, 0.1);
-      outline: none;
-      background: #ffffff;
-    }
-    
-    #calc-impacto-fap .input-field:hover {
-      border-color: #9ca3af;
-    }
-    
-    #calc-impacto-fap input[type=number]::-webkit-inner-spin-button,
-    #calc-impacto-fap input[type=number]::-webkit-outer-spin-button{ 
-      -webkit-appearance: none; 
-      margin: 0 
-    }
-    
-    #calc-impacto-fap input[type=number]{ 
-      -moz-appearance: textfield 
-    }
-    
-    .section-header {
-      background: #f3f4f6;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    
-    .result-card {
-      background: #152e3e;
-      border-radius: 16px;
-      border: 1px solid #152e3e;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    }
-    
-    .metric-card {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-      border: 1px solid #f3f4f6;
-      transition: all 0.2s ease;
-    }
-    
-    @media (min-width: 768px) {
-      .metric-card {
-        padding: 24px;
-      }
-    }
-    
-    .metric-card:hover {
-      transform: translateY(-2px);
-    }
-    
-    .label {
-      font-weight: 600;
-      color: #374151;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-    
-    .help-text {
-      color: #6b7280;
-      font-size: 12px;
-      margin-top: 6px;
-      font-weight: 500;
-    }
-    
-    .title-gradient {
-      color: #152e3e;
-    }
-    
-    /* Responsividade para mobile */
-    @media (max-width: 767px) {
-      .header .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-      
-      .title-container h1 {
-        font-size: 1.25rem;
-        line-height: 1.75rem;
-      }
-      
-      .title-container p {
-        font-size: 0.75rem;
-      }
-      
-      #calc-impacto-fap .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-        margin-top: 1rem;
-      }
-      
-      .section-header {
-        padding: 1.5rem;
-      }
-      
-      .section-header h2 {
-        font-size: 1.25rem;
-        margin-bottom: 1.5rem;
-      }
-      
-      .result-card {
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-      }
-      
-      .result-card p:last-child {
-        font-size: 2.5rem;
-      }
-      
-      .metric-card {
-        padding: 1.25rem;
-      }
-      
-      .metric-card p:last-child {
-        font-size: 1.5rem;
-      }
-    }
-
   </style>
 </head>
+
 <body>
-
-
-
   <!-- HEADER -->
   <div class="header">
     <div class="container mx-auto px-6">
-      <!-- LOGO, TÍTULO E NAVEGAÇÃO -->
       <div class="flex flex-col sm:flex-row items-center justify-between py-4 gap-4">
-        <!-- LOGO -->
         <div class="logo-container">
           <img src="http://www.reformatributaria.com/wp-content/uploads/2025/09/Logo-ROIT-branca-e-dourada.png" alt="ROIT" class="logo-image">
         </div>
-        
-        <!-- TÍTULO CENTRALIZADO -->
         <div class="title-container text-center flex-1 order-3 sm:order-2">
           <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white">Calcule o Impacto do FAP Majorado</h1>
           <p class="text-xs sm:text-sm text-gray-300 mt-1">Simule o impacto financeiro do FAP majorado na sua empresa</p>
         </div>
-        
-        <!-- INDICADOR DIREITA -->
         <div class="text-center sm:text-right order-2 sm:order-3">
           <p class="text-xs sm:text-sm text-gray-300">Calculadora FAP</p>
         </div>
       </div>
     </div>
   </div>
-  
-  <!-- TARJA DOURADA -->
+
   <div class="golden-stripe"></div>
 
   <section id="calc-impacto-fap" class="text-gray-800">
     <div class="container mx-auto p-4 sm:p-6 md:p-8 lg:p-12 max-w-5xl">
 
-      <!-- CARD PRINCIPAL -->
       <div class="main-card overflow-hidden">
-        <!-- SEÇÃO DE INPUTS -->
+        <!-- INPUTS -->
         <div class="section-header p-4 sm:p-6 md:p-8 lg:p-10">
           <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-6 sm:mb-8 flex items-center">
             <span class="bg-yellow-600 text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">1</span>
@@ -277,14 +118,14 @@
           </div>
         </div>
 
-        <!-- SEÇÃO DE RESULTADOS -->
+        <!-- RESULTADOS -->
         <div class="p-4 sm:p-6 md:p-8 lg:p-10">
           <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-8 sm:mb-10 flex items-center">
             <span class="bg-yellow-600 text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">2</span>
             Analise o Resultado
           </h2>
 
-          <!-- CARD DE IMPACTO TOTAL -->
+          <!-- IMPACTO TOTAL -->
           <div class="result-card p-4 sm:p-6 md:p-8 text-center mb-8 sm:mb-10">
             <p class="text-lg sm:text-xl font-semibold text-white mb-2">Custo Adicional em 26 Meses</p>
             <p class="text-blue-100 mb-4 sm:mb-6 opacity-90 text-sm sm:text-base">(Diferença entre seu FAP atual e o FAP mínimo)</p>
@@ -299,82 +140,76 @@
             </div>
             <div class="metric-card">
               <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Atual)</p>
-              <p id="custo-minimo" class="text-2xl sm:text-3xl font-bold text-red-600">R$ 0,00</p>
+              <p id="custo-atual" class="text-2xl sm:text-3xl font-bold text-red-600">R$ 0,00</p>
             </div>
             <div class="metric-card sm:col-span-2 lg:col-span-1">
               <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Mínimo)</p>
-              <p id="custo-atual" class="text-2xl sm:text-3xl font-bold text-green-600">R$ 0,00</p>
+              <p id="custo-minimo" class="text-2xl sm:text-3xl font-bold text-green-600">R$ 0,00</p>
             </div>
           </div>
-          
+
           <p class="text-center text-xs sm:text-sm text-gray-500 bg-gray-50 rounded-lg p-3 sm:p-4 max-w-2xl mx-auto">
             *Estimativa considerando 24 salários + 2x décimo terceiro.
           </p>
         </div>
       </div>
 
-      <!-- FOOTER -->
       <footer class="text-center p-4 sm:p-6">
         <p class="text-gray-500 text-sm">Simulador desenvolvido para fins de estimativa. Os valores podem variar.</p>
       </footer>
-
     </div>
   </section>
 
-
-
-  <!-- Cálculo Impacto FAP x RAT -->
+  <!-- SCRIPT -->
   <script>
     const ratInput = document.getElementById('rat');
     const fapInput = document.getElementById('fap');
     const folhaInput = document.getElementById('folha');
-
     const ratAjustadoOutput = document.getElementById('rat-ajustado');
     const custoMinimoOutput = document.getElementById('custo-minimo');
     const custoAtualOutput = document.getElementById('custo-atual');
     const impactoTotalOutput = document.getElementById('impacto-total');
 
-    function formatToCurrencyDisplay(value) {
-      return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    function formatToCurrencyDisplay(value){
+      return value.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
     }
-    function parseCurrencyToNumber(value) {
-      if (typeof value !== 'string' || value === '') return 0;
-      return parseFloat(value.replace(/\./g, '').replace(',', '.'));
+    function parseCurrencyToNumber(value){
+      if(typeof value!=='string'||value==='')return 0;
+      return parseFloat(value.replace(/\./g,'').replace(',','.'));
     }
-    function formatCurrencyInput(event) {
-      const input = event.target;
-      let value = input.value.replace(/\D/g, '');
-      if (value === '') { input.value = ''; return; }
-      const numberValue = parseFloat(value) / 100;
-      input.value = numberValue.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    function formatCurrencyInput(event){
+      const input=event.target;
+      let value=input.value.replace(/\D/g,'');
+      if(value===''){input.value='';return;}
+      const numberValue=parseFloat(value)/100;
+      input.value=numberValue.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
     }
     function parseFap(str){
-      if (typeof str !== 'string') return 0;
-      return parseFloat(str.replace(/\./g,'').replace(',', '.')) || 0;
+      if(typeof str!=='string')return 0;
+      return parseFloat(str.replace(/\./g,'').replace(',','.'))||0;
     }
 
-    function calcularImpacto() {
-      const rat = parseFloat(ratInput.value) || 1;
-      const fap = parseFap(fapInput.value);
-      const folha = parseCurrencyToNumber(folhaInput.value) || 0;
-      const fapMinimo = 0.5000;
+    function calcularImpacto(){
+      const rat=parseFloat(ratInput.value)||1;
+      const fap=parseFap(fapInput.value);
+      const folha=parseCurrencyToNumber(folhaInput.value)||0;
+      const fapMinimo=0.5000;
 
-      const ratAjustado = rat * fap;
-      const custoAtual = folha * (ratAjustado / 100);
-      const custoMinimo = folha * ((rat * fapMinimo) / 100);
-      const impacto26Meses = (custoAtual - custoMinimo) * 26;
+      const ratAjustado=rat*fap;
+      const custoAtual=folha*(ratAjustado/100);
+      const custoMinimo=folha*((rat*fapMinimo)/100);
+      const impacto26Meses=Math.abs(custoAtual-custoMinimo)*26; // corrigido
 
-      ratAjustadoOutput.textContent = `${ratAjustado.toFixed(4).replace('.', ',')}%`;
-      custoMinimoOutput.textContent = formatToCurrencyDisplay(custoMinimo);
-      custoAtualOutput.textContent = formatToCurrencyDisplay(custoAtual);
-      impactoTotalOutput.textContent = formatToCurrencyDisplay(impacto26Meses);
+      ratAjustadoOutput.textContent=`${ratAjustado.toFixed(4).replace('.',',')}%`;
+      custoAtualOutput.textContent=formatToCurrencyDisplay(custoAtual);
+      custoMinimoOutput.textContent=formatToCurrencyDisplay(custoMinimo);
+      impactoTotalOutput.textContent=formatToCurrencyDisplay(impacto26Meses);
     }
 
     ratInput.addEventListener('input', calcularImpacto);
-    fapInput.addEventListener('input', () => calcularImpacto());
-    folhaInput.addEventListener('input', (e) => { formatCurrencyInput(e); calcularImpacto(); });
+    fapInput.addEventListener('input', calcularImpacto);
+    folhaInput.addEventListener('input',(e)=>{formatCurrencyInput(e);calcularImpacto();});
     document.addEventListener('DOMContentLoaded', calcularImpacto);
   </script>
-
 </body>
 </html>

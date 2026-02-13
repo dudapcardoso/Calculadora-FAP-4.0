@@ -137,7 +137,7 @@
                 <li>As perguntas foram formuladas para que <b>SIM</b> seja o cenário <b>positivo</b>.</li>
                 <li>Ao marcar <b>SIM</b>, somamos o peso positivo. Ao marcar <b>NÃO</b>, aplicamos uma penalidade negativa.</li>
                 <li><b>Score inicial:</b> 0. O score final pode ser negativo.</li>
-                <li><b>Regra de teto (pilares):</b> se qualquer pilar ficar <b>NÃO</b>, a classificação máxima será <b>Alto</b> (não chega em <b>Pacificado</b>).</li>
+                <li><b>Regra de pilar:</b> se qualquer pilar ficar <b>NÃO</b>, a classificação final será <b>Baixo</b>, independentemente do score.</li>
               </ul>
             </div>
 
@@ -149,7 +149,7 @@
                 <div class="flex items-center justify-between"><span>Médio</span><span class="font-bold">35–64</span></div>
                 <div class="flex items-center justify-between"><span>Baixo</span><span class="font-bold">&lt; 35</span></div>
               </div>
-              <p class="help-text mt-3">*A regra de teto pode reduzir “Pacificado” para “Alto”.</p>
+              <p class="help-text mt-3">*Pilares NÃO atendidos derrubam para “Baixo”.</p>
             </div>
           </div>
         </div>
@@ -169,7 +169,7 @@
                 <div class="flex items-center gap-3 flex-wrap">
                   <span id="badge" class="badge badge-neutral">—</span>
                   <span id="cap-note" class="text-xs text-gray-500 hidden">
-                    *Classificação limitada pela regra de teto (pilares).
+                    *Classificação derrubada por pilar não atendido.
                   </span>
                 </div>
               </div>
@@ -188,7 +188,7 @@
           <!-- QUESTIONS -->
           <div class="space-y-3 sm:space-y-4">
 
-            <!-- Q1 -->
+            <!-- Q1 (NÃO É PILAR) -->
             <div class="metric-card flex items-start justify-between gap-4">
               <div class="flex-1">
                 <div class="flex items-start gap-2">
@@ -198,12 +198,12 @@
                   <div class="tip" tabindex="0">
                     <span class="tip-btn" aria-label="Ajuda">i</span>
                     <div class="tip-box">
-                      <b>Marque SIM</b> quando o prêmio é pago apenas a empregados (segurados empregados).<br>
-                      Se houver pagamento a PJ/associado/CI, marque <b>NÃO</b>.
+                      <b>SIM</b> quando o prêmio é pago apenas a empregados.<br>
+                      <b>NÃO</b> se houver pagamento a PJ/associado/CI.
                     </div>
                   </div>
                 </div>
-                <p class="help-text">Peso: +25 (SIM) | Penalidade: -40 (NÃO) • Pilar</p>
+                <p class="help-text">Peso: +25 (SIM) | Penalidade: -40 (NÃO)</p>
               </div>
               <label class="flex items-center gap-3">
                 <span class="text-sm font-bold text-gray-600">NÃO</span>
@@ -224,7 +224,7 @@
                     <span class="tip-btn" aria-label="Ajuda">i</span>
                     <div class="tip-box">
                       <b>SIM</b> se não há dever jurídico de pagar.<br>
-                      <b>NÃO</b> se existe imposição legal/normativa obrigando o pagamento (ou sua estrutura).
+                      <b>NÃO</b> se existe imposição legal/normativa obrigando o pagamento.
                     </div>
                   </div>
                 </div>
@@ -238,7 +238,7 @@
               </label>
             </div>
 
-            <!-- Q3 -->
+            <!-- Q3 (PILAR) -->
             <div class="metric-card flex items-start justify-between gap-4">
               <div class="flex-1">
                 <div class="flex items-start gap-2">
@@ -249,7 +249,7 @@
                     <span class="tip-btn" aria-label="Ajuda">i</span>
                     <div class="tip-box">
                       <b>SIM</b> se o contrato individual não prevê o prêmio como direito/garantia.<br>
-                      <b>NÃO</b> se houver cláusula/carta proposta prometendo bônus como parte garantida do pacote.
+                      <b>NÃO</b> se houver promessa/garantia de bônus no contrato/carta proposta.
                     </div>
                   </div>
                 </div>
@@ -273,8 +273,8 @@
                   <div class="tip" tabindex="0">
                     <span class="tip-btn" aria-label="Ajuda">i</span>
                     <div class="tip-box">
-                      <b>SIM</b> quando o instrumento coletivo é apenas facultativo e não fixa valor mínimo/reajuste.<br>
-                      <b>NÃO</b> se impõe regra/valor/reajuste/determinação de pagamento.
+                      <b>SIM</b> quando é facultativo (sem valor mínimo/reajuste/determinação).<br>
+                      <b>NÃO</b> se impõe regra/valor/reajuste/determinação.
                     </div>
                   </div>
                 </div>
@@ -288,7 +288,7 @@
               </label>
             </div>
 
-            <!-- Q5 -->
+            <!-- Q5 (PILAR) -->
             <div class="metric-card flex items-start justify-between gap-4">
               <div class="flex-1">
                 <div class="flex items-start gap-2">
@@ -298,8 +298,8 @@
                   <div class="tip" tabindex="0">
                     <span class="tip-btn" aria-label="Ajuda">i</span>
                     <div class="tip-box">
-                      <b>SIM</b> se há evidência do “ordinariamente esperado” e do “superado” (metas, histórico, relatórios).<br>
-                      <b>NÃO</b> se não há como comprovar objetivamente o superamento.
+                      <b>SIM</b> se há evidências do esperado e do superado.<br>
+                      <b>NÃO</b> se não há comprovação objetiva do superamento.
                     </div>
                   </div>
                 </div>
@@ -323,7 +323,7 @@
                   <div class="tip" tabindex="0">
                     <span class="tip-btn" aria-label="Ajuda">i</span>
                     <div class="tip-box">
-                      <b>SIM</b> quando existe política/regulamento com critérios, elegibilidade e apuração mínima.<br>
+                      <b>SIM</b> quando existe política/regulamento com critérios e apuração mínima.<br>
                       <b>NÃO</b> se a prática é informal/sem documento.
                     </div>
                   </div>
@@ -348,8 +348,8 @@
                   <div class="tip" tabindex="0">
                     <span class="tip-btn" aria-label="Ajuda">i</span>
                     <div class="tip-box">
-                      <b>SIM</b> se não houve “moeda de troca” individual (ex.: bônus garantido na contratação/aditivo).<br>
-                      <b>NÃO</b> se houve ajuste bilateral prévio gerando obrigação.
+                      <b>SIM</b> se não houve ajuste bilateral prévio (contratação/aditivo com bônus garantido).<br>
+                      <b>NÃO</b> se houve negociação individual gerando obrigação.
                     </div>
                   </div>
                 </div>
@@ -373,8 +373,8 @@
                   <div class="tip" tabindex="0">
                     <span class="tip-btn" aria-label="Ajuda">i</span>
                     <div class="tip-box">
-                      <b>SIM</b> quando a política é renovada/ajustada por ciclo (ex.: anual) e não vira obrigação permanente.<br>
-                      <b>NÃO</b> se está “amarrada” a obrigação contínua/inalterável.
+                      <b>SIM</b> quando é renovada/ajustada por ciclo (ex.: anual).<br>
+                      <b>NÃO</b> se vira obrigação contínua/inalterável.
                     </div>
                   </div>
                 </div>
@@ -398,8 +398,8 @@
                   <div class="tip" tabindex="0">
                     <span class="tip-btn" aria-label="Ajuda">i</span>
                     <div class="tip-box">
-                      <b>SIM</b> se há critérios auditáveis (indicadores, pontuação, evidências).<br>
-                      <b>NÃO</b> se é totalmente subjetivo e sem registros.
+                      <b>SIM</b> se há critérios auditáveis (indicadores/evidências).<br>
+                      <b>NÃO</b> se é subjetivo e sem registros.
                     </div>
                   </div>
                 </div>
@@ -428,17 +428,21 @@
   </section>
 
   <script>
-    // Pesos (SIM) e Penalidades (NÃO)
     const QUESTIONS = [
-      { id: "q1", yes:  25, no: -40, pillar: true  }, // CLT only
-      { id: "q2", yes:  20, no: -35, pillar: false }, // no legal obligation
-      { id: "q3", yes:  25, no: -45, pillar: true  }, // not in employment contract
-      { id: "q4", yes:  15, no: -30, pillar: false }, // CCT/ACT not binding
-      { id: "q5", yes:  25, no: -40, pillar: true  }, // proof expected vs exceeded
-      { id: "q6", yes:  10, no: -15, pillar: false }, // policy exists
-      { id: "q7", yes:  20, no: -30, pillar: false }, // unilateral
-      { id: "q8", yes:  15, no: -20, pillar: false }, // autonomy by cycle
-      { id: "q9", yes:  15, no: -25, pillar: false }, // measurable
+      // q1 NÃO é pilar (ajuste pedido)
+      { id: "q1", yes:  25, no: -40, pillar: false },
+
+      { id: "q2", yes:  20, no: -35, pillar: false },
+
+      // Pilares atuais:
+      { id: "q3", yes:  25, no: -45, pillar: true  },
+      { id: "q4", yes:  15, no: -30, pillar: false },
+      { id: "q5", yes:  25, no: -40, pillar: true  },
+
+      { id: "q6", yes:  10, no: -15, pillar: false },
+      { id: "q7", yes:  20, no: -30, pillar: false },
+      { id: "q8", yes:  15, no: -20, pillar: false },
+      { id: "q9", yes:  15, no: -25, pillar: false },
     ];
 
     function getScoreAndPillars() {
@@ -449,6 +453,7 @@
         const el = document.getElementById(q.id);
         const isYes = !!el.checked; // checked = SIM
         score += isYes ? q.yes : q.no;
+
         if (q.pillar && !isYes) pillarFailed = true;
       });
 
@@ -474,14 +479,12 @@
 
     function updateUI() {
       const { score, pillarFailed } = getScoreAndPillars();
-
       let label = classify(score);
 
-      // Regra de teto (AJUSTADA):
-      // Se qualquer pilar for NÃO, impede apenas "Pacificado" (cai para "Alto")
+      // Regra dos pilares: se qualquer pilar for NÃO, derruba para "Baixo"
       const capNote = document.getElementById("cap-note");
-      if (pillarFailed && label === "Pacificado") {
-        label = "Alto";
+      if (pillarFailed) {
+        label = "Baixo";
         capNote.classList.remove("hidden");
       } else {
         capNote.classList.add("hidden");

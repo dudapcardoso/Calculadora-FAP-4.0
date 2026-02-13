@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Matriz de Risco – Premiação (COSIT 10/2026)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Tailwind apenas nesta página -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'tax-blue': '#152E3E',
+            'tax-gold': '#E2B874',
+            'tax-gray': '#EBEBEB',
+            'tax-dark-gray': '#6B7280',
+            'tax-bg-light': '#F9FAFB',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html,body{ margin:0; padding:0; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
+    #matriz-premiacao{ background:#f6f6f6; min-height:100vh; }
+    .header{ background:#152e3e; padding:1rem 0; margin-bottom:0; }
+    @media(min-width:768px){ .header{ padding:2rem 0; } }
+    .golden-stripe{ background:#dba958; height:6px; width:100%; }
+    .logo-container{ display:flex; align-items:center; }
+    .logo-image{ height:40px; width:auto; max-width:150px; }
+    @media(min-width:768px){ .logo-image{ height:45px; max-width:200px; } }
+    #matriz-premiacao .main-card{ background:#fff; border-radius:16px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); border:1px solid #e5e7eb; overflow:hidden; }
+    .section-header{ background:#f3f4f6; border-bottom:1px solid #e5e7eb; }
+    .metric-card{ background:#fff; border-radius:12px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.1); border:1px solid #f3f4f6; transition:all .2s ease; }
+    @media(min-width:768px){ .metric-card{ padding:24px; } }
+    .metric-card:hover{ transform:translateY(-2px); }
+    .help-text{ color:#6b7280; font-size:12px; margin-top:6px; font-weight:500; }
+
+    /* Toggle */
+    .toggle{
+      width:46px; height:26px; border-radius:9999px;
+      background:#d1d5db; position:relative; transition:all .2s ease;
+      cursor:pointer; flex-shrink:0;
+      border:1px solid #cbd5e1;
+    }
+    .toggle::after{
+      content:""; width:22px; height:22px; border-radius:9999px;
+      background:#fff; position:absolute; top:1px; left:1px;
+      transition:all .2s ease; box-shadow:0 1px 2px rgba(0,0,0,.15);
+    }
+    input:checked + .toggle{ background:#E2B874; border-color:#dba958; }
+    input:checked + .toggle::after{ transform:translateX(20px); }
+
+    /* Tooltip */
+    .tip{ position:relative; display:inline-flex; align-items:center; justify-content:center; }
+    .tip-btn{
+      width:18px; height:18px; border-radius:9999px;
+      background:#e5e7eb; color:#374151; font-weight:800;
+      font-size:12px; line-height:18px; text-align:center;
+      border:1px solid #d1d5db;
+      cursor:help;
+      user-select:none;
+    }
+    .tip:hover .tip-box, .tip:focus-within .tip-box{ opacity:1; transform:translateY(0); pointer-events:auto; }
+    .tip-box{
+      position:absolute; z-index:50; width:320px;
+      right:0; top:26px;
+      background:#111827; color:#f9fafb; font-size:12px; line-height:1.35;
+      padding:10px 12px; border-radius:12px;
+      box-shadow:0 10px 15px -3px rgba(0,0,0,0.25);
+      opacity:0; transform:translateY(-4px); pointer-events:none;
+      transition:all .15s ease;
+    }
+    .tip-box::before{
+      content:""; position:absolute; right:10px; top:-6px;
+      border-width:0 6px 6px 6px; border-style:solid;
+      border-color:transparent transparent #111827 transparent;
+    }
+
+    /* Badge */
+    .badge{ display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .75rem; border-radius:9999px; font-weight:800; }
+    .badge-neutral{ background:#f3f4f6; color:#111827; border:1px solid #e5e7eb; }
+    .badge-good{ background:rgba(34,197,94,.15); color:#14532d; border:1px solid rgba(34,197,94,.25); }
+    .badge-warn{ background:rgba(234,179,8,.15); color:#713f12; border:1px solid rgba(234,179,8,.25); }
+    .badge-mid{ background:rgba(59,130,246,.15); color:#1e3a8a; border:1px solid rgba(59,130,246,.25); }
+    .badge-bad{ background:rgba(239,68,68,.15); color:#7f1d1d; border:1px solid rgba(239,68,68,.25); }
+
+    @media(max-width:767px){
+      .header .container{ padding-left:1rem; padding-right:1rem; }
+      .title-container h1{ font-size:1.25rem; line-height:1.75rem; }
+      .title-container p{ font-size:.75rem; }
+      #matriz-premiacao .container{ padding-left:1rem; padding-right:1rem; margin-top:1rem; }
+      .section-header{ padding:1.5rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col sm:flex-row items-center justify-between py-4 gap-4">
+        <div class="logo-container">
+          <img src="http://www.reformatributaria.com/wp-content/uploads/2025/09/Logo-ROIT-branca-e-dourada.png" alt="ROIT" class="logo-image">
+        </div>
+        <div class="title-container text-center flex-1 order-3 sm:order-2">
+          <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white">Matriz de Risco – Premiação (COSIT 10/2026)</h1>
+          <p class="text-xs sm:text-sm text-gray-300 mt-1">Checklist objetivo com pontuação automática e classificação de risco</p>
+        </div>
+        <div class="text-center sm:text-right order-2 sm:order-3">
+          <p class="text-xs sm:text-sm text-gray-300">ROIT | Previdenciário</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="golden-stripe"></div>
+
+  <section id="matriz-premiacao" class="text-gray-800">
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 lg:p-12 max-w-5xl">
+
+      <div class="main-card overflow-hidden">
+        <!-- INTRO / METODOLOGIA -->
+        <div class="section-header p-4 sm:p-6 md:p-8 lg:p-10">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center">
+            <span class="bg-yellow-600 text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">1</span>
+            Como funciona a pontuação
+          </h2>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div class="metric-card lg:col-span-2">
+              <p class="text-sm text-gray-700 font-semibold mb-2">Regras</p>
+              <ul class="text-sm text-gray-600 space-y-2 list-disc pl-5">
+                <li>As perguntas foram formuladas para que <b>SIM</b> seja o cenário <b>positivo</b>.</li>
+                <li>Ao marcar <b>SIM</b>, somamos o peso positivo. Ao marcar <b>NÃO</b>, aplicamos uma penalidade negativa.</li>
+                <li><b>Score inicial:</b> 0. O score final pode ser negativo.</li>
+                <li><b>Regra de teto (pilares):</b> se qualquer pilar ficar <b>NÃO</b>, a classificação máxima será <b>Alto</b> (não chega em <b>Pacificado</b>).</li>
+              </ul>
+            </div>
+
+            <div class="metric-card">
+              <p class="text-sm text-gray-700 font-semibold mb-2">Faixas de classificação</p>
+              <div class="space-y-2 text-sm text-gray-700">
+                <div class="flex items-center justify-between"><span>Pacificado</span><span class="font-bold">≥ 80</span></div>
+                <div class="flex items-center justify-between"><span>Alto</span><span class="font-bold">65–79</span></div>
+                <div class="flex items-center justify-between"><span>Médio</span><span class="font-bold">35–64</span></div>
+                <div class="flex items-center justify-between"><span>Baixo</span><span class="font-bold">&lt; 35</span></div>
+              </div>
+              <p class="help-text mt-3">*A regra de teto pode reduzir “Pacificado” para “Alto”.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHECKLIST -->
+        <div class="p-4 sm:p-6 md:p-8 lg:p-10">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-6 sm:mb-8 flex items-center">
+            <span class="bg-yellow-600 text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">2</span>
+            Responda ao checklist (SIM = atende)
+          </h2>
+
+          <!-- RESULT SUMMARY (CLARO) -->
+          <div class="metric-card mb-8 sm:mb-10">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <p class="text-sm text-gray-600 font-medium mb-1">Classificação</p>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span id="badge" class="badge badge-neutral">—</span>
+                  <span id="cap-note" class="text-xs text-gray-500 hidden">
+                    *Classificação limitada pela regra de teto (pilares).
+                  </span>
+                </div>
+              </div>
+
+              <div class="text-left sm:text-right">
+                <p class="text-sm text-gray-600 font-medium mb-1">Score</p>
+                <p id="score" class="text-3xl sm:text-4xl font-extrabold text-gray-800">0</p>
+              </div>
+            </div>
+
+            <div class="mt-4 text-xs sm:text-sm text-gray-600 bg-gray-50 rounded-lg p-3">
+              <b>Faixas:</b> Pacificado ≥ 80 | Alto 65–79 | Médio 35–64 | Baixo &lt; 35
+            </div>
+          </div>
+
+          <!-- QUESTIONS -->
+          <div class="space-y-3 sm:space-y-4">
+
+            <!-- Q1 -->
+            <div class="metric-card flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="flex items-start gap-2">
+                  <p class="text-sm sm:text-base font-semibold text-gray-800">
+                    1) O pagamento é realizado exclusivamente a empregados CLT (não PJ/CI/associado)?
+                  </p>
+                  <div class="tip" tabindex="0">
+                    <span class="tip-btn" aria-label="Ajuda">i</span>
+                    <div class="tip-box">
+                      <b>Marque SIM</b> quando o prêmio é pago apenas a empregados (segurados empregados).<br>
+                      Se houver pagamento a PJ/associado/CI, marque <b>NÃO</b>.
+                    </div>
+                  </div>
+                </div>
+                <p class="help-text">Peso: +25 (SIM) | Penalidade: -40 (NÃO) • Pilar</p>
+              </div>
+              <label class="flex items-center gap-3">
+                <span class="text-sm font-bold text-gray-600">NÃO</span>
+                <input id="q1" type="checkbox" class="sr-only">
+                <span class="toggle" aria-hidden="true"></span>
+                <span class="text-sm font-bold text-gray-800">SIM</span>
+              </label>
+            </div>
+
+            <!-- Q2 -->
+            <div class="metric-card flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="flex items-start gap-2">
+                  <p class="text-sm sm:text-base font-semibold text-gray-800">
+                    2) O pagamento não decorre de obrigação legal (lei/sentença normativa etc.)?
+                  </p>
+                  <div class="tip" tabindex="0">
+                    <span class="tip-btn" aria-label="Ajuda">i</span>
+                    <div class="tip-box">
+                      <b>SIM</b> se não há dever jurídico de pagar.<br>
+                      <b>NÃO</b> se existe imposição legal/normativa obrigando o pagamento (ou sua estrutura).
+                    </div>
+                  </div>
+                </div>
+                <p class="help-text">Peso: +20 (SIM) | Penalidade: -35 (NÃO)</p>
+              </div>
+              <label class="flex items-center gap-3">
+                <span class="text-sm font-bold text-gray-600">NÃO</span>
+                <input id="q2" type="checkbox" class="sr-only">
+                <span class="toggle" aria-hidden="true"></span>
+                <span class="text-sm font-bold text-gray-800">SIM</span>
+              </label>
+            </div>
+
+            <!-- Q3 -->
+            <div class="metric-card flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="flex items-start gap-2">
+                  <p class="text-sm sm:text-base font-semibold text-gray-800">
+                    3) Não há previsão do prêmio no contrato de trabalho (nem como parcela garantida/condição de contratação)?
+                  </p>
+                  <div class="tip" tabindex="0">
+                    <span class="tip-btn" aria-label="Ajuda">i</span>
+                    <div class="tip-box">
+                      <b>SIM</b> se o contrato individual não prevê o prêmio como direito/garantia.<br>
+                      <b>NÃO</b> se houver cláusula/carta proposta prometendo bônus como parte garantida do pacote.
+                    </div>
+                  </div>
+                </div>
+                <p class="help-text">Peso: +25 (SIM) | Penalidade: -45 (NÃO) • Pilar</p>
+              </div>
+              <label class="flex items-center gap-3">
+                <span class="text-sm font-bold text-gray-600">NÃO</span>
+                <input id="q3" type="checkbox" class="sr-only">
+                <span class="toggle" aria-hidden="true"></span>
+                <span class="text-sm font-bold text-gray-800">SIM</span>
+              </label>
+            </div>
+
+            <!-- Q4 -->
+            <div class="metric-card flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="flex items-start gap-2">
+                  <p class="text-sm sm:text-base font-semibold text-gray-800">
+                    4) CCT/ACT/Sindicato não impõe obrigatoriedade, valor mínimo ou regra vinculante de pagamento?
+                  </p>
+                  <div class="tip" tabindex="0">
+                    <span class="tip-btn" aria-label="Ajuda">i</span>
+                    <div class="tip-box">
+                      <b>SIM</b> quando o instrumento coletivo é apenas facultativo e não fixa valor mínimo/reajuste.<br>
+                      <b>NÃO</b> se impõe regra/valor/reajuste/determinação de pagamento.
+                    </div>
+                  </div>
+                </div>
+                <p class="help-text">Peso: +15 (SIM) | Penalidade: -30 (NÃO)</p>
+              </div>
+              <label class="flex items-center gap-3">
+                <span class="text-sm font-bold text-gray-600">NÃO</span>
+                <input id="q4" type="checkbox" class="sr-only">
+                <span class="toggle" aria-hidden="true"></span>
+                <span class="text-sm font-bold text-gray-800">SIM</span>
+              </label>
+            </div>
+
+            <!-- Q5 -->
+            <div class="metric-card flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="flex items-start gap-2">
+                  <p class="text-sm sm:text-base font-semibold text-gray-800">
+                    5) Existe prova objetiva de “esperado vs. superado” (meta/baseline/comparativo/histórico)?
+                  </p>
+                  <div class="tip" tabindex="0">
+                    <span class="tip-btn" aria-label="Ajuda">i</span>
+                    <div class="tip-box">
+                      <b>SIM</b> se há evidência do “ordinariamente esperado” e do “superado” (metas, histórico, relatórios).<br>
+                      <b>NÃO</b> se não há como comprovar objetivamente o superamento.
+                    </div>
+                  </div>
+                </div>
+                <p class="help-text">Peso: +25 (SIM) | Penalidade: -40 (NÃO) • Pilar</p>
+              </div>
+              <label class="flex items-center gap-3">
+                <span class="text-sm font-bold text-gray-600">NÃO</span>
+                <input id="q5" type="checkbox" class="sr-only">
+                <span class="toggle" aria-hidden="true"></span>
+                <span class="text-sm font-bold text-gray-800">SIM</span>
+              </label>
+            </div>
+
+            <!-- Q6 -->
+            <div class="metric-card flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="flex items-start gap-2">
+                  <p class="text-sm sm:text-base font-semibold text-gray-800">
+                    6) Existe política/regulamento formal com critérios e parâmetros definidos?
+                  </p>
+                  <div class="tip" tabindex="0">
+                    <span class="tip-btn" aria-label="Ajuda">i</span>
+                    <div class="tip-box">
+                      <b>SIM</b> quando existe política/regulamento com critérios, elegibilidade e apuração mínima.<br>
+                      <b>NÃO</b> se a prática é informal/sem documento.
+                    </div>
+                  </div>
+                </div>
+                <p class="help-text">Peso: +10 (SIM) | Penalidade: -15 (NÃO)</p>
+              </div>
+              <label class="flex items-center gap-3">
+                <span class="text-sm font-bold text-gray-600">NÃO</span>
+                <input id="q6" type="checkbox" class="sr-only">
+                <span class="toggle" aria-hidden="true"></span>
+                <span class="text-sm font-bold text-gray-800">SIM</span>
+              </label>
+            </div>
+
+            <!-- Q7 -->
+            <div class="metric-card flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="flex items-start gap-2">
+                  <p class="text-sm sm:text-base font-semibold text-gray-800">
+                    7) A política foi instituída unilateralmente, sem ajuste sinalagmático prévio (negociação individual que gere obrigação)?
+                  </p>
+                  <div class="tip" tabindex="0">
+                    <span class="tip-btn" aria-label="Ajuda">i</span>
+                    <div class="tip-box">
+                      <b>SIM</b> se não houve “moeda de troca” individual (ex.: bônus garantido na contratação/aditivo).<br>
+                      <b>NÃO</b> se houve ajuste bilateral prévio gerando obrigação.
+                    </div>
+                  </div>
+                </div>
+                <p class="help-text">Peso: +20 (SIM) | Penalidade: -30 (NÃO)</p>
+              </div>
+              <label class="flex items-center gap-3">
+                <span class="text-sm font-bold text-gray-600">NÃO</span>
+                <input id="q7" type="checkbox" class="sr-only">
+                <span class="toggle" aria-hidden="true"></span>
+                <span class="text-sm font-bold text-gray-800">SIM</span>
+              </label>
+            </div>
+
+            <!-- Q8 -->
+            <div class="metric-card flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="flex items-start gap-2">
+                  <p class="text-sm sm:text-base font-semibold text-gray-800">
+                    8) A liberalidade está preservada por ciclo (autonomia para instituir/alterar/descontinuar a política)?
+                  </p>
+                  <div class="tip" tabindex="0">
+                    <span class="tip-btn" aria-label="Ajuda">i</span>
+                    <div class="tip-box">
+                      <b>SIM</b> quando a política é renovada/ajustada por ciclo (ex.: anual) e não vira obrigação permanente.<br>
+                      <b>NÃO</b> se está “amarrada” a obrigação contínua/inalterável.
+                    </div>
+                  </div>
+                </div>
+                <p class="help-text">Peso: +15 (SIM) | Penalidade: -20 (NÃO)</p>
+              </div>
+              <label class="flex items-center gap-3">
+                <span class="text-sm font-bold text-gray-600">NÃO</span>
+                <input id="q8" type="checkbox" class="sr-only">
+                <span class="toggle" aria-hidden="true"></span>
+                <span class="text-sm font-bold text-gray-800">SIM</span>
+              </label>
+            </div>
+
+            <!-- Q9 -->
+            <div class="metric-card flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="flex items-start gap-2">
+                  <p class="text-sm sm:text-base font-semibold text-gray-800">
+                    9) O desempenho superior é objetivamente mensurável (quantitativo ou qualitativo com rastreabilidade)?
+                  </p>
+                  <div class="tip" tabindex="0">
+                    <span class="tip-btn" aria-label="Ajuda">i</span>
+                    <div class="tip-box">
+                      <b>SIM</b> se há critérios auditáveis (indicadores, pontuação, evidências).<br>
+                      <b>NÃO</b> se é totalmente subjetivo e sem registros.
+                    </div>
+                  </div>
+                </div>
+                <p class="help-text">Peso: +15 (SIM) | Penalidade: -25 (NÃO)</p>
+              </div>
+              <label class="flex items-center gap-3">
+                <span class="text-sm font-bold text-gray-600">NÃO</span>
+                <input id="q9" type="checkbox" class="sr-only">
+                <span class="toggle" aria-hidden="true"></span>
+                <span class="text-sm font-bold text-gray-800">SIM</span>
+              </label>
+            </div>
+
+          </div>
+
+          <div class="mt-8 text-center text-xs sm:text-sm text-gray-500 bg-gray-50 rounded-lg p-3 sm:p-4 max-w-3xl mx-auto">
+            *Ferramenta de apoio para triagem e alinhamento interno. A classificação pode variar conforme documentos e contexto do caso concreto.
+          </div>
+        </div>
+      </div>
+
+      <footer class="text-center p-4 sm:p-6">
+        <p class="text-gray-500 text-sm">ROIT | Matriz de Risco – Premiação (COSIT 10/2026)</p>
+      </footer>
+    </div>
+  </section>
+
+  <script>
+    // Pesos (SIM) e Penalidades (NÃO)
+    const QUESTIONS = [
+      { id: "q1", yes:  25, no: -40, pillar: true  }, // CLT only
+      { id: "q2", yes:  20, no: -35, pillar: false }, // no legal obligation
+      { id: "q3", yes:  25, no: -45, pillar: true  }, // not in employment contract
+      { id: "q4", yes:  15, no: -30, pillar: false }, // CCT/ACT not binding
+      { id: "q5", yes:  25, no: -40, pillar: true  }, // proof expected vs exceeded
+      { id: "q6", yes:  10, no: -15, pillar: false }, // policy exists
+      { id: "q7", yes:  20, no: -30, pillar: false }, // unilateral
+      { id: "q8", yes:  15, no: -20, pillar: false }, // autonomy by cycle
+      { id: "q9", yes:  15, no: -25, pillar: false }, // measurable
+    ];
+
+    function getScoreAndPillars() {
+      let score = 0;
+      let pillarFailed = false;
+
+      QUESTIONS.forEach(q => {
+        const el = document.getElementById(q.id);
+        const isYes = !!el.checked; // checked = SIM
+        score += isYes ? q.yes : q.no;
+        if (q.pillar && !isYes) pillarFailed = true;
+      });
+
+      return { score, pillarFailed };
+    }
+
+    function classify(score) {
+      if (score >= 80) return "Pacificado";
+      if (score >= 65) return "Alto";
+      if (score >= 35) return "Médio";
+      return "Baixo";
+    }
+
+    function badgeClass(label){
+      switch(label){
+        case "Pacificado": return "badge badge-good";
+        case "Alto": return "badge badge-warn";
+        case "Médio": return "badge badge-mid";
+        case "Baixo": return "badge badge-bad";
+        default: return "badge badge-neutral";
+      }
+    }
+
+    function updateUI() {
+      const { score, pillarFailed } = getScoreAndPillars();
+
+      let label = classify(score);
+
+      // Regra de teto (AJUSTADA):
+      // Se qualquer pilar for NÃO, impede apenas "Pacificado" (cai para "Alto")
+      const capNote = document.getElementById("cap-note");
+      if (pillarFailed && label === "Pacificado") {
+        label = "Alto";
+        capNote.classList.remove("hidden");
+      } else {
+        capNote.classList.add("hidden");
+      }
+
+      document.getElementById("score").textContent = String(score);
+      const badge = document.getElementById("badge");
+      badge.textContent = label;
+      badge.className = badgeClass(label);
+    }
+
+    function bind() {
+      QUESTIONS.forEach(q => {
+        const el = document.getElementById(q.id);
+        el.addEventListener("change", updateUI);
+      });
+      updateUI();
+    }
+
+    document.addEventListener("DOMContentLoaded", bind);
+  </script>
+</body>
+</html>

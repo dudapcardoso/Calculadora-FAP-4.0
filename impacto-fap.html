@@ -113,7 +113,7 @@
           <nav class="top-nav flex flex-wrap items-center justify-center gap-2">
             <!-- AJUSTE OS HREFs PARA SEUS ARQUIVOS -->
             <a href="index.html">Calculadora</a>
-            <a href="impactos-fap.html" class="is-active">Impactos do FAP</a>
+            <a href="impacto-fap.html" class="is-active">Impacto do FAP</a>
             <a href="como-o-fap-e-calculado.html">Como o FAP é calculado</a>
           </nav>
         </div>
@@ -133,7 +133,9 @@
             <span class="bg-yellow-600 text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">1</span>
             Insira os dados da sua empresa
           </h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+
+          <!-- ✅ Ajuste: agora são 4 campos -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8">
             <div>
               <label for="rat" class="label">Alíquota RAT (%)</label>
               <select id="rat" class="w-full input-field">
@@ -143,11 +145,21 @@
               </select>
               <p class="help-text">Selecione o risco da sua atividade</p>
             </div>
+
             <div>
-              <label for="fap" class="label">Índice FAP Atual</label>
-              <input type="text" id="fap" value="1,0000" inputmode="decimal" placeholder="1,0000" class="w-full input-field">
-              <p class="help-text">Use vírgula: ex. 0,7500</p>
+              <!-- ✅ Ajuste: renomeado -->
+              <label for="fapPublicado" class="label">Índice FAP Publicado</label>
+              <input type="text" id="fapPublicado" value="1,0000" inputmode="decimal" placeholder="1,0000" class="w-full input-field">
+              <p class="help-text">Use vírgula: ex. 1,7859</p>
             </div>
+
+            <div>
+              <!-- ✅ Ajuste: novo campo aberto -->
+              <label for="fapAlvo" class="label">Índice FAP Alvo</label>
+              <input type="text" id="fapAlvo" value="0,5000" inputmode="decimal" placeholder="0,5000" class="w-full input-field">
+              <p class="help-text">Ex.: 0,6000 • 1,2000 • 0,7500</p>
+            </div>
+
             <div>
               <label for="folha" class="label">Folha de Pagamento Mensal</label>
               <div class="relative">
@@ -169,23 +181,32 @@
           <!-- IMPACTO TOTAL -->
           <div class="result-card p-4 sm:p-6 md:p-8 text-center mb-8 sm:mb-10">
             <p class="text-lg sm:text-xl font-semibold text-white mb-2">Custo Adicional em 26 Meses</p>
-            <p class="text-blue-100 mb-4 sm:mb-6 opacity-90 text-sm sm:text-base">(Diferença entre seu FAP atual e o FAP mínimo)</p>
+
+            <!-- ✅ Ajuste: texto dinâmico -->
+            <p id="impacto-subtitle" class="text-blue-100 mb-4 sm:mb-6 opacity-90 text-sm sm:text-base">
+              (Diferença entre seu FAP publicado e o FAP alvo)
+            </p>
+
             <p id="impacto-total" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white">R$ 0,00</p>
           </div>
 
           <!-- MÉTRICAS -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-8">
             <div class="metric-card">
-              <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">RAT Ajustado</p>
+              <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">RAT Ajustado (Publicado)</p>
               <p id="rat-ajustado" class="text-2xl sm:text-3xl font-bold text-gray-800">1,0000%</p>
             </div>
+
+            <!-- ✅ Ajuste: nome -->
             <div class="metric-card">
-              <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Atual)</p>
-              <p id="custo-atual" class="text-2xl sm:text-3xl font-bold text-red-600">R$ 0,00</p>
+              <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Publicado)</p>
+              <p id="custo-publicado" class="text-2xl sm:text-3xl font-bold text-red-600">R$ 0,00</p>
             </div>
+
+            <!-- ✅ Ajuste: agora é ALVO (e não mínimo) -->
             <div class="metric-card sm:col-span-2 lg:col-span-1">
-              <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Mínimo)</p>
-              <p id="custo-minimo" class="text-2xl sm:text-3xl font-bold text-green-600">R$ 0,00</p>
+              <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Alvo)</p>
+              <p id="custo-alvo" class="text-2xl sm:text-3xl font-bold text-green-600">R$ 0,00</p>
             </div>
           </div>
 
@@ -204,20 +225,25 @@
   <!-- SCRIPT -->
   <script>
     const ratInput = document.getElementById('rat');
-    const fapInput = document.getElementById('fap');
+    const fapPublicadoInput = document.getElementById('fapPublicado'); // ✅ novo id
+    const fapAlvoInput = document.getElementById('fapAlvo');           // ✅ novo
     const folhaInput = document.getElementById('folha');
+
     const ratAjustadoOutput = document.getElementById('rat-ajustado');
-    const custoMinimoOutput = document.getElementById('custo-minimo');
-    const custoAtualOutput = document.getElementById('custo-atual');
+    const custoPublicadoOutput = document.getElementById('custo-publicado'); // ✅ novo id
+    const custoAlvoOutput = document.getElementById('custo-alvo');           // ✅ novo id
     const impactoTotalOutput = document.getElementById('impacto-total');
+    const impactoSubtitle = document.getElementById('impacto-subtitle');
 
     function formatToCurrencyDisplay(value){
       return value.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
     }
+
     function parseCurrencyToNumber(value){
       if(typeof value!=='string'||value==='')return 0;
       return parseFloat(value.replace(/\./g,'').replace(',','.'));
     }
+
     function formatCurrencyInput(event){
       const input=event.target;
       let value=input.value.replace(/\D/g,'');
@@ -225,31 +251,55 @@
       const numberValue=parseFloat(value)/100;
       input.value=numberValue.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
     }
+
     function parseFap(str){
       if(typeof str!=='string')return 0;
       return parseFloat(str.replace(/\./g,'').replace(',','.'))||0;
     }
 
+    function clampFap(v){
+      // opcional: mantém dentro do intervalo oficial
+      if(!isFinite(v)) return 0;
+      if(v < 0.5) return 0.5;
+      if(v > 2.0) return 2.0;
+      return v;
+    }
+
     function calcularImpacto(){
-      const rat=parseFloat(ratInput.value)||1;
-      const fap=parseFap(fapInput.value);
-      const folha=parseCurrencyToNumber(folhaInput.value)||0;
-      const fapMinimo=0.5000;
+      const rat = parseFloat(ratInput.value) || 1;
 
-      const ratAjustado=rat*fap;
-      const custoAtual=folha*(ratAjustado/100);
-      const custoMinimo=folha*((rat*fapMinimo)/100);
-      const impacto26Meses=Math.abs(custoAtual-custoMinimo)*26;
+      let fapPublicado = parseFap(fapPublicadoInput.value);
+      let fapAlvo = parseFap(fapAlvoInput.value);
 
-      ratAjustadoOutput.textContent=`${ratAjustado.toFixed(4).replace('.',',')}%`;
-      custoAtualOutput.textContent=formatToCurrencyDisplay(custoAtual);
-      custoMinimoOutput.textContent=formatToCurrencyDisplay(custoMinimo);
-      impactoTotalOutput.textContent=formatToCurrencyDisplay(impacto26Meses);
+      // mantém o comportamento mais "seguro" dentro do range
+      fapPublicado = clampFap(fapPublicado);
+      fapAlvo = clampFap(fapAlvo);
+
+      const folha = parseCurrencyToNumber(folhaInput.value) || 0;
+
+      const ratAjustadoPublicado = rat * fapPublicado;
+
+      const custoPublicado = folha * (ratAjustadoPublicado/100);
+      const custoAlvo = folha * ((rat * fapAlvo)/100);
+
+      const impacto26Meses = Math.abs(custoPublicado - custoAlvo) * 26;
+
+      ratAjustadoOutput.textContent = `${ratAjustadoPublicado.toFixed(4).replace('.',',')}%`;
+      custoPublicadoOutput.textContent = formatToCurrencyDisplay(custoPublicado);
+      custoAlvoOutput.textContent = formatToCurrencyDisplay(custoAlvo);
+      impactoTotalOutput.textContent = formatToCurrencyDisplay(impacto26Meses);
+
+      // subtítulo (mostra valores que estão sendo comparados)
+      impactoSubtitle.textContent =
+        `(Diferença entre FAP publicado ${fapPublicado.toFixed(4).replace('.',',')} e FAP alvo ${fapAlvo.toFixed(4).replace('.',',')})`;
     }
 
     ratInput.addEventListener('input', calcularImpacto);
-    fapInput.addEventListener('input', calcularImpacto);
+    fapPublicadoInput.addEventListener('input', calcularImpacto);
+    fapAlvoInput.addEventListener('input', calcularImpacto);
+
     folhaInput.addEventListener('input',(e)=>{formatCurrencyInput(e);calcularImpacto();});
+
     document.addEventListener('DOMContentLoaded', calcularImpacto);
   </script>
 </body>

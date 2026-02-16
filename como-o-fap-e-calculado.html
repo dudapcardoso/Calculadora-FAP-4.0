@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cálculo do FAP - Infográfico Interativo</title>
+    <title>Como o FAP é calculado - Infográfico Interativo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
@@ -26,6 +26,47 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--color-bg);
         }
+
+        /* ===== Header (igual ao estilo que fizemos em Impactos) ===== */
+        .header {
+            background: #152e3e;
+            padding: 1rem 0;
+            margin-bottom: 0;
+        }
+        @media (min-width: 768px) { .header { padding: 2rem 0; } }
+        .golden-stripe { background: #dba958; height: 6px; width: 100%; }
+
+        .top-nav a{
+            display:inline-flex;
+            align-items:center;
+            gap:.5rem;
+            padding:.45rem .75rem;
+            border-radius:999px;
+            font-weight:700;
+            font-size:12px;
+            line-height:1;
+            color:rgba(255,255,255,.85);
+            border:1px solid rgba(255,255,255,.15);
+            transition:all .15s ease;
+            white-space:nowrap;
+            text-decoration:none;
+        }
+        .top-nav a:hover{
+            color:#fff;
+            border-color:rgba(255,255,255,.35);
+            transform:translateY(-1px);
+        }
+        .top-nav a.is-active{
+            background:#dba958;
+            color:#152e3e;
+            border-color:#dba958;
+        }
+        .top-nav-wrap{ margin-top:12px; }
+        @media(max-width:767px){
+            .top-nav a{ font-size:11px; padding:.4rem .6rem; }
+        }
+
+        /* ===== Cards e componentes ===== */
         .card {
             background-color: var(--color-card-bg);
             color: var(--color-text-primary);
@@ -60,7 +101,7 @@
             .responsive-table th, .responsive-table td {
                 padding-left: 0.5rem;
                 padding-right: 0.5rem;
-                font-size: 0.85rem; /* fonte menor em mobile */
+                font-size: 0.85rem;
             }
         }
 
@@ -74,7 +115,7 @@
         /* Redução só nas seções 5 e 7 */
         .section-5 .katex-display,
         .section-7 .katex-display {
-            font-size: clamp(0.40rem, 1.2vw, 0.60rem); /* ↓ menor no mobile, sem afetar o resto */
+            font-size: clamp(0.40rem, 1.2vw, 0.60rem);
             line-height: 1.25;
             max-width: 100%;
             overflow-x: auto;
@@ -82,14 +123,35 @@
         }
     </style>
 </head>
-<body class="p-4 sm:p-6 md:p-8">
-    <div class="max-w-4xl mx-auto">
-        <!-- Header -->
-        <header class="text-center mb-10">
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white">Cálculo do FAP</h1>
-            <p class="text-lg mt-2" style="color: var(--color-accent);">Análise de Impactos e Metodologia</p>
-        </header>
 
+<body>
+    <!-- HEADER com navegação (igual ao Impactos) -->
+    <div class="header">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col items-center justify-between py-4 gap-3">
+                <div class="title-container text-center">
+                    <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white">
+                        Como o FAP é calculado
+                    </h1>
+                    <p class="text-xs sm:text-sm text-gray-300 mt-1">
+                        Metodologia, regras e simulações — de ponta a ponta
+                    </p>
+                </div>
+
+                <!-- NAV (AJUSTE OS HREFs) -->
+                <div class="top-nav-wrap w-full">
+                    <nav class="top-nav flex flex-wrap items-center justify-center gap-2">
+                        <a href="index.html">Calculadora</a>
+                        <a href="impactos-fap.html">Impactos do FAP</a>
+                        <a href="como-o-fap-e-calculado.html" class="is-active">Como o FAP é calculado</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="golden-stripe"></div>
+
+    <div class="max-w-4xl mx-auto p-4 sm:p-6 md:p-8">
         <div class="grid grid-cols-1 gap-8">
             <!-- 1 -->
             <section class="card p-6">
@@ -123,7 +185,7 @@
                      <p class="mt-4 text-sm text-gray-500 italic">A alta ponderação da Gravidade (50%) revela que a severidade de um acidente tem o maior peso na definição do FAP.</p>
                 </div>
             </section>
-            
+
             <!-- 3 -->
             <section class="card p-6">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)] mb-4">3. Quais ocorrências entram no cálculo?</h2>
@@ -135,12 +197,9 @@
                             <tr>
                                 <th scope="col" class="px-4 py-3">Código</th>
                                 <th scope="col" class="px-4 py-3">Descrição</th>
-                                <!-- Esconde no mobile -->
                                 <th scope="col" class="px-4 py-3 text-center hidden sm:table-cell">Frequência?</th>
                                 <th scope="col" class="px-4 py-3 text-center">Gravidade? (peso)</th>
-                                <!-- Esconde no mobile e só aparece a partir de md -->
                                 <th scope="col" class="px-4 py-3 text-center hidden md:table-cell">Custo?</th>
-                                <!-- Esconde no mobile e só aparece a partir de lg -->
                                 <th scope="col" class="px-4 py-3 hidden lg:table-cell">Observação</th>
                             </tr>
                         </thead>
@@ -216,7 +275,7 @@
                     </div>
                 </div>
             </section>
-            
+
             <!-- 5 (fonte menor) -->
             <section class="card p-6 section-5">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)] mb-4">5. Cálculo dos Indicadores Base</h2>
@@ -264,7 +323,7 @@
                     <li><strong>Sem acidentes:</strong> Garante o FAP mínimo de 0,5000 (bônus máximo).</li>
                     <li><strong>Omissão de CAT:</strong> Resulta no FAP máximo de 2,0000 (punição máxima).</li>
                     <li><strong>Morte ou Invalidez:</strong> Se ocorrer no 1º ano do período-base, o FAP fica travado em no mínimo 1,0000.</li>
-                    <li><strong>Rotatividade > 75%:</strong> Causa a perda do bônus, fixando o FAP em 1,0000.</li>
+                    <li><strong>Rotatividade &gt; 75%:</strong> Causa a perda do bônus, fixando o FAP em 1,0000.</li>
                 </ul>
             </section>
 
@@ -273,7 +332,6 @@
                 <h2 class="text-2xl font-bold text-[var(--color-bg)] mb-4">9. Caso Prático</h2>
                 <p class="text-[var(--color-text-secondary)] mb-4">Análise de uma empresa com RAT de 3% e folha de pagamento mensal de R$ 400.000,00.</p>
                 <div class="space-y-6">
-                    <!-- Cenário Publicado -->
                     <div>
                         <h3 class="font-semibold text-lg">Cenário Publicado (FAP 1,7859)</h3>
                         <div class="mt-2 space-y-2 text-sm text-gray-600">
@@ -282,7 +340,6 @@
                             <p><strong>Custo Anual (13 meses):</strong> R$ 21.430,80 × 13 = <span class="font-bold text-gray-800">R$ 278.600,40</span></p>
                         </div>
                     </div>
-                    <!-- Cenário Alvo -->
                     <div class="border-t pt-4">
                         <h3 class="font-semibold text-lg">Cenário Alvo (FAP 0,5000)</h3>
                         <div class="mt-2 space-y-2 text-sm text-gray-600">
@@ -292,7 +349,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Economia Potencial -->
                 <div class="border-t pt-4 mt-6">
                     <h3 class="font-bold text-lg text-gray-800">Economia Potencial</h3>
                     <div class="mt-2 space-y-2 text-sm">
@@ -343,7 +399,7 @@
                     </div>
                 </div>
             </section>
-            
+
             <!-- 11 -->
             <section class="card p-6">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)]">11. Ponto-Chave: O Efeito Bienal</h2>

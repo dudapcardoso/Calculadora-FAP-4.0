@@ -33,6 +33,36 @@
     .logo-container{ display:flex; align-items:center; }
     .logo-image{ height:40px; width:auto; max-width:150px; }
     @media(min-width:768px){ .logo-image{ height:45px; max-width:200px; } }
+
+    /* NAV */
+    .top-nav a{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      padding:.45rem .75rem;
+      border-radius:999px;
+      font-weight:700;
+      font-size:12px;
+      line-height:1;
+      color:rgba(255,255,255,.85);
+      border:1px solid rgba(255,255,255,.15);
+      transition:all .15s ease;
+      white-space:nowrap;
+    }
+    .top-nav a:hover{
+      color:#fff;
+      border-color:rgba(255,255,255,.35);
+      transform:translateY(-1px);
+    }
+    .top-nav a.is-active{
+      background:#dba958; /* dourado */
+      color:#152e3e;
+      border-color:#dba958;
+    }
+    .top-nav-wrap{
+      margin-top:12px;
+    }
+
     #calc-impacto-fap .main-card{ background:#fff; border-radius:16px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); border:1px solid #e5e7eb; overflow:hidden; }
     #calc-impacto-fap .input-field{ background:#fff; border:2px solid #d1d5db; border-radius:12px; transition:all .2s ease; color:#374151; font-weight:500; padding:14px 18px; font-size:16px; }
     #calc-impacto-fap .input-field:focus,#calc-impacto-fap .input-field:focus-within{ border-color:#152e3e; box-shadow:0 0 0 3px rgba(21,46,62,0.1); outline:none; background:#fff; }
@@ -57,25 +87,35 @@
       .result-card p:last-child{ font-size:2.5rem; }
       .metric-card{ padding:1.25rem; }
       .metric-card p:last-child{ font-size:1.5rem; }
+
+      /* no mobile, deixa o nav mais compacto */
+      .top-nav a{ font-size:11px; padding:.4rem .6rem; }
     }
   </style>
 </head>
 
 <body>
-  <!-- HEADER (sem logo) -->
+  <!-- HEADER (com navegação) -->
   <div class="header">
     <div class="container mx-auto px-6">
-      <div class="flex flex-col sm:flex-row items-center justify-between py-4 gap-4">
-        <!-- placeholder para manter alinhamento sem o logo -->
-        <div></div>
-
-        <div class="title-container text-center flex-1 order-3 sm:order-2">
-          <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white">Calcule o Impacto do FAP Majorado</h1>
-          <p class="text-xs sm:text-sm text-gray-300 mt-1">Simule o impacto financeiro do FAP majorado na sua empresa</p>
+      <div class="flex flex-col items-center justify-between py-4 gap-3">
+        <div class="title-container text-center">
+          <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white">
+            Calcule o Impacto do FAP Majorado
+          </h1>
+          <p class="text-xs sm:text-sm text-gray-300 mt-1">
+            Simule o impacto financeiro do FAP majorado na sua empresa
+          </p>
         </div>
 
-        <div class="text-center sm:text-right order-2 sm:order-3">
-          <p class="text-xs sm:text-sm text-gray-300">Calculadora FAP</p>
+        <!-- NAV -->
+        <div class="top-nav-wrap w-full">
+          <nav class="top-nav flex flex-wrap items-center justify-center gap-2">
+            <!-- AJUSTE OS HREFs PARA SEUS ARQUIVOS -->
+            <a href="index.html">Calculadora</a>
+            <a href="impactos-fap.html" class="is-active">Impactos do FAP</a>
+            <a href="como-o-fap-e-calculado.html">Como o FAP é calculado</a>
+          </nav>
         </div>
       </div>
     </div>
@@ -214,4 +254,3 @@
   </script>
 </body>
 </html>
-

@@ -26,7 +26,50 @@ layout: null
   </script>
 
   <style>
-    #calc-fap { background-color: #152E3E; min-height: 100vh; }
+    /* ===== Ajustes pedidos =====
+       1) Header igual às outras páginas
+       2) Background do conteúdo igual às outras páginas
+    */
+    #calc-fap { background-color: #f6f6f6; min-height: 100vh; } /* antes: #152E3E */
+
+    /* Header padrão (igual Impacto/Como é calculado) */
+    .header{ background:#152e3e; padding:1rem 0; margin-bottom:0; }
+    @media(min-width:768px){ .header{ padding:2rem 0; } }
+    .golden-stripe{ background:#dba958; height:6px; width:100%; }
+
+    .top-nav a{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      padding:.45rem .75rem;
+      border-radius:999px;
+      font-weight:700;
+      font-size:12px;
+      line-height:1;
+      color:rgba(255,255,255,.85);
+      border:1px solid rgba(255,255,255,.15);
+      transition:all .15s ease;
+      white-space:nowrap;
+      text-decoration:none;
+      background:rgba(255,255,255,.06);
+    }
+    .top-nav a:hover{
+      color:#fff;
+      border-color:rgba(255,255,255,.35);
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.12);
+    }
+    .top-nav a.is-active{
+      background:#dba958;
+      color:#152e3e;
+      border-color:#dba958;
+    }
+    .top-nav-wrap{ margin-top:12px; }
+    @media(max-width:767px){
+      .top-nav a{ font-size:11px; padding:.4rem .6rem; }
+    }
+
+    /* ===== Restante do seu CSS (mantido) ===== */
     .main-card{ background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1) }
     .input-field{ background:#F3F4F6;border:1px solid #D1D5DB;border-radius:.5rem;transition:all .2s;color:#152E3E }
     .input-field:focus{ border-color:#E2B874; box-shadow:0 0 0 2px rgba(226,184,116,.3); outline:none }
@@ -40,33 +83,41 @@ layout: null
     .blob { position:absolute; filter: blur(40px); opacity:.25; pointer-events:none; }
     .addon { position:absolute; right:.75rem; top:50%; transform:translateY(-50%); color:#6B7280; font-weight:600; }
     #flash{display:none} #flash.show{display:block}
-
-    /* NAV tabs (mesmo visual das outras páginas) */
-    .navtab{ padding:.5rem .9rem;border-radius:999px;border:1px solid transparent;color:#fff;background:rgba(255,255,255,.06); display:inline-block }
-    .navtab:hover{ background:rgba(255,255,255,.12) }
-    .navtab.is-active{ border-color:#E2B874;background:rgba(226,184,116,.12); color:#fff }
   </style>
 </head>
+
 <body>
 
 <section id="calc-fap" class="text-gray-800">
+  <!-- HEADER novo (igual às outras páginas) -->
+  <div class="header">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col items-center justify-between py-4 gap-3">
+        <div class="title-container text-center">
+          <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white">
+            Calculadora do FAP
+          </h1>
+          <p class="text-xs sm:text-sm text-gray-300 mt-1">
+            Recalcule índices e veja o impacto
+          </p>
+        </div>
+
+        <!-- NAV padrão (com impacto-fap.html conforme seu Obs2) -->
+        <div class="top-nav-wrap w-full">
+          <nav class="top-nav flex flex-wrap items-center justify-center gap-2">
+            <a href="./index.html" class="is-active">Calculadora</a>
+            <a href="./impacto-fap.html">Impacto do FAP</a>
+            <a href="./como-o-fap-e-calculado.html">Como o FAP é calculado</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="golden-stripe"></div>
+
   <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
 
-    <!-- NAV entre as 3 páginas (TOPO, antes do título) -->
-    <nav class="flex justify-center gap-2 mb-6">
-      <!-- use links RELATIVOS; mantenha os 3 arquivos na MESMA pasta -->
-      <a href="./index.html"                  class="navtab">Calculadora</a>
-      <a href="./impacto-fap.html"           class="navtab">Impacto do FAP</a>
-      <a href="./como-o-fap-e-calculado.html" class="navtab">Como o FAP é calculado</a>
-    </nav>
-
-    <!-- Cabeçalho -->
-    <header class="text-center mb-6">
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Calculadora do FAP</h1>
-      <p class="mt-2 text-lg sm:text-xl text-tax-gold">Recalcule índices e veja o impacto</p>
-    </header>
-
-    <!-- HERO orgânico -->
+    <!-- HERO orgânico (mantido) -->
     <section class="relative bg-tax-blue text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-lg overflow-hidden">
       <div class="blob w-40 h-40 bg-tax-gold rounded-full -top-10 -left-10 absolute"></div>
       <div class="blob w-36 h-36 bg-white rounded-full -bottom-10 -right-12 absolute"></div>
@@ -544,9 +595,9 @@ layout: null
     if(tb) tb.addEventListener('blur', function(){ maskBRLInput(tb); });
   });
 
-  /* ===== Marca aba ativa na NAV (borda dourada) ===== */
+  /* (Mantido) Marca aba ativa — agora aplicado ao novo menu */
   document.addEventListener('DOMContentLoaded', function(){
-    var tabs = document.querySelectorAll('.navtab');
+    var tabs = document.querySelectorAll('.top-nav a');
 
     function norm(p){
       try { p = new URL(p, location.href).pathname; } catch(e) { p = p || ''; }
@@ -557,7 +608,6 @@ layout: null
     tabs.forEach(function(a){
       var target = norm(a.getAttribute('href') || '');
       if (target && here === target) a.classList.add('is-active');
-      // também considera "/" como index
       if ((target === '' || target === '/') && (here === '' || here === '/')) a.classList.add('is-active');
     });
   });
@@ -565,6 +615,3 @@ layout: null
 
 </body>
 </html>
-
-
-

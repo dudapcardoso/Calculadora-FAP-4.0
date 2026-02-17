@@ -98,6 +98,35 @@
       font-size:12px; color:#374151; font-weight:700;
       white-space:nowrap;
     }
+
+    /* ===== PRINT FIX (PDF) ===== */
+    @media print {
+      @page { size: A4 landscape; margin: 10mm; }
+
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      body { background: #fff !important; }
+      #matriz { background: #fff !important; min-height: auto !important; }
+
+      .main-card, .row-card { box-shadow: none !important; }
+
+      .row-card, .main-card, blockquote {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      .container { max-width: none !important; }
+
+      .main-card { zoom: 0.92; }
+
+      /* tooltips não fazem sentido no PDF e podem bagunçar layout */
+      .tip-box { display: none !important; }
+
+      .header { padding: 8mm 0 !important; }
+    }
   </style>
 </head>
 
@@ -542,7 +571,7 @@
               </div>
 
               <p class="help-text mt-4">
-                *Citações curtas da COSIT 10/2026 (para caber no layout). Se você quiser, eu adapto para “citação + referência do item” com ainda menos texto no card e mais texto nos tooltips.
+                *Citações curtas da COSIT 10/2026 (para caber no layout).
               </p>
             </div>
           </div>

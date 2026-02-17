@@ -32,6 +32,7 @@
     .logo-container{ display:flex; align-items:center; }
     .logo-image{ height:40px; width:auto; max-width:150px; }
     @media(min-width:768px){ .logo-image{ height:45px; max-width:200px; } }
+
     .main-card{ background:#fff; border-radius:16px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); border:1px solid #e5e7eb; overflow:hidden; }
     .section-header{ background:#f3f4f6; border-bottom:1px solid #e5e7eb; }
     .row-card{ border:1px solid #e5e7eb; border-radius:14px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
@@ -51,7 +52,7 @@
     }
     .tip:hover .tip-box, .tip:focus-within .tip-box{ opacity:1; transform:translateY(0); pointer-events:auto; }
     .tip-box{
-      position:absolute; z-index:50; width:360px;
+      position:absolute; z-index:50; width:380px;
       right:0; top:26px;
       background:#111827; color:#f9fafb; font-size:12px; line-height:1.35;
       padding:10px 12px; border-radius:12px;
@@ -77,8 +78,26 @@
       line-height:1.45;
     }
 
-    details summary { cursor:pointer; user-select:none; }
-    details summary::-webkit-details-marker { display:none; }
+    /* Link button */
+    .link-btn{
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding:.55rem .85rem; border-radius:12px;
+      background:#152E3E; color:#fff; font-weight:800;
+      border:1px solid rgba(255,255,255,.18);
+      text-decoration:none;
+      box-shadow:0 6px 12px rgba(0,0,0,0.12);
+      transition:transform .15s ease, opacity .15s ease;
+    }
+    .link-btn:hover{ transform:translateY(-1px); opacity:.95; }
+    .link-btn:active{ transform:translateY(0px); }
+
+    .ref-chip{
+      display:inline-flex; align-items:center;
+      padding:.2rem .55rem; border-radius:9999px;
+      background:#f3f4f6; border:1px solid #e5e7eb;
+      font-size:12px; color:#374151; font-weight:700;
+      white-space:nowrap;
+    }
   </style>
 </head>
 
@@ -99,7 +118,11 @@
           </p>
         </div>
         <div class="text-center sm:text-right order-2 sm:order-3">
-          <p class="text-xs sm:text-sm text-gray-300">ROIT | Previdenciário</p>
+          <a class="link-btn" href="https://normasinternet2.receita.fazenda.gov.br/#/consulta/externa/149121" target="_blank" rel="noopener noreferrer">
+            <span style="font-weight:900;">COSIT 10/2026</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <p class="text-xs sm:text-sm text-gray-300 mt-2">Abrir norma oficial</p>
         </div>
       </div>
     </div>
@@ -121,7 +144,7 @@
             a explicação e o trecho correspondente da <b>COSIT 10/2026</b>.
           </p>
           <p class="help-text">
-            Observação: este material é de triagem. A aderência real depende do conjunto documental (políticas, contratos, ACT/CCT, evidências de metas e apuração).
+            Observação: material de triagem. A aderência real depende do conjunto documental (políticas, contratos, ACT/CCT, evidências de metas e apuração).
           </p>
         </div>
 
@@ -137,13 +160,11 @@
             </div>
 
             <div class="flex-1 p-4 md:p-5">
-              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                <div class="flex items-center gap-3">
-                  <span class="px-3 py-1 rounded-full text-sm font-extrabold bg-green-50 text-green-800 border border-green-200">
-                    PACIFICADO
-                  </span>
-                  <span class="text-xs text-gray-500">Combinação ideal (aderência máxima)</span>
-                </div>
+              <div class="flex items-center gap-3 flex-wrap">
+                <span class="px-3 py-1 rounded-full text-sm font-extrabold bg-green-50 text-green-800 border border-green-200">
+                  PACIFICADO
+                </span>
+                <span class="text-xs text-gray-500">Combinação ideal (aderência máxima)</span>
               </div>
 
               <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -154,10 +175,9 @@
                     <div class="tip" tabindex="0">
                       <span class="tip-btn">i</span>
                       <div class="tip-box">
-                        Base: COSIT 10/2026, itens 27 e 28 (não pode decorrer de obrigação legal ou ajuste sinalagmático).
+                        <span class="ref-chip">COSIT 10/2026 – item 27</span>
                         <blockquote>
                           “...não poderá decorrer de obrigação legal ou de ajuste sinalagmático.”
-                          <br><span class="opacity-80">COSIT 10/2026, item 27</span>
                         </blockquote>
                       </div>
                     </div>
@@ -174,10 +194,9 @@
                     <div class="tip" tabindex="0">
                       <span class="tip-btn">i</span>
                       <div class="tip-box">
-                        Base: COSIT 10/2026 – exige “desempenho superior ao ordinariamente esperado”.
+                        <span class="ref-chip">COSIT 10/2026 – conceito (trecho inicial)</span>
                         <blockquote>
                           “...em razão de desempenho superior ao ordinariamente esperado...”
-                          <br><span class="opacity-80">COSIT 10/2026, ementa/trecho inicial</span>
                         </blockquote>
                       </div>
                     </div>
@@ -194,10 +213,9 @@
                     <div class="tip" tabindex="0">
                       <span class="tip-btn">i</span>
                       <div class="tip-box">
-                        Base: COSIT 10/2026, item 28.1 – regulamento com requisitos não descaracteriza a liberalidade, se livre de influências negociais.
+                        <span class="ref-chip">COSIT 10/2026 – item 28.1</span>
                         <blockquote>
-                          “A mera parametrização... em regulamento... não descaracteriza possível ato de liberalidade...”
-                          <br><span class="opacity-80">COSIT 10/2026, item 28.1</span>
+                          “A mera parametrização de requisitos em regulamento da empresa para que o empregado faça jus a prêmio por desempenho superior não descaracteriza possível ato de liberalidade do empregador.”
                         </blockquote>
                       </div>
                     </div>
@@ -219,7 +237,7 @@
             </div>
 
             <div class="flex-1 p-4 md:p-5">
-              <div class="flex items-center gap-3">
+              <div class="flex items-center gap-3 flex-wrap">
                 <span class="px-3 py-1 rounded-full text-sm font-extrabold bg-amber-50 text-amber-900 border border-amber-200">
                   ALTO
                 </span>
@@ -233,10 +251,9 @@
                     <div class="tip" tabindex="0">
                       <span class="tip-btn">i</span>
                       <div class="tip-box">
-                        Base: itens 27 e 28 (contrato/CCT/lei/ajuste sinalagmático descaracterizam).
+                        <span class="ref-chip">COSIT 10/2026 – item 27</span>
                         <blockquote>
-                          “...há incidência... sobre o prêmio pago em decorrência de lei, contrato de trabalho, convenção coletiva...”
-                          <br><span class="opacity-80">COSIT 10/2026, item 28</span>
+                          “...não poderá decorrer de obrigação legal ou de ajuste sinalagmático.”
                         </blockquote>
                       </div>
                     </div>
@@ -252,10 +269,9 @@
                     <div class="tip" tabindex="0">
                       <span class="tip-btn">i</span>
                       <div class="tip-box">
-                        Base: exige “superior ao ordinariamente esperado”.
+                        <span class="ref-chip">COSIT 10/2026 – conceito (trecho inicial)</span>
                         <blockquote>
-                          “...desempenho superior ao ordinariamente esperado...”
-                          <br><span class="opacity-80">COSIT 10/2026, trecho inicial</span>
+                          “...em razão de desempenho superior ao ordinariamente esperado...”
                         </blockquote>
                       </div>
                     </div>
@@ -271,10 +287,9 @@
                     <div class="tip" tabindex="0">
                       <span class="tip-btn">i</span>
                       <div class="tip-box">
-                        Atenção: mesmo havendo regulamento, a fiscalização pode glosar se entender que decorre de “ajuste antecedente” (direto ou indireto).
+                        <span class="ref-chip">COSIT 10/2026 – item 28.2</span>
                         <blockquote>
-                          “...se... decorrerem... de acordo antecedente... é pertinente reconhecer a supressão da autonomia...”
-                          <br><span class="opacity-80">COSIT 10/2026, item 28.2</span>
+                          “...é pertinente reconhecer essa supressão da autonomia da empresa em determinar-se quanto à liberalidade, que passa a ser uma expressão de negócio coletivo, logo não amparado pela isenção.”
                         </blockquote>
                       </div>
                     </div>
@@ -282,7 +297,9 @@
                   <div class="mt-3 flex items-center gap-2 text-amber-800 font-extrabold">
                     <span class="text-2xl">⚠</span><span>Parcial</span>
                   </div>
-                  <p class="help-text">Ex.: política existe, mas há fragilidade na autonomia (indícios de negociação/amarração em outro instrumento).</p>
+                  <p class="help-text">
+                    Ex.: existe política, porém há indícios de “amarração” por instrumento/arranjo antecedente (direto ou indireto).
+                  </p>
                 </div>
               </div>
             </div>
@@ -297,7 +314,7 @@
             </div>
 
             <div class="flex-1 p-4 md:p-5">
-              <div class="flex items-center gap-3">
+              <div class="flex items-center gap-3 flex-wrap">
                 <span class="px-3 py-1 rounded-full text-sm font-extrabold bg-blue-50 text-blue-900 border border-blue-200">
                   MÉDIO
                 </span>
@@ -311,10 +328,9 @@
                     <div class="tip" tabindex="0">
                       <span class="tip-btn">i</span>
                       <div class="tip-box">
-                        Mantém o requisito de “não obrigação legal / não ajuste sinalagmático”.
+                        <span class="ref-chip">COSIT 10/2026 – item 27</span>
                         <blockquote>
                           “...não poderá decorrer de obrigação legal ou de ajuste sinalagmático.”
-                          <br><span class="opacity-80">COSIT 10/2026, item 27</span>
                         </blockquote>
                       </div>
                     </div>
@@ -330,10 +346,9 @@
                     <div class="tip" tabindex="0">
                       <span class="tip-btn">i</span>
                       <div class="tip-box">
-                        Quando a evidência é incompleta, a tese fica mais discutível (apesar do requisito existir no texto).
+                        <span class="ref-chip">COSIT 10/2026 – conceito (trecho inicial)</span>
                         <blockquote>
-                          “...desempenho superior ao ordinariamente esperado...”
-                          <br><span class="opacity-80">COSIT 10/2026, trecho inicial</span>
+                          “...em razão de desempenho superior ao ordinariamente esperado...”
                         </blockquote>
                       </div>
                     </div>
@@ -341,7 +356,9 @@
                   <div class="mt-3 flex items-center gap-2 text-amber-800 font-extrabold">
                     <span class="text-2xl">⚠</span><span>Fraco/Incompleto</span>
                   </div>
-                  <p class="help-text">Ex.: existe meta, mas sem baseline/ordinário; ou sem rastreabilidade do atingimento.</p>
+                  <p class="help-text">
+                    Ex.: há meta, mas sem baseline do “ordinário”; ou sem rastreabilidade do atingimento.
+                  </p>
                 </div>
 
                 <div class="p-4 rounded-xl border border-red-200 bg-red-50">
@@ -350,10 +367,9 @@
                     <div class="tip" tabindex="0">
                       <span class="tip-btn">i</span>
                       <div class="tip-box">
-                        Se houver indício de que o regulamento decorre de ajuste antecedente, a fiscalização pode lançar.
+                        <span class="ref-chip">COSIT 10/2026 – item 28.3</span>
                         <blockquote>
-                          “...achados de auditoria... conclusão... decorre de ajuste antecedente... é pertinente o lançamento...”
-                          <br><span class="opacity-80">COSIT 10/2026, item 28.3</span>
+                          “...se a fiscalização reunir achados de auditoria que levem à conclusão de que o conteúdo regulamentar decorre de ajuste antecedente, mesmo que indiretamente, é pertinente o lançamento sobre tais valores.”
                         </blockquote>
                       </div>
                     </div>
@@ -361,7 +377,9 @@
                   <div class="mt-3 flex items-center gap-2 text-red-700 font-extrabold">
                     <span class="text-2xl">✕</span><span>Não atendido</span>
                   </div>
-                  <p class="help-text">Ex.: política existe, mas há “amarração” (contrato individual / regra coletiva determinando valor / ajuste prévio).</p>
+                  <p class="help-text">
+                    Ex.: política existe, mas a autonomia não é demonstrável (indícios de ajuste antecedente / regra vinculante).
+                  </p>
                 </div>
               </div>
             </div>
@@ -370,13 +388,13 @@
           <!-- Row 4: Baixo -->
           <div class="row-card flex bg-white">
             <div class="row-left bg-red-600">
-              <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/15 flex items-center justify-content-center flex items-center justify-center">
+              <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/15 flex items-center justify-center">
                 <span class="text-white text-3xl md:text-4xl font-black">✕</span>
               </div>
             </div>
 
             <div class="flex-1 p-4 md:p-5">
-              <div class="flex items-center gap-3">
+              <div class="flex items-center gap-3 flex-wrap">
                 <span class="px-3 py-1 rounded-full text-sm font-extrabold bg-red-50 text-red-900 border border-red-200">
                   BAIXO
                 </span>
@@ -390,10 +408,9 @@
                     <div class="tip" tabindex="0">
                       <span class="tip-btn">i</span>
                       <div class="tip-box">
-                        Base: quando decorre de lei/contrato/CCT ou qualquer contratação que descaracterize a liberalidade, há incidência.
+                        <span class="ref-chip">COSIT 10/2026 – item 28</span>
                         <blockquote>
-                          “...incidência... sobre o prêmio pago em decorrência de lei, contrato de trabalho, convenção coletiva...”
-                          <br><span class="opacity-80">COSIT 10/2026, item 28</span>
+                          “...há incidência... sobre o prêmio pago em decorrência de lei, contrato de trabalho, convenção coletiva...”
                         </blockquote>
                       </div>
                     </div>
@@ -409,10 +426,9 @@
                     <div class="tip" tabindex="0">
                       <span class="tip-btn">i</span>
                       <div class="tip-box">
-                        Sem prova objetiva do “superior ao ordinariamente esperado”, a tese perde sustentação.
+                        <span class="ref-chip">COSIT 10/2026 – conceito (trecho inicial)</span>
                         <blockquote>
-                          “...desempenho superior ao ordinariamente esperado...”
-                          <br><span class="opacity-80">COSIT 10/2026, trecho inicial</span>
+                          “...em razão de desempenho superior ao ordinariamente esperado...”
                         </blockquote>
                       </div>
                     </div>
@@ -428,10 +444,9 @@
                     <div class="tip" tabindex="0">
                       <span class="tip-btn">i</span>
                       <div class="tip-box">
-                        Mesmo com política, se houver ajuste antecedente/negociação que suprima autonomia, a isenção não se aplica.
+                        <span class="ref-chip">COSIT 10/2026 – item 28.2</span>
                         <blockquote>
                           “...supressão da autonomia... logo, não amparado pela isenção.”
-                          <br><span class="opacity-80">COSIT 10/2026, item 28.2</span>
                         </blockquote>
                       </div>
                     </div>
@@ -443,87 +458,91 @@
               </div>
 
               <div class="mt-4 text-xs text-gray-600 bg-gray-50 border border-gray-200 rounded-xl p-3">
-                <b>Regra prática:</b> se houver indício de obrigação/ajuste (lei, contrato de trabalho, CCT/ACT impondo regra ou valor),
-                ou se não houver prova objetiva do “ordinário vs extraordinário”, tende a cair em <b>BAIXO</b>.
+                <b>Regra prática:</b> indícios de obrigação/ajuste (lei, contrato de trabalho, CCT/ACT impondo regra/valor),
+                ou ausência de prova objetiva do “ordinário vs extraordinário”, tendem a resultar em <b>BAIXO</b>.
               </div>
             </div>
           </div>
 
-          <!-- EXTRA: explicativos (accordion) -->
+          <!-- EXPLICATIVOS (SEMPRE EXPANDIDOS) -->
           <div class="mt-8">
             <div class="p-4 md:p-5 rounded-xl border border-gray-200 bg-gray-50">
-              <h3 class="text-lg font-bold text-tax-blue mb-2">Explicativos por bloco (com base textual da COSIT 10/2026)</h3>
-              <p class="text-sm text-gray-700 mb-3">
-                Abaixo, a fundamentação “texto → bloco”. (Os trechos estão em formato curto para caber na página.)
-              </p>
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <div>
+                  <h3 class="text-lg font-bold text-tax-blue">Explicativos por bloco (COSIT 10/2026)</h3>
+                  <p class="text-sm text-gray-700">
+                    Fundamentação “texto → bloco”, já exibida (sem necessidade de expandir).
+                  </p>
+                </div>
+                <a class="link-btn" href="https://normasinternet2.receita.fazenda.gov.br/#/consulta/externa/149121" target="_blank" rel="noopener noreferrer">
+                  Abrir COSIT 10/2026 ↗
+                </a>
+              </div>
 
-              <div class="space-y-3">
-                <details class="bg-white rounded-xl border border-gray-200 p-4">
-                  <summary class="flex items-center justify-between gap-3">
-                    <span class="font-bold text-tax-blue">Bloco 1 — “Não previsto em qualquer tipo de ajuste”</span>
-                    <span class="text-xs px-2 py-1 rounded-full bg-gray-100 border border-gray-200">COSIT 10/2026: itens 27 e 28</span>
-                  </summary>
-                  <div class="mt-3 text-sm text-gray-700">
-                    <p>
-                      Este bloco reflete o núcleo de vedação: o prêmio isento não pode nascer de <b>obrigação legal</b> nem de <b>ajuste sinalagmático</b>
-                      (lei/contrato/CCT/qualquer contratação que elimine a liberalidade).
-                    </p>
-                    <blockquote>
-                      “...não poderá decorrer de obrigação legal ou de ajuste sinalagmático.”
-                      <br><span class="opacity-80">COSIT 10/2026, item 27</span>
-                    </blockquote>
-                    <blockquote>
-                      “...há incidência... sobre o prêmio pago em decorrência de lei, contrato de trabalho, convenção coletiva...”
-                      <br><span class="opacity-80">COSIT 10/2026, item 28</span>
-                    </blockquote>
+              <div class="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-3">
+                <!-- Explicativo bloco 1 -->
+                <div class="bg-white rounded-xl border border-gray-200 p-4">
+                  <div class="flex items-center justify-between gap-2">
+                    <p class="font-bold text-tax-blue">Bloco 1 — “Não previsto em qualquer tipo de ajuste”</p>
+                    <span class="ref-chip">itens 27 e 28</span>
                   </div>
-                </details>
+                  <p class="text-sm text-gray-700 mt-2">
+                    Núcleo de vedação: o prêmio isento não pode nascer de <b>obrigação legal</b> nem de <b>ajuste sinalagmático</b>
+                    (lei/contrato/CCT/qualquer contratação que elimine a liberalidade).
+                  </p>
+                  <blockquote>
+                    “...não poderá decorrer de obrigação legal ou de ajuste sinalagmático.”
+                    <br><span class="opacity-80">COSIT 10/2026, item 27</span>
+                  </blockquote>
+                  <blockquote>
+                    “...há incidência... sobre o prêmio pago em decorrência de lei, contrato de trabalho, convenção coletiva...”
+                    <br><span class="opacity-80">COSIT 10/2026, item 28</span>
+                  </blockquote>
+                </div>
 
-                <details class="bg-white rounded-xl border border-gray-200 p-4">
-                  <summary class="flex items-center justify-between gap-3">
-                    <span class="font-bold text-tax-blue">Bloco 2 — “Prova objetiva do desempenho superior ‘ordinário vs extraordinário’”</span>
-                    <span class="text-xs px-2 py-1 rounded-full bg-gray-100 border border-gray-200">COSIT 10/2026: trecho inicial</span>
-                  </summary>
-                  <div class="mt-3 text-sm text-gray-700">
-                    <p>
-                      Este bloco exige evidência de superamento do <b>ordinariamente esperado</b>.
-                      Na prática: baseline do “ordinário” + meta/critério do “extraordinário” + rastreabilidade do atingimento.
-                    </p>
-                    <blockquote>
-                      “...em razão de desempenho superior ao ordinariamente esperado...”
-                      <br><span class="opacity-80">COSIT 10/2026, trecho inicial</span>
-                    </blockquote>
+                <!-- Explicativo bloco 2 -->
+                <div class="bg-white rounded-xl border border-gray-200 p-4">
+                  <div class="flex items-center justify-between gap-2">
+                    <p class="font-bold text-tax-blue">Bloco 2 — “Prova objetiva do desempenho superior”</p>
+                    <span class="ref-chip">conceito</span>
                   </div>
-                </details>
+                  <p class="text-sm text-gray-700 mt-2">
+                    Exige evidência de superamento do <b>ordinariamente esperado</b>.
+                    Na prática: baseline do “ordinário” + meta/critério do “extraordinário” + rastreabilidade do atingimento.
+                  </p>
+                  <blockquote>
+                    “...em razão de desempenho superior ao ordinariamente esperado...”
+                    <br><span class="opacity-80">COSIT 10/2026, trecho inicial</span>
+                  </blockquote>
+                </div>
 
-                <details class="bg-white rounded-xl border border-gray-200 p-4">
-                  <summary class="flex items-center justify-between gap-3">
-                    <span class="font-bold text-tax-blue">Bloco 3 — “Política formal e autonomia do empregador (liberalidade)”</span>
-                    <span class="text-xs px-2 py-1 rounded-full bg-gray-100 border border-gray-200">COSIT 10/2026: itens 28.1, 28.2 e 28.3</span>
-                  </summary>
-                  <div class="mt-3 text-sm text-gray-700">
-                    <p>
-                      A COSIT admite política/regulamento com critérios, desde que a parametrização reflita liberalidade do empregador e não seja
-                      consequência de ajuste antecedente (direto ou indireto). A fiscalização pode glosar se “achados de auditoria” indicarem ajuste.
-                    </p>
-                    <blockquote>
-                      “A mera parametrização... em regulamento... não descaracteriza possível ato de liberalidade...”
-                      <br><span class="opacity-80">COSIT 10/2026, item 28.1</span>
-                    </blockquote>
-                    <blockquote>
-                      “...supressão da autonomia... logo, não amparado pela isenção.”
-                      <br><span class="opacity-80">COSIT 10/2026, item 28.2</span>
-                    </blockquote>
-                    <blockquote>
-                      “...achados de auditoria... decorre de ajuste antecedente... é pertinente o lançamento...”
-                      <br><span class="opacity-80">COSIT 10/2026, item 28.3</span>
-                    </blockquote>
+                <!-- Explicativo bloco 3 -->
+                <div class="bg-white rounded-xl border border-gray-200 p-4">
+                  <div class="flex items-center justify-between gap-2">
+                    <p class="font-bold text-tax-blue">Bloco 3 — “Política formal e autonomia (liberalidade)”</p>
+                    <span class="ref-chip">itens 28.1–28.3</span>
                   </div>
-                </details>
+                  <p class="text-sm text-gray-700 mt-2">
+                    A COSIT admite política/regulamento com critérios, desde que a parametrização reflita liberalidade do empregador e não seja
+                    consequência de ajuste antecedente (direto ou indireto). A fiscalização pode glosar se “achados de auditoria” indicarem ajuste.
+                  </p>
+                  <blockquote>
+                    “A mera parametrização de requisitos em regulamento... não descaracteriza possível ato de liberalidade...”
+                    <br><span class="opacity-80">COSIT 10/2026, item 28.1</span>
+                  </blockquote>
+                  <blockquote>
+                    “...supressão da autonomia... logo, não amparado pela isenção.”
+                    <br><span class="opacity-80">COSIT 10/2026, item 28.2</span>
+                  </blockquote>
+                  <blockquote>
+                    “...achados de auditoria... decorre de ajuste antecedente... é pertinente o lançamento...”
+                    <br><span class="opacity-80">COSIT 10/2026, item 28.3</span>
+                  </blockquote>
+                </div>
               </div>
 
               <p class="help-text mt-4">
-                *Citações curtas extraídas da COSIT 10/2026 (30/01/2026). Ajuste as redações internas conforme a política do cliente e o conjunto documental.
+                *Citações curtas da COSIT 10/2026 (para caber no layout). Se você quiser, eu adapto para “citação + referência do item” com ainda menos texto no card e mais texto nos tooltips.
               </p>
             </div>
           </div>

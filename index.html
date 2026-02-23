@@ -251,7 +251,7 @@ layout: null
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <button id="btnCalcularFap" type="button" class="btn-primary" onclick="calcularFap()">Calcular FAP</button>
-            <button id="btnRelatorio"   type="button" class="btn-secondary" onclick="abrirFormularioRelatorio()">Gerar Relatório do Cálculo</button>
+           <button id="btnRelatorio" type="button" class="btn-secondary" onclick="startPaidPdfFlow()">Gerar Relatório do Cálculo (R$ 9,99)</button>
           </div>
 
           <div class="bg-tax-bg-light rounded-lg p-4">
@@ -571,7 +571,61 @@ layout: null
       console.error(err); flash("Erro ao gerar o relatório.");
     }
   }
+<script type="text/javascript">
+  // ... (seu código acima continua igual)
 
+  /* ===== Pagamento + Snapshot ===== */
+  var MP_LINK = "https://mpago.la/2cxW5Dn"; // seu link
+
+  function saveReportPayloadToLocalStorage(){
+    // Salva os dados “crus” (strings) do formulário, pra reconstruir o relatório depois
+    var payload = {
+      ts: Date.now(),
+
+      cat: (document.getElementById("cat")||{}).value || "",
+      b91: (document.getElementById("b91")||{}).value || "",
+      b92: (document.getElementById("b92")||{}).value || "",
+      b93: (document.getElementById("b93")||{}).value || "",
+      b94: (document.getElementById("b94")||{}).value || "",
+
+      massaSalarial: (document.getElementById("massaSalarial")||{}).value || "",
+      mediaVinculos: (document.getElementById("mediaVinculos")||{}).value || "",
+      totalBeneficios: (document.getElementById("totalBeneficios")||{}).value || "",
+
+      ordemFrequencia: (document.getElementById("ordemFrequencia")||{}).value || "",
+      ordemGravidade: (document.getElementById("ordemGravidade")||{}).value || "",
+      ordemCusto: (document.getElementById("ordemCusto")||{}).value || "",
+
+      totalEstabelecimentos: (document.getElementById("totalEstabelecimentos")||{}).value || "",
+      taxaRotatividade: (document.getElementById("taxaRotatividade")||{}).value || "",
+
+      page: location.pathname
+    };
+
+    localStorage.setItem("fap_pdf_payload_v1", JSON.stringify(payload));
+    return payload;
+  }
+
+  function startPaidPdfFlow(){
+    // valida se já calculou FAP (ou ao menos se os campos base foram preenchidos)
+    var obrigBase = ["cat","b91","b92","b93","b94","massaSalarial","mediaVinculos","totalBeneficios"];
+    if (!verificarCamposObrigatorios(obrigBase)) return;
+
+    // também exige campos da etapa 2 (faz sentido vender relatório completo)
+    var obrigFap = ["ordemFrequencia","ordemGravidade","ordemCusto","totalEstabelecimentos","taxaRotatividade"];
+    if (!verificarCamposObrigatorios(obrigFap)) return;
+
+    saveReportPayloadToLocalStorage();
+
+    // manda pagar (Mercado Pago)
+    window.location.href = MP_LINK;
+  }
+
+  // expõe global
+  window.startPaidPdfFlow = startPaidPdfFlow;
+
+  // ... (seu código abaixo continua igual)
+</script>
   // Expor no escopo global (garante o funcionamento do onclick)
   window.calcularIndices = calcularIndices;
   window.calcularFap = calcularFap;
@@ -585,7 +639,7 @@ layout: null
     var l  = document.getElementById('btnLimpar');
     if(c)  c.addEventListener('click', calcularIndices);
     if(cf) cf.addEventListener('click', calcularFap);
-    if(r)  r.addEventListener('click', abrirFormularioRelatorio);
+    if(r)  r.addEventListener('click', startPaidPdfFlow);
     if(l)  l.addEventListener('click', function(){ location.reload(); });
 
     // normaliza BRL ao sair do campo
@@ -615,4 +669,5 @@ layout: null
 
 </body>
 </html>
+
 

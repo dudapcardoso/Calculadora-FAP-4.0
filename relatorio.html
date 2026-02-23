@@ -87,20 +87,49 @@ layout: null
   function getParams(){
     var u = new URL(location.href);
     var o = {};
-    u.searchParams.forEach((v,k)=>o[k]=v);
+    u.searchParams.forEach(function(v,k){ o[k]=v; });
     return o;
   }
 
   // ===== Paywall storage =====
-  var LS_KEY = "fap_last_payload_v1";
+  // IMPORTANTE: a chave correta do index é "fap_pdf_payload_v1"
+  var LS_KEY_PRIMARY = "fap_pdf_payload_v1";
+  var LS_KEY_OLD     = "fap_last_payload_v1";   // compatibilidade, se existir
+  var SS_KEY         = "fap_pdf_payload_v1_ss"; // se você usar sessionStorage no index
+  var NAME_KEY       = "FAP_PDF_PAYLOAD_V1";     // se você usar window.name no index
+
   function loadPayload(){
-    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "null"); }
-    catch(e){ return null; }
+    var s = null;
+
+    // 1) localStorage chave nova
+    try { s = localStorage.getItem(LS_KEY_PRIMARY); } catch(e){ s = null; }
+    if (s) { try { return JSON.parse(s); } catch(e){} }
+
+    // 2) localStorage chave antiga (se existir)
+    try { s = localStorage.getItem(LS_KEY_OLD); } catch(e){ s = null; }
+    if (s) { try { return JSON.parse(s); } catch(e){} }
+
+    // 3) sessionStorage (se você adotou)
+    try { s = sessionStorage.getItem(SS_KEY); } catch(e){ s = null; }
+    if (s) { try { return JSON.parse(s); } catch(e){} }
+
+    // 4) window.name (se você adotou)
+    try{
+      var nameObj = {};
+      try { nameObj = JSON.parse(window.name || "{}"); } catch(e){ nameObj = {}; }
+      s = nameObj[NAME_KEY] || null;
+      if (s) return JSON.parse(s);
+    }catch(e){}
+
+    return null;
   }
 
   function isApproved(params){
     // MP manda status=approved (às vezes collection_status=approved)
-    return (params.status === "approved" || params.collection_status === "approved" || params.paid === "1");
+    var st = String(params.status || "").toLowerCase();
+    var cs = String(params.collection_status || "").toLowerCase();
+    var paid = String(params.paid || "").toLowerCase();
+    return (st === "approved" || cs === "approved" || paid === "1");
   }
 
   function renderReport(p){
@@ -192,6 +221,7 @@ layout: null
     if(params.payment_id) parts.push("payment_id: " + params.payment_id);
     if(params.payment_type) parts.push("tipo: " + params.payment_type);
     if(params.status) parts.push("status: " + params.status);
+    if(params.collection_status) parts.push("collection_status: " + params.collection_status);
     document.getElementById("subinfo").textContent = parts.join(" • ");
 
     if(!ok){
@@ -201,7 +231,7 @@ layout: null
 
     var payload = loadPayload();
     if(!payload){
-      showErr("Pagamento aprovado, mas não encontrei os dados do cálculo salvos neste navegador. <br><br><strong>Solução:</strong> volte para a calculadora, preencha os dados novamente e clique em <strong>Gerar Relatório do Cálculo</strong> para salvar e liberar.");
+      showErr("Pagamento aprovado, mas não encontrei os dados do cálculo salvos neste navegador. <br><br><strong>Causa comum:</strong> chave de storage diferente entre index e relatório ou acesso por domínio diferente. <br><br><strong>Solução:</strong> volte para a calculadora, preencha os dados novamente e clique em <strong>Gerar Relatório do Cálculo</strong> para salvar e liberar.");
       return;
     }
 

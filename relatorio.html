@@ -87,49 +87,27 @@ layout: null
   function getParams(){
     var u = new URL(location.href);
     var o = {};
-    u.searchParams.forEach(function(v,k){ o[k]=v; });
+    u.searchParams.forEach((v,k)=>o[k]=v);
     return o;
   }
 
   // ===== Paywall storage =====
-  // IMPORTANTE: a chave correta do index é "fap_pdf_payload_v1"
-  var LS_KEY_PRIMARY = "fap_pdf_payload_v1";
-  var LS_KEY_OLD     = "fap_last_payload_v1";   // compatibilidade, se existir
-  var SS_KEY         = "fap_pdf_payload_v1_ss"; // se você usar sessionStorage no index
-  var NAME_KEY       = "FAP_PDF_PAYLOAD_V1";     // se você usar window.name no index
+  // IMPORTANTE: tem que bater com o index.html
+  var LS_KEY = "fap_pdf_payload_v1";
 
   function loadPayload(){
-    var s = null;
-
-    // 1) localStorage chave nova
-    try { s = localStorage.getItem(LS_KEY_PRIMARY); } catch(e){ s = null; }
-    if (s) { try { return JSON.parse(s); } catch(e){} }
-
-    // 2) localStorage chave antiga (se existir)
-    try { s = localStorage.getItem(LS_KEY_OLD); } catch(e){ s = null; }
-    if (s) { try { return JSON.parse(s); } catch(e){} }
-
-    // 3) sessionStorage (se você adotou)
-    try { s = sessionStorage.getItem(SS_KEY); } catch(e){ s = null; }
-    if (s) { try { return JSON.parse(s); } catch(e){} }
-
-    // 4) window.name (se você adotou)
-    try{
-      var nameObj = {};
-      try { nameObj = JSON.parse(window.name || "{}"); } catch(e){ nameObj = {}; }
-      s = nameObj[NAME_KEY] || null;
-      if (s) return JSON.parse(s);
-    }catch(e){}
-
-    return null;
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "null"); }
+    catch(e){ return null; }
   }
 
   function isApproved(params){
-    // MP manda status=approved (às vezes collection_status=approved)
-    var st = String(params.status || "").toLowerCase();
-    var cs = String(params.collection_status || "").toLowerCase();
-    var paid = String(params.paid || "").toLowerCase();
-    return (st === "approved" || cs === "approved" || paid === "1");
+    return (params.status === "approved" || params.collection_status === "approved" || params.paid === "1");
+  }
+
+  function esc(s){
+    return String(s ?? "").replace(/[&<>"']/g, function(m){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]);
+    });
   }
 
   function renderReport(p){
@@ -166,18 +144,20 @@ layout: null
 
     var indiceComposto = ((0.5 * pGrav) + (0.35 * pFreq) + (0.15 * pCusto)) * 0.02;
     var fap = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
-    if (taxaRot > 75 && fap < 1) fap = 1;
+    var ajustouRotatividade = false;
+    if (taxaRot > 75 && fap < 1){ fap = 1; ajustouRotatividade = true; }
 
+    // ===== HTML (replica o relatório "completo") =====
     var html = ''
       + '<section class="grid grid-cols-1 sm:grid-cols-4 gap-6">'
       +   '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-3xl font-bold">' + br4(indiceFrequencia) + '</p>'
-      +     '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaEventos+' / '+br2(mediaVinculos).replace(",",".") + ') × 1000</p></div>'
+      +     '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaEventos+' / '+mediaVinculos+') × 1000</p></div>'
       +   '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-3xl font-bold">' + br4(indiceGravidade) + '</p>'
-      +     '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+br4(somaGravidade).replace(",",".")+' / '+br2(mediaVinculos).replace(",",".")+') × 1000</p></div>'
+      +     '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaGravidade.toFixed(4)+' / '+mediaVinculos+') × 1000</p></div>'
       +   '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-3xl font-bold">' + br4(indiceCusto) + '</p>'
       +     '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+brCurrency(totalBeneficios)+' / '+brCurrency(massaSalarial)+') × 1000</p></div>'
       +   '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">FAP Calculado</p><p class="text-3xl font-bold">' + br4(fap) + '</p>'
-      +     (taxaRot>75 && fap===1 ? '<p class="text-xs text-tax-dark-gray mt-1">Ajuste por rotatividade &gt; 75%</p>' : '')
+      +     (ajustouRotatividade ? '<p class="text-xs text-tax-dark-gray mt-1">Ajuste por rotatividade &gt; 75%</p>' : '')
       +   '</div>'
       + '</section>'
 
@@ -192,6 +172,8 @@ layout: null
       +       '<tr><td class="py-2">Massa Salarial</td><td class="py-2 text-right">' + brCurrency(massaSalarial) + '</td></tr>'
       +       '<tr><td class="py-2">Média de Vínculos</td><td class="py-2 text-right">' + br2(mediaVinculos) + '</td></tr>'
       +       '<tr><td class="py-2">Benefícios Pagos</td><td class="py-2 text-right">' + brCurrency(totalBeneficios) + '</td></tr>'
+      +       '<tr><td class="py-2">N (Estabelecimentos)</td><td class="py-2 text-right">' + br2(totalEstab) + '</td></tr>'
+      +       '<tr><td class="py-2">Rotatividade (%)</td><td class="py-2 text-right">' + br2(taxaRot) + '%</td></tr>'
       +     '</tbody></table></div>'
 
       +   '<div class="card p-5"><h2 class="text-lg font-bold mb-4">Percentis e Composto</h2>'
@@ -200,12 +182,80 @@ layout: null
       +       '<tr><td class="py-2">% Gravidade</td><td class="py-2 text-right">' + br4(pGrav) + '%</td></tr>'
       +       '<tr><td class="py-2">% Custo</td><td class="py-2 text-right">' + br4(pCusto) + '%</td></tr>'
       +       '<tr><td class="py-2 font-semibold">Índice Composto</td><td class="py-2 text-right font-semibold">' + br4(indiceComposto) + '</td></tr>'
-      +       '<tr><td class="py-2 font-semibold">FAP Final</td><td class="py-2 text-right font-semibold">' + br4(fap)
-      +         ((taxaRot>75 && fap===1)?' <span class="text-xs text-tax-dark-gray">(ajustado por rotatividade > 75%)</span>':'')
+      +       '<tr><td class="py-2 font-semibold">FAP Final</td><td class="py-2 text-right font-semibold">' + br4(fap)'
+      +         (ajustouRotatividade ? ' <span class="text-xs text-tax-dark-gray">(ajustado por rotatividade &gt; 75%)</span>' : '')
       +       '</td></tr>'
       +     '</tbody></table>'
       +     '<div class="text-xs text-tax-dark-gray mt-2">Cálculo do Composto: (0,5×' + br4(pGrav) + ' + 0,35×' + br4(pFreq) + ' + 0,15×' + br4(pCusto) + ') × 0,02 = <strong>' + br4(indiceComposto) + '</strong></div>'
-      +     (temBasePercentil ? '' : '<p class="text-xs text-red-600">Observação: N (total de estabelecimentos) ≤ 1.</p>')
+      +     (temBasePercentil ? '' : '<p class="text-xs text-red-600 mt-2">Observação: N (total de estabelecimentos) ≤ 1.</p>')
+      +   '</div>'
+      + '</section>'
+
+      + '<section class="space-y-6">'
+      +   '<div class="card p-5">'
+      +     '<h2 class="text-lg font-bold mb-3">Entendendo o FAP</h2>'
+      +     '<p class="text-sm text-tax-dark-gray leading-relaxed">'
+      +       'O FAP é um multiplicador (0,500 a 2,000) aplicado sobre a alíquota do RAT. '
+      +       'Ele nasce de um índice composto que pondera os percentis da sua subclasse CNAE '
+      +       'por gravidade (peso 0,5), frequência (0,35) e custo (0,15), reescalonado por 0,02. '
+      +       'Existem travas mínimas/máximas e regra de rotatividade: se a rotatividade &gt; 75% e o FAP ficar &lt; 1, ele é elevado para 1.'
+      +     '</p>'
+      +   '</div>'
+
+      +   '<div class="card p-5">'
+      +     '<h2 class="text-lg font-bold mb-3">Fórmulas (gerais)</h2>'
+      +     '<ul class="space-y-2 text-sm text-tax-dark-gray">'
+      +       '<li><strong>Índice de Frequência (IF):</strong> <code>(B91 + B92 + B93 + B94 + CAT) / Vínculos_médios × 1000</code></li>'
+      +       '<li><strong>Índice de Gravidade (IG):</strong> <code>((B91×0,1 + B92×0,3 + B93×0,5 + B94×0,1 + CAT×0,5) / Vínculos_médios) × 1000</code></li>'
+      +       '<li><strong>Índice de Custo (IC):</strong> <code>(Total de Benefícios / Massa Salarial) × 1000</code></li>'
+      +       '<li><strong>Percentis:</strong> <code>P = ((k − 1) / (N − 1)) × 100</code></li>'
+      +       '<li><strong>Índice Composto:</strong> <code>(0,5×P<sub>G</sub> + 0,35×P<sub>F</sub> + 0,15×P<sub>C</sub>) × 0,02</code></li>'
+      +       '<li><strong>FAP final:</strong> <code>max(0,500, Composto)</code> com ajuste para 1,000 se rotatividade &gt; 75% e Composto &lt; 1</li>'
+      +     '</ul>'
+      +   '</div>'
+
+      +   '<div class="card p-5">'
+      +     '<h2 class="text-lg font-bold mb-3">Fórmulas com seus dados</h2>'
+      +     '<ul class="space-y-2 text-sm text-tax-dark-gray">'
+
+      +       '<li><strong>IF:</strong> '
+      +         '<code>( ' + b91 + ' + ' + b92 + ' + ' + b93 + ' + ' + b94 + ' + ' + cat + ' ) / ' + mediaVinculos + ' × 1000 = ' + br4(indiceFrequencia) + '</code>'
+      +       '</li>'
+
+      +       '<li><strong>IG:</strong> '
+      +         '<code>( (' + b91 + '×0,1) + (' + b92 + '×0,3) + (' + b93 + '×0,5) + (' + b94 + '×0,1) + (' + cat + '×0,5) ) / ' + mediaVinculos + ' × 1000 = ' + br4(indiceGravidade) + '</code>'
+      +       '</li>'
+
+      +       '<li><strong>IC:</strong> '
+      +         '<code>( ' + brCurrency(totalBeneficios) + ' / ' + brCurrency(massaSalarial) + ' ) × 1000 = ' + br4(indiceCusto) + '</code>'
+      +       '</li>'
+
+      +       '<li><strong>Percentis:</strong>'
+      +         '<div class="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-3">'
+      +           '<div class="p-3 bg-tax-bg-light rounded-lg">'
+      +             '<div class="text-xs text-tax-dark-gray">Frequência</div>'
+      +             '<div class="text-sm"><code>k=' + (ordemFrequencia||0) + ', N=' + (totalEstab||0) + '</code> ⇒ <strong>' + br4(pFreq) + '%</strong></div>'
+      +           '</div>'
+      +           '<div class="p-3 bg-tax-bg-light rounded-lg">'
+      +             '<div class="text-xs text-tax-dark-gray">Gravidade</div>'
+      +             '<div class="text-sm"><code>k=' + (ordemGravidade||0) + ', N=' + (totalEstab||0) + '</code> ⇒ <strong>' + br4(pGrav) + '%</strong></div>'
+      +           '</div>'
+      +           '<div class="p-3 bg-tax-bg-light rounded-lg">'
+      +             '<div class="text-xs text-tax-dark-gray">Custo</div>'
+      +             '<div class="text-sm"><code>k=' + (ordemCusto||0) + ', N=' + (totalEstab||0) + '</code> ⇒ <strong>' + br4(pCusto) + '%</strong></div>'
+      +           '</div>'
+      +         '</div>'
+      +       '</li>'
+
+      +       '<li><strong>Índice Composto:</strong> '
+      +         '<code>(0,5×' + br4(pGrav) + ' + 0,35×' + br4(pFreq) + ' + 0,15×' + br4(pCusto) + ') × 0,02 = ' + br4(indiceComposto) + '</code>'
+      +       '</li>'
+
+      +       '<li><strong>FAP final:</strong> '
+      +         '<code>' + (ajustouRotatividade ? 'Ajuste por rotatividade &gt; 75% ⇒ ' : '') + br4(fap) + '</code>'
+      +       '</li>'
+
+      +     '</ul>'
       +   '</div>'
       + '</section>';
 
@@ -221,17 +271,16 @@ layout: null
     if(params.payment_id) parts.push("payment_id: " + params.payment_id);
     if(params.payment_type) parts.push("tipo: " + params.payment_type);
     if(params.status) parts.push("status: " + params.status);
-    if(params.collection_status) parts.push("collection_status: " + params.collection_status);
     document.getElementById("subinfo").textContent = parts.join(" • ");
 
     if(!ok){
-      showErr("Pagamento não confirmado nesta URL. Se você acabou de pagar, verifique se o link contém <strong>status=approved</strong>. Se preferir, volte para a calculadora e tente novamente.");
+      showErr("Pagamento não confirmado nesta URL. Se você acabou de pagar, verifique se o link contém <strong>status=approved</strong> (ou <strong>collection_status=approved</strong>). Se preferir, volte para a calculadora e tente novamente.");
       return;
     }
 
     var payload = loadPayload();
     if(!payload){
-      showErr("Pagamento aprovado, mas não encontrei os dados do cálculo salvos neste navegador. <br><br><strong>Causa comum:</strong> chave de storage diferente entre index e relatório ou acesso por domínio diferente. <br><br><strong>Solução:</strong> volte para a calculadora, preencha os dados novamente e clique em <strong>Gerar Relatório do Cálculo</strong> para salvar e liberar.");
+      showErr("Pagamento aprovado, mas não encontrei os dados do cálculo salvos neste navegador. <br><br><strong>Solução:</strong> volte para a calculadora, preencha os dados novamente e clique em <strong>Gerar Relatório do Cálculo</strong> para salvar e liberar.");
       return;
     }
 

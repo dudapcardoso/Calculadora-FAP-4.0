@@ -268,13 +268,8 @@ layout: null
       var ok = isApproved(params);
 
       // info útil no topo
-      var parts = [];
-      if(params.payment_id) parts.push("payment_id: " + params.payment_id);
-      if(params.payment_type) parts.push("tipo: " + params.payment_type);
-      if(params.status) parts.push("status: " + params.status);
-      if(params.collection_status) parts.push("collection_status: " + params.collection_status);
-      if(params.paid) parts.push("paid: " + params.paid);
-      document.getElementById("subinfo").textContent = parts.join(" • ");
+         document.getElementById("subinfo").textContent =
+          "Pagamento confirmado • Relatório liberado";
 
       if(!ok){
         showErr("Pagamento não confirmado nesta URL. Se você acabou de pagar, verifique se o link contém <strong>status=approved</strong> (ou <strong>collection_status=approved</strong>). Se preferir, volte para a calculadora e tente novamente.");

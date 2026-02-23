@@ -104,12 +104,6 @@ layout: null
     return (params.status === "approved" || params.collection_status === "approved" || params.paid === "1");
   }
 
-  function esc(s){
-    return String(s ?? "").replace(/[&<>"']/g, function(m){
-      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]);
-    });
-  }
-
   function renderReport(p){
     // Inputs
     var cat = parseGeneric(p.cat) || 0;
@@ -138,16 +132,21 @@ layout: null
 
     var denom = (totalEstab - 1);
     var temBasePercentil = denom > 0;
+
     var pFreq  = temBasePercentil ? ((ordemFrequencia - 1) / denom) * 100 : 0;
     var pGrav  = temBasePercentil ? ((ordemGravidade  - 1) / denom) * 100 : 0;
     var pCusto = temBasePercentil ? ((ordemCusto      - 1) / denom) * 100 : 0;
 
     var indiceComposto = ((0.5 * pGrav) + (0.35 * pFreq) + (0.15 * pCusto)) * 0.02;
     var fap = (indiceComposto <= 0.5) ? 0.5 : indiceComposto;
-    var ajustouRotatividade = false;
-    if (taxaRot > 75 && fap < 1){ fap = 1; ajustouRotatividade = true; }
 
-    // ===== HTML (replica o relatório "completo") =====
+    var ajustouRotatividade = false;
+    if (taxaRot > 75 && fap < 1){
+      fap = 1;
+      ajustouRotatividade = true;
+    }
+
+    // ===== HTML do relatório (completo) =====
     var html = ''
       + '<section class="grid grid-cols-1 sm:grid-cols-4 gap-6">'
       +   '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-3xl font-bold">' + br4(indiceFrequencia) + '</p>'
@@ -182,9 +181,10 @@ layout: null
       +       '<tr><td class="py-2">% Gravidade</td><td class="py-2 text-right">' + br4(pGrav) + '%</td></tr>'
       +       '<tr><td class="py-2">% Custo</td><td class="py-2 text-right">' + br4(pCusto) + '%</td></tr>'
       +       '<tr><td class="py-2 font-semibold">Índice Composto</td><td class="py-2 text-right font-semibold">' + br4(indiceComposto) + '</td></tr>'
-      +       '<tr><td class="py-2 font-semibold">FAP Final</td><td class="py-2 text-right font-semibold">' + br4(fap)'
-      +         (ajustouRotatividade ? ' <span class="text-xs text-tax-dark-gray">(ajustado por rotatividade &gt; 75%)</span>' : '')
-      +       '</td></tr>'
+      +       '<tr><td class="py-2 font-semibold">FAP Final</td><td class="py-2 text-right font-semibold">'
+      +         + br4(fap)
+      +         + (ajustouRotatividade ? ' <span class="text-xs text-tax-dark-gray">(ajustado por rotatividade &gt; 75%)</span>' : '')
+      +       + '</td></tr>'
       +     '</tbody></table>'
       +     '<div class="text-xs text-tax-dark-gray mt-2">Cálculo do Composto: (0,5×' + br4(pGrav) + ' + 0,35×' + br4(pFreq) + ' + 0,15×' + br4(pCusto) + ') × 0,02 = <strong>' + br4(indiceComposto) + '</strong></div>'
       +     (temBasePercentil ? '' : '<p class="text-xs text-red-600 mt-2">Observação: N (total de estabelecimentos) ≤ 1.</p>')
@@ -263,28 +263,35 @@ layout: null
   }
 
   (function init(){
-    var params = getParams();
-    var ok = isApproved(params);
+    try{
+      var params = getParams();
+      var ok = isApproved(params);
 
-    // info útil no topo
-    var parts = [];
-    if(params.payment_id) parts.push("payment_id: " + params.payment_id);
-    if(params.payment_type) parts.push("tipo: " + params.payment_type);
-    if(params.status) parts.push("status: " + params.status);
-    document.getElementById("subinfo").textContent = parts.join(" • ");
+      // info útil no topo
+      var parts = [];
+      if(params.payment_id) parts.push("payment_id: " + params.payment_id);
+      if(params.payment_type) parts.push("tipo: " + params.payment_type);
+      if(params.status) parts.push("status: " + params.status);
+      if(params.collection_status) parts.push("collection_status: " + params.collection_status);
+      if(params.paid) parts.push("paid: " + params.paid);
+      document.getElementById("subinfo").textContent = parts.join(" • ");
 
-    if(!ok){
-      showErr("Pagamento não confirmado nesta URL. Se você acabou de pagar, verifique se o link contém <strong>status=approved</strong> (ou <strong>collection_status=approved</strong>). Se preferir, volte para a calculadora e tente novamente.");
-      return;
+      if(!ok){
+        showErr("Pagamento não confirmado nesta URL. Se você acabou de pagar, verifique se o link contém <strong>status=approved</strong> (ou <strong>collection_status=approved</strong>). Se preferir, volte para a calculadora e tente novamente.");
+        return;
+      }
+
+      var payload = loadPayload();
+      if(!payload){
+        showErr("Pagamento aprovado, mas não encontrei os dados do cálculo salvos neste navegador. <br><br><strong>Solução:</strong> volte para a calculadora, preencha os dados novamente e clique em <strong>Gerar Relatório do Cálculo</strong> para salvar e liberar.");
+        return;
+      }
+
+      renderReport(payload);
+    }catch(err){
+      console.error(err);
+      showErr("Erro ao montar o relatório. Abra o console (F12) e verifique os erros. <br><br><code>" + String(err && err.message ? err.message : err) + "</code>");
     }
-
-    var payload = loadPayload();
-    if(!payload){
-      showErr("Pagamento aprovado, mas não encontrei os dados do cálculo salvos neste navegador. <br><br><strong>Solução:</strong> volte para a calculadora, preencha os dados novamente e clique em <strong>Gerar Relatório do Cálculo</strong> para salvar e liberar.");
-      return;
-    }
-
-    renderReport(payload);
   })();
 </script>
 

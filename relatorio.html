@@ -1,9 +1,14 @@
+---
+layout: null
+---
+
 <!doctype html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Relatório do Cálculo do FAP</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -15,34 +20,47 @@
       } }
     }
   </script>
+
   <style>
-    body{ background:#f6f6f6; }
-    .card{ background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1) }
+    @media print{
+      .no-print{display:none!important}
+      body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    }
+    .card{background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1)}
     code{background:#F3F4F6;padding:.1rem .35rem;border-radius:.35rem}
-    .btn{ background:#152E3E;color:#fff;border-radius:.5rem;padding:.75rem 1rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center }
-    .btn:hover{ filter:brightness(1.05) }
-    .btn2{ background:#E2B874;color:#152E3E;border-radius:.5rem;padding:.75rem 1rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center }
-    .btn2:hover{ filter:brightness(1.05) }
   </style>
 </head>
 
-<body>
-  <div class="max-w-4xl mx-auto p-4 sm:p-6 md:p-8">
-    <div class="card p-6">
-      <h1 class="text-2xl font-extrabold text-tax-blue">Relatório do Cálculo do FAP</h1>
-      <p class="text-tax-dark-gray mt-1">www.calculadorafap.com.br</p>
-
-      <div id="status" class="mt-4 text-tax-dark-gray"></div>
-
-      <div id="actions" class="mt-6 flex flex-col sm:flex-row gap-3">
-        <a class="btn2" href="./index.html">Voltar para a calculadora</a>
-        <a class="btn" id="payLink" href="https://mpago.la/2cxW5Dn">Pagar (R$ 9,99) e liberar</a>
+<body class="bg-tax-bg-light text-tax-blue">
+  <header class="bg-tax-blue text-white p-6 sm:p-8">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold">Relatório do Cálculo do FAP</h1>
+        <p class="text-tax-gold">www.calculadorafap.com.br</p>
+        <p id="subinfo" class="text-xs text-white/70 mt-1"></p>
+      </div>
+      <div class="flex gap-2">
+        <a href="./index.html" class="no-print bg-white/10 hover:bg-white/20 text-white font-semibold px-4 py-2 rounded-md">
+          Voltar
+        </a>
+        <button class="no-print bg-white text-tax-blue font-semibold px-4 py-2 rounded-md shadow" onclick="window.print()">
+          Imprimir / Salvar PDF
+        </button>
       </div>
     </div>
-  </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto p-6 sm:p-8 space-y-8">
+    <div id="msg" class="hidden rounded-md border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm"></div>
+    <div id="report"></div>
+
+    <p class="text-center text-xs text-tax-dark-gray">
+      Gerado por calculadorafap.com.br
+    </p>
+  </main>
 
 <script>
-  /* ===== Helpers (copiados do seu index) ===== */
+  // ===== Helpers =====
   function br4(n){ return isFinite(n) ? Number(n).toFixed(4).replace('.', ',') : '—'; }
   function br2(n){ return isFinite(n) ? Number(n).toFixed(2).replace('.', ',') : '—'; }
   function brCurrency(n){ return isFinite(n) ? Number(n).toLocaleString('pt-BR', {style:'currency', currency:'BRL'}) : '—'; }
@@ -60,42 +78,59 @@
     return parseFloat(s.replace(/\./g,'').replace(',', '.'));
   }
 
-  function getParam(name){
-    return new URL(window.location.href).searchParams.get(name);
+  function showErr(html){
+    var el = document.getElementById('msg');
+    el.innerHTML = html;
+    el.classList.remove('hidden');
   }
+
+  function getParams(){
+    var u = new URL(location.href);
+    var o = {};
+    u.searchParams.forEach((v,k)=>o[k]=v);
+    return o;
+  }
+
+  // ===== Paywall storage =====
+  var LS_KEY = "fap_last_payload_v1";
   function loadPayload(){
-    try { return JSON.parse(localStorage.getItem("fap_pdf_payload_v1")); }
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "null"); }
     catch(e){ return null; }
   }
 
-  function buildReportHTML(payload){
-    var cat = parseGeneric(payload.cat) || 0;
-    var b91 = parseGeneric(payload.b91) || 0;
-    var b92 = parseGeneric(payload.b92) || 0;
-    var b93 = parseGeneric(payload.b93) || 0;
-    var b94 = parseGeneric(payload.b94) || 0;
+  function isApproved(params){
+    // MP manda status=approved (às vezes collection_status=approved)
+    return (params.status === "approved" || params.collection_status === "approved" || params.paid === "1");
+  }
 
-    var massaSalarial   = parseBRLForCalc(payload.massaSalarial) || 0;
-    var mediaVinculos   = parseGeneric(payload.mediaVinculos) || 1;
-    var totalBeneficios = parseBRLForCalc(payload.totalBeneficios) || 0;
+  function renderReport(p){
+    // Inputs
+    var cat = parseGeneric(p.cat) || 0;
+    var b91 = parseGeneric(p.b91) || 0;
+    var b92 = parseGeneric(p.b92) || 0;
+    var b93 = parseGeneric(p.b93) || 0;
+    var b94 = parseGeneric(p.b94) || 0;
 
-    var ordemFrequencia = parseGeneric(payload.ordemFrequencia) || 0;
-    var ordemGravidade  = parseGeneric(payload.ordemGravidade) || 0;
-    var ordemCusto      = parseGeneric(payload.ordemCusto) || 0;
-    var totalEstab      = parseGeneric(payload.totalEstabelecimentos) || 1;
-    var taxaRot         = parseGeneric(payload.taxaRotatividade) || 0;
+    var massaSalarial   = parseBRLForCalc(p.massaSalarial) || 0;
+    var mediaVinculos   = parseGeneric(p.mediaVinculos) || 1;
+    var totalBeneficios = parseBRLForCalc(p.totalBeneficios) || 0;
+
+    var ordemFrequencia = parseGeneric(p.ordemFrequencia) || 0;
+    var ordemGravidade  = parseGeneric(p.ordemGravidade) || 0;
+    var ordemCusto      = parseGeneric(p.ordemCusto) || 0;
+    var totalEstab      = parseGeneric(p.totalEstabelecimentos) || 1;
+    var taxaRot         = parseGeneric(p.taxaRotatividade) || 0;
 
     var MULT = 1000;
     var somaEventos   = (b91 + b92 + b93 + b94 + cat);
     var somaGravidade = (b91*0.1 + b92*0.3 + b93*0.5 + b94*0.1 + cat*0.5);
 
-    var indiceFrequencia = (somaEventos   / mediaVinculos) * MULT;
+    var indiceFrequencia = (somaEventos / mediaVinculos) * MULT;
     var indiceGravidade  = (somaGravidade / mediaVinculos) * MULT;
     var indiceCusto      = (totalBeneficios / massaSalarial) * MULT;
 
     var denom = (totalEstab - 1);
     var temBasePercentil = denom > 0;
-
     var pFreq  = temBasePercentil ? ((ordemFrequencia - 1) / denom) * 100 : 0;
     var pGrav  = temBasePercentil ? ((ordemGravidade  - 1) / denom) * 100 : 0;
     var pCusto = temBasePercentil ? ((ordemCusto      - 1) / denom) * 100 : 0;
@@ -105,114 +140,74 @@
     if (taxaRot > 75 && fap < 1) fap = 1;
 
     var html = ''
-      + '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">'
-      + '<title>Relatório do Cálculo do FAP</title><meta name="viewport" content="width=device-width, initial-scale=1">'
-      + '<script src="https://cdn.tailwindcss.com"><\/script>'
-      + '<script>tailwind.config={theme:{extend:{colors:{"tax-blue":"#152E3E","tax-gold":"#E2B874","tax-gray":"#EBEBEB","tax-dark-gray":"#6B7280","tax-bg-light":"#F9FAFB"}}}}<\/script>'
-      + '<style>@media print{.no-print{display:none!important}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'
-      + '.card{background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1)}'
-      + 'code{background:#F3F4F6;padding:.1rem .35rem;border-radius:.35rem}</style></head>'
-      + '<body class="bg-tax-bg-light text-tax-blue">'
-      + '<header class="bg-tax-blue text-white p-6 sm:p-8">'
-      + '<div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">'
-      + '<div><h1 class="text-2xl sm:text-3xl font-extrabold">Relatório do Cálculo do FAP</h1><p class="text-tax-gold">www.calculadorafap.com.br</p></div>'
-      + '<button class="no-print bg-white text-tax-blue font-semibold px-4 py-2 rounded-md shadow" onclick="window.print()">Imprimir / Salvar PDF</button>'
-      + '</div></header>'
-      + '<main class="max-w-5xl mx-auto p-6 sm:p-8 space-y-8">'
-
       + '<section class="grid grid-cols-1 sm:grid-cols-4 gap-6">'
-      + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-3xl font-bold">'+br4(indiceFrequencia)+'</p>'
-      + '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaEventos+' / '+mediaVinculos+') × 1000</p></div>'
-      + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-3xl font-bold">'+br4(indiceGravidade)+'</p>'
-      + '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaGravidade.toFixed(4)+' / '+mediaVinculos+') × 1000</p></div>'
-      + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-3xl font-bold">'+br4(indiceCusto)+'</p>'
-      + '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+totalBeneficios+' / '+massaSalarial+') × 1000</p></div>'
-      + '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">FAP Calculado</p><p class="text-3xl font-bold">'+br4(fap)+'</p>'
-      + (taxaRot>75 && fap===1 ? '<p class="text-xs text-tax-dark-gray mt-1">Ajuste por rotatividade &gt; 75%</p>' : '')
-      + '</div></section>'
+      +   '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Frequência</p><p class="text-3xl font-bold">' + br4(indiceFrequencia) + '</p>'
+      +     '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+somaEventos+' / '+br2(mediaVinculos).replace(",",".") + ') × 1000</p></div>'
+      +   '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Gravidade</p><p class="text-3xl font-bold">' + br4(indiceGravidade) + '</p>'
+      +     '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+br4(somaGravidade).replace(",",".")+' / '+br2(mediaVinculos).replace(",",".")+') × 1000</p></div>'
+      +   '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">Índice de Custo</p><p class="text-3xl font-bold">' + br4(indiceCusto) + '</p>'
+      +     '<p class="text-xs text-tax-dark-gray mt-1">Checagem: ('+brCurrency(totalBeneficios)+' / '+brCurrency(massaSalarial)+') × 1000</p></div>'
+      +   '<div class="card p-5 text-center"><p class="text-sm text-tax-dark-gray">FAP Calculado</p><p class="text-3xl font-bold">' + br4(fap) + '</p>'
+      +     (taxaRot>75 && fap===1 ? '<p class="text-xs text-tax-dark-gray mt-1">Ajuste por rotatividade &gt; 75%</p>' : '')
+      +   '</div>'
+      + '</section>'
 
       + '<section class="grid grid-cols-1 lg:grid-cols-2 gap-6">'
-      + '<div class="card p-5"><h2 class="text-lg font-bold mb-4">Entradas (Fatos Geradores)</h2>'
-      + '<table class="w-full text-sm"><tbody class="divide-y divide-tax-gray">'
-      + '<tr><td class="py-2">CAT</td><td class="py-2 text-right">'+br2(cat)+'</td></tr>'
-      + '<tr><td class="py-2">B91</td><td class="py-2 text-right">'+br2(b91)+'</td></tr>'
-      + '<tr><td class="py-2">B92</td><td class="py-2 text-right">'+br2(b92)+'</td></tr>'
-      + '<tr><td class="py-2">B93</td><td class="py-2 text-right">'+br2(b93)+'</td></tr>'
-      + '<tr><td class="py-2">B94</td><td class="py-2 text-right">'+br2(b94)+'</td></tr>'
-      + '<tr><td class="py-2">Massa Salarial</td><td class="py-2 text-right">'+brCurrency(massaSalarial)+'</td></tr>'
-      + '<tr><td class="py-2">Média de Vínculos</td><td class="py-2 text-right">'+br2(mediaVinculos)+'</td></tr>'
-      + '<tr><td class="py-2">Benefícios Pagos</td><td class="py-2 text-right">'+brCurrency(totalBeneficios)+'</td></tr>'
-      + '</tbody></table></div>'
+      +   '<div class="card p-5"><h2 class="text-lg font-bold mb-4">Entradas (Fatos Geradores)</h2>'
+      +     '<table class="w-full text-sm"><tbody class="divide-y divide-tax-gray">'
+      +       '<tr><td class="py-2">CAT</td><td class="py-2 text-right">' + br2(cat) + '</td></tr>'
+      +       '<tr><td class="py-2">B91</td><td class="py-2 text-right">' + br2(b91) + '</td></tr>'
+      +       '<tr><td class="py-2">B92</td><td class="py-2 text-right">' + br2(b92) + '</td></tr>'
+      +       '<tr><td class="py-2">B93</td><td class="py-2 text-right">' + br2(b93) + '</td></tr>'
+      +       '<tr><td class="py-2">B94</td><td class="py-2 text-right">' + br2(b94) + '</td></tr>'
+      +       '<tr><td class="py-2">Massa Salarial</td><td class="py-2 text-right">' + brCurrency(massaSalarial) + '</td></tr>'
+      +       '<tr><td class="py-2">Média de Vínculos</td><td class="py-2 text-right">' + br2(mediaVinculos) + '</td></tr>'
+      +       '<tr><td class="py-2">Benefícios Pagos</td><td class="py-2 text-right">' + brCurrency(totalBeneficios) + '</td></tr>'
+      +     '</tbody></table></div>'
 
-      + '<div class="card p-5"><h2 class="text-lg font-bold mb-4">Percentis e Composto</h2>'
-      + '<table class="w-full text-sm mb-4"><tbody class="divide-y divide-tax-gray">'
-      + '<tr><td class="py-2">% Frequência</td><td class="py-2 text-right">'+br4(pFreq)+'%</td></tr>'
-      + '<tr><td class="py-2">% Gravidade</td><td class="py-2 text-right">'+br4(pGrav)+'%</td></tr>'
-      + '<tr><td class="py-2">% Custo</td><td class="py-2 text-right">'+br4(pCusto)+'%</td></tr>'
-      + '<tr><td class="py-2 font-semibold">Índice Composto</td><td class="py-2 text-right font-semibold">'+br4(indiceComposto)+'</td></tr>'
-      + '<tr><td class="py-2 font-semibold">FAP Final</td><td class="py-2 text-right font-semibold">'+br4(fap)
-      + ((taxaRot>75 && fap===1)?' <span class="text-xs text-tax-dark-gray">(ajustado por rotatividade &gt; 75%)</span>':'')
-      + '</td></tr></tbody></table>'
-      + '<div class="text-xs text-tax-dark-gray mt-2">Cálculo do Composto: (0,5×'+br4(pGrav)+' + 0,35×'+br4(pFreq)+' + 0,15×'+br4(pCusto)+') × 0,02 = <strong>'+br4(indiceComposto)+'</strong></div>'
-      + (temBasePercentil ? '' : '<p class="text-xs text-red-600">Observação: N (total de estabelecimentos) ≤ 1.</p>')
-      + '</div></section>'
+      +   '<div class="card p-5"><h2 class="text-lg font-bold mb-4">Percentis e Composto</h2>'
+      +     '<table class="w-full text-sm mb-4"><tbody class="divide-y divide-tax-gray">'
+      +       '<tr><td class="py-2">% Frequência</td><td class="py-2 text-right">' + br4(pFreq) + '%</td></tr>'
+      +       '<tr><td class="py-2">% Gravidade</td><td class="py-2 text-right">' + br4(pGrav) + '%</td></tr>'
+      +       '<tr><td class="py-2">% Custo</td><td class="py-2 text-right">' + br4(pCusto) + '%</td></tr>'
+      +       '<tr><td class="py-2 font-semibold">Índice Composto</td><td class="py-2 text-right font-semibold">' + br4(indiceComposto) + '</td></tr>'
+      +       '<tr><td class="py-2 font-semibold">FAP Final</td><td class="py-2 text-right font-semibold">' + br4(fap)
+      +         ((taxaRot>75 && fap===1)?' <span class="text-xs text-tax-dark-gray">(ajustado por rotatividade > 75%)</span>':'')
+      +       '</td></tr>'
+      +     '</tbody></table>'
+      +     '<div class="text-xs text-tax-dark-gray mt-2">Cálculo do Composto: (0,5×' + br4(pGrav) + ' + 0,35×' + br4(pFreq) + ' + 0,15×' + br4(pCusto) + ') × 0,02 = <strong>' + br4(indiceComposto) + '</strong></div>'
+      +     (temBasePercentil ? '' : '<p class="text-xs text-red-600">Observação: N (total de estabelecimentos) ≤ 1.</p>')
+      +   '</div>'
+      + '</section>';
 
-      + '<section class="space-y-6">'
-      + '<div class="card p-5"><h2 class="text-lg font-bold mb-3">Entendendo o FAP</h2>'
-      + '<p class="text-sm text-tax-dark-gray leading-relaxed">O FAP é um multiplicador (0,500 a 2,000) aplicado sobre a alíquota do RAT. Ele nasce de um índice composto que pondera os percentis da sua subclasse CNAE por gravidade (peso 0,5), frequência (0,35) e custo (0,15), reescalonado por 0,02. Existem travas mínimas/máximas e regra de rotatividade: se a rotatividade &gt; 75% e o FAP ficar &lt; 1, ele é elevado para 1.</p>'
-      + '</div>'
-      + '<div class="card p-5"><h2 class="text-lg font-bold mb-3">Fórmulas (gerais)</h2>'
-      + '<ul class="space-y-2 text-sm text-tax-dark-gray">'
-      + '<li><strong>Índice de Frequência (IF):</strong> <code>(B91 + B92 + B93 + B94 + CAT) / Vínculos_médios × 1000</code></li>'
-      + '<li><strong>Índice de Gravidade (IG):</strong> <code>((B91×0,1 + B92×0,3 + B93×0,5 + B94×0,1 + CAT×0,5) / Vínculos_médios) × 1000</code></li>'
-      + '<li><strong>Índice de Custo (IC):</strong> <code>(Total de Benefícios / Massa Salarial) × 1000</code></li>'
-      + '<li><strong>Percentis:</strong> <code>P = ((k − 1) / (N − 1)) × 100</code></li>'
-      + '<li><strong>Índice Composto:</strong> <code>(0,5×P<sub>G</sub> + 0,35×P<sub>F</sub> + 0,15×P<sub>C</sub>) × 0,02</code></li>'
-      + '<li><strong>FAP final:</strong> <code>max(0,500, Composto)</code> com ajuste para 1,000 se rotatividade &gt; 75% e Composto &lt; 1</li>'
-      + '</ul></div></section>'
-
-      + '<p class="text-center text-xs text-tax-dark-gray">Gerado por calculadorafap.com.br</p>'
-      + '</main></body></html>';
-
-    return html;
+    document.getElementById("report").innerHTML = html;
   }
 
-  function openReportInNewTab(html){
-    var w = window.open('', '_blank');
-    w.document.open();
-    w.document.write(html);
-    w.document.close();
-  }
+  (function init(){
+    var params = getParams();
+    var ok = isApproved(params);
 
-  document.addEventListener('DOMContentLoaded', function(){
-    var paid = getParam('paid'); // esperado: ?paid=1 (se você configurar no MP)
-    var statusEl = document.getElementById('status');
+    // info útil no topo
+    var parts = [];
+    if(params.payment_id) parts.push("payment_id: " + params.payment_id);
+    if(params.payment_type) parts.push("tipo: " + params.payment_type);
+    if(params.status) parts.push("status: " + params.status);
+    document.getElementById("subinfo").textContent = parts.join(" • ");
 
-    if (paid !== '1') {
-      statusEl.innerHTML = "Para liberar o relatório, finalize o pagamento via Pix (R$ 9,99).";
+    if(!ok){
+      showErr("Pagamento não confirmado nesta URL. Se você acabou de pagar, verifique se o link contém <strong>status=approved</strong>. Se preferir, volte para a calculadora e tente novamente.");
       return;
     }
 
     var payload = loadPayload();
-    if (!payload) {
-      statusEl.innerHTML = "Pagamento confirmado, mas não encontrei os dados do cálculo neste navegador. Volte, refaça o cálculo e tente novamente.";
+    if(!payload){
+      showErr("Pagamento aprovado, mas não encontrei os dados do cálculo salvos neste navegador. <br><br><strong>Solução:</strong> volte para a calculadora, preencha os dados novamente e clique em <strong>Gerar Relatório do Cálculo</strong> para salvar e liberar.");
       return;
     }
 
-    // validade 2h
-    var maxAgeMs = 2 * 60 * 60 * 1000;
-    if (!payload.ts || (Date.now() - payload.ts) > maxAgeMs) {
-      statusEl.innerHTML = "Seus dados expiraram. Volte, refaça o cálculo e gere o relatório novamente.";
-      return;
-    }
-
-    statusEl.innerHTML = "Pagamento confirmado. Gerando seu relatório...";
-    var reportHTML = buildReportHTML(payload);
-    openReportInNewTab(reportHTML);
-
-    // opcional: limpar para evitar relatório com dados antigos
-    // localStorage.removeItem("fap_pdf_payload_v1");
-  });
+    renderReport(payload);
+  })();
 </script>
+
 </body>
 </html>

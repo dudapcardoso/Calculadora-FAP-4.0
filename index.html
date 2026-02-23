@@ -238,7 +238,7 @@ layout: null
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <button id="btnCalcularFap" type="button" class="btn-primary" onclick="calcularFap()">Calcular FAP</button>
 
-            <!-- AQUI: agora é pago -->
+            <!-- BOTÃO PAGO -->
             <button id="btnRelatorio" type="button" class="btn-secondary" onclick="startPaidPdfFlow()">
               Gerar Relatório do Cálculo (R$ 9,99)
             </button>
@@ -320,10 +320,18 @@ layout: null
     return true;
   }
 
-  /* ===== Pagamento (MVP) ===== */
+  /* ===== Pagamento (MVP robusto) =====
+     Importante:
+     - NÃO abrimos relatorio.html antes de pagar (popups / bloqueios)
+     - Salvamos o payload no localStorage
+     - Redirecionamos pro mpago.la
+     - O Mercado Pago volta pra relatorio.html com status=approved
+  */
   var MP_LINK = "https://mpago.la/2cxW5Dn";
   var REPORT_PAGE = "./relatorio.html";
-  var LS_KEY = "fap_pdf_payload_v1";
+  var LS_KEY_PAYLOAD = "fap_pdf_payload_v1";
+  var LS_KEY_PAID = "fap_paid_v1";
+  var LS_KEY_PENDING = "fap_pending_v1";
 
   function saveReportPayload(){
     var payload = {
@@ -342,8 +350,28 @@ layout: null
       totalEstabelecimentos: (document.getElementById("totalEstabelecimentos")||{}).value || "",
       taxaRotatividade: (document.getElementById("taxaRotatividade")||{}).value || ""
     };
-    try { localStorage.setItem(LS_KEY, JSON.stringify(payload)); } catch(e){}
+    try { localStorage.setItem(LS_KEY_PAYLOAD, JSON.stringify(payload)); } catch(e){}
     return payload;
+  }
+
+  function isPaid(){
+    return localStorage.getItem(LS_KEY_PAID) === "1";
+  }
+
+  // Se por algum motivo o MP redirecionar pra ESTA página com ?status=approved, liberamos e mandamos pro relatório.
+  function markPaidIfApprovedFromURL(){
+    try{
+      var u = new URL(location.href);
+      var status = u.searchParams.get("status");
+      var collection = u.searchParams.get("collection_status");
+      var paid = u.searchParams.get("paid");
+      if(status === "approved" || collection === "approved" || paid === "1"){
+        localStorage.setItem(LS_KEY_PAID, "1");
+        localStorage.removeItem(LS_KEY_PENDING);
+        // manda pro relatório (onde ele vai renderizar lendo o localStorage)
+        window.location.replace(REPORT_PAGE + "?paid=1");
+      }
+    }catch(e){}
   }
 
   function startPaidPdfFlow(){
@@ -354,12 +382,16 @@ layout: null
     var obrigFap = ["ordemFrequencia","ordemGravidade","ordemCusto","totalEstabelecimentos","taxaRotatividade"];
     if (!verificarCamposObrigatorios(obrigFap)) return;
 
+    // se já pagou neste navegador, vai direto pro relatório
+    if (isPaid()){
+      window.location.href = REPORT_PAGE + "?paid=1";
+      return;
+    }
+
     saveReportPayload();
+    try { localStorage.setItem(LS_KEY_PENDING, "1"); } catch(e){}
 
-    // tenta abrir a página de relatório em nova aba (normalmente passa por ser clique do usuário)
-    try { window.open(REPORT_PAGE, "_blank"); } catch(e){}
-
-    // redireciona pro pagamento
+    // redireciona para o pagamento
     window.location.href = MP_LINK;
   }
 
@@ -444,11 +476,10 @@ layout: null
     }
   }
 
-  /* ===== Relatório (mantido, ainda existe para debug interno) ===== */
+  /* ===== Relatório DIRETO (mantido, apenas para debug interno) ===== */
   function abrirFormularioRelatorio() {
     try{
-      // (mantive sua função original intacta — mas você não usa mais no botão)
-      flash("Função de relatório direto está desativada no fluxo pago. Use o botão pago.");
+      flash("Relatório direto (debug) não está ligado ao botão pago. Use o fluxo pago.");
     }catch(err){
       console.error(err); flash("Erro ao gerar o relatório.");
     }
@@ -462,6 +493,9 @@ layout: null
 
   // Garantias extras (listeners)
   document.addEventListener('DOMContentLoaded', function(){
+    // se por acaso o MP voltar pro index com approved, já libera e manda pro relatório
+    markPaidIfApprovedFromURL();
+
     var c  = document.getElementById('btnCalcular');
     var cf = document.getElementById('btnCalcularFap');
     var r  = document.getElementById('btnRelatorio');

@@ -12,11 +12,15 @@
       theme: {
         extend: {
           colors: {
-            'tax-blue': '#152E3E',
-            'tax-gold': '#E2B874',
-            'tax-gray': '#EBEBEB',
-            'tax-dark-gray': '#6B7280',
-            'tax-bg-light': '#F9FAFB',
+            /* ✅ NOVA PALETA (Azul profundo + Bronze) */
+            'tax-blue': '#0E1A24',
+            'tax-gold': '#B08D57',
+            'tax-gray': '#E5E7EB',
+            'tax-dark-gray': '#4B5563',
+            'tax-bg-light': '#F3F4F6',
+
+            /* opcional p/ hover elegante (se quiser usar em classes) */
+            'tax-blue-hover': '#1F2F3A',
           }
         }
       }
@@ -26,10 +30,17 @@
   <!-- Estilos -->
   <style>
     html,body{ margin:0; padding:0; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
-    #calc-impacto-fap{ background:#f6f6f6; min-height:100vh; }
-    .header{ background:#152e3e; padding:1rem 0; margin-bottom:0; }
+
+    /* ✅ fundo geral usando a nova paleta (antes #f6f6f6) */
+    #calc-impacto-fap{ background:#F3F4F6; min-height:100vh; }
+
+    /* ✅ header azul profundo */
+    .header{ background:#0E1A24; padding:1rem 0; margin-bottom:0; }
     @media(min-width:768px){ .header{ padding:2rem 0; } }
-    .golden-stripe{ background:#dba958; height:6px; width:100%; }
+
+    /* ✅ faixa bronze (antes dourado ROIT) */
+    .golden-stripe{ background:#B08D57; height:6px; width:100%; }
+
     .logo-container{ display:flex; align-items:center; }
     .logo-image{ height:40px; width:auto; max-width:150px; }
     @media(min-width:768px){ .logo-image{ height:45px; max-width:200px; } }
@@ -55,27 +66,70 @@
       transform:translateY(-1px);
     }
     .top-nav a.is-active{
-      background:#dba958; /* dourado */
-      color:#152e3e;
-      border-color:#dba958;
+      background:#B08D57; /* ✅ bronze */
+      color:#0E1A24;      /* ✅ azul profundo */
+      border-color:#B08D57;
     }
     .top-nav-wrap{
       margin-top:12px;
     }
 
-    #calc-impacto-fap .main-card{ background:#fff; border-radius:16px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); border:1px solid #e5e7eb; overflow:hidden; }
-    #calc-impacto-fap .input-field{ background:#fff; border:2px solid #d1d5db; border-radius:12px; transition:all .2s ease; color:#374151; font-weight:500; padding:14px 18px; font-size:16px; }
-    #calc-impacto-fap .input-field:focus,#calc-impacto-fap .input-field:focus-within{ border-color:#152e3e; box-shadow:0 0 0 3px rgba(21,46,62,0.1); outline:none; background:#fff; }
+    #calc-impacto-fap .main-card{
+      background:#fff;
+      border-radius:16px;
+      box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);
+      border:1px solid #e5e7eb;
+      overflow:hidden;
+    }
+
+    #calc-impacto-fap .input-field{
+      background:#fff;
+      border:2px solid #d1d5db;
+      border-radius:12px;
+      transition:all .2s ease;
+      color:#374151;
+      font-weight:500;
+      padding:14px 18px;
+      font-size:16px;
+    }
+
+    /* ✅ foco usando novo azul profundo */
+    #calc-impacto-fap .input-field:focus,
+    #calc-impacto-fap .input-field:focus-within{
+      border-color:#0E1A24;
+      box-shadow:0 0 0 3px rgba(14,26,36,0.12);
+      outline:none;
+      background:#fff;
+    }
+
     #calc-impacto-fap .input-field:hover{ border-color:#9ca3af; }
-    #calc-impacto-fap input[type=number]::-webkit-inner-spin-button,#calc-impacto-fap input[type=number]::-webkit-outer-spin-button{ -webkit-appearance:none; margin:0; }
+    #calc-impacto-fap input[type=number]::-webkit-inner-spin-button,
+    #calc-impacto-fap input[type=number]::-webkit-outer-spin-button{ -webkit-appearance:none; margin:0; }
     #calc-impacto-fap input[type=number]{ -moz-appearance:textfield; }
+
     .section-header{ background:#f3f4f6; border-bottom:1px solid #e5e7eb; }
-    .result-card{ background:#152e3e; border-radius:16px; border:1px solid #152e3e; box-shadow:0 10px 15px -3px rgba(0,0,0,0.1); }
-    .metric-card{ background:#fff; border-radius:12px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.1); border:1px solid #f3f4f6; transition:all .2s ease; }
+
+    /* ✅ resultado com novo azul profundo */
+    .result-card{
+      background:#0E1A24;
+      border-radius:16px;
+      border:1px solid #0E1A24;
+      box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+
+    .metric-card{
+      background:#fff;
+      border-radius:12px;
+      padding:20px;
+      box-shadow:0 1px 3px rgba(0,0,0,0.1);
+      border:1px solid #f3f4f6;
+      transition:all .2s ease;
+    }
     @media(min-width:768px){ .metric-card{ padding:24px; } }
     .metric-card:hover{ transform:translateY(-2px); }
     .label{ font-weight:600; color:#374151; margin-bottom:8px; font-size:14px; }
     .help-text{ color:#6b7280; font-size:12px; margin-top:6px; font-weight:500; }
+
     @media(max-width:767px){
       .header .container{ padding-left:1rem; padding-right:1rem; }
       .title-container h1{ font-size:1.25rem; line-height:1.75rem; }
@@ -130,7 +184,8 @@
         <!-- INPUTS -->
         <div class="section-header p-4 sm:p-6 md:p-8 lg:p-10">
           <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-6 sm:mb-8 flex items-center">
-            <span class="bg-yellow-600 text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">1</span>
+            <!-- ✅ bolinha usando bronze -->
+            <span class="bg-tax-gold text-tax-blue rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">1</span>
             Insira os dados da sua empresa
           </h2>
 
@@ -174,7 +229,8 @@
         <!-- RESULTADOS -->
         <div class="p-4 sm:p-6 md:p-8 lg:p-10">
           <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-8 sm:mb-10 flex items-center">
-            <span class="bg-yellow-600 text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">2</span>
+            <!-- ✅ bolinha usando bronze -->
+            <span class="bg-tax-gold text-tax-blue rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">2</span>
             Analise o Resultado
           </h2>
 
@@ -216,69 +272,36 @@
         </div>
       </div>
 
+      <!-- ✅ Sugestão: Pix antes do footer (fica mais “certo” sem quebrar o rodapé) -->
+      <section class="max-w-3xl mx-auto mt-16 mb-10 px-6">
+        <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 text-center shadow-sm">
+          <h3 class="text-lg font-semibold mb-2">☕ Gostou da ferramenta? Apoie o projeto.</h3>
+          <p class="text-gray-600 text-sm mb-4">
+            Se a calculadora ajudou sua empresa a identificar oportunidades ou reduzir custos,
+            você pode contribuir via Pix para manter o projeto atualizado, independente e gratuito.
+          </p>
+
+          <div class="flex flex-col items-center gap-3">
+            <div class="text-xs text-gray-500">
+              Chave Pix:
+              <span class="font-medium text-gray-800 select-all">eduardocardosop@gmail.com</span>
+            </div>
+
+            <button
+              type="button"
+              onclick="copyPixKey()"
+              class="bg-tax-blue text-white px-6 py-2 rounded-xl text-sm hover:opacity-90 transition">
+              Copiar chave Pix
+            </button>
+
+            <p id="pixCopiedMsg" class="text-xs text-gray-500 hidden">✅ Chave Pix copiada!</p>
+            <p class="text-xs text-gray-400">Contribuição voluntária.</p>
+          </div>
+        </div>
+      </section>
+
       <footer class="text-center p-4 sm:p-6">
         <p class="text-gray-500 text-sm">Simulador desenvolvido para fins de estimativa. Os valores podem variar.</p>
-     <section class="max-w-3xl mx-auto mt-16 mb-10 px-6">
-  <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 text-center shadow-sm">
-    <h3 class="text-lg font-semibold mb-2">☕ Gostou da ferramenta? Apoie o projeto.</h3>
-    <p class="text-gray-600 text-sm mb-4">
-      Se a calculadora ajudou sua empresa a identificar oportunidades ou reduzir custos,
-      você pode contribuir via Pix para manter o projeto atualizado, independente e gratuito.
-    </p>
-
-    <div class="flex flex-col items-center gap-3">
-      <div class="text-xs text-gray-500">
-        Chave Pix:
-        <span class="font-medium text-gray-800 select-all">eduardocardosop@gmail.com</span>
-      </div>
-
-      <button
-        type="button"
-        onclick="copyPixKey()"
-        class="bg-black text-white px-6 py-2 rounded-xl text-sm hover:opacity-90 transition">
-        Copiar chave Pix
-      </button>
-
-      <p id="pixCopiedMsg" class="text-xs text-gray-500 hidden">✅ Chave Pix copiada!</p>
-      <p class="text-xs text-gray-400">Contribuição voluntária.</p>
-    </div>
-  </div>
-</section>
-
-<script>
-  function copyPixKey() {
-    const key = "eduardocardosop@gmail.com";
-    const msg = document.getElementById("pixCopiedMsg");
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(key).then(() => {
-        msg.classList.remove("hidden");
-        setTimeout(() => msg.classList.add("hidden"), 2500);
-      }).catch(() => fallbackCopy(key, msg));
-    } else {
-      fallbackCopy(key, msg);
-    }
-  }
-
-  function fallbackCopy(text, msgEl) {
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.setAttribute("readonly", "");
-    ta.style.position = "absolute";
-    ta.style.left = "-9999px";
-    document.body.appendChild(ta);
-    ta.select();
-    try {
-      document.execCommand("copy");
-      msgEl.classList.remove("hidden");
-      setTimeout(() => msgEl.classList.add("hidden"), 2500);
-    } catch (e) {
-      // Se falhar, ao menos o texto está "select-all" no HTML
-      alert("Não foi possível copiar automaticamente. Selecione a chave Pix e copie manualmente.");
-    }
-    document.body.removeChild(ta);
-  }
-</script>
       </footer>
     </div>
   </section>
@@ -362,6 +385,39 @@
     folhaInput.addEventListener('input',(e)=>{formatCurrencyInput(e);calcularImpacto();});
 
     document.addEventListener('DOMContentLoaded', calcularImpacto);
+
+    /* ✅ PIX */
+    function copyPixKey() {
+      const key = "eduardocardosop@gmail.com";
+      const msg = document.getElementById("pixCopiedMsg");
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(key).then(() => {
+          msg.classList.remove("hidden");
+          setTimeout(() => msg.classList.add("hidden"), 2500);
+        }).catch(() => fallbackCopy(key, msg));
+      } else {
+        fallbackCopy(key, msg);
+      }
+    }
+
+    function fallbackCopy(text, msgEl) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "absolute";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        msgEl.classList.remove("hidden");
+        setTimeout(() => msgEl.classList.add("hidden"), 2500);
+      } catch (e) {
+        alert("Não foi possível copiar automaticamente. Selecione a chave Pix e copie manualmente.");
+      }
+      document.body.removeChild(ta);
+    }
   </script>
 </body>
 </html>

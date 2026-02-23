@@ -12,40 +12,34 @@
       theme: {
         extend: {
           colors: {
-            /* ✅ NOVA PALETA (Azul profundo + Bronze) */
+            /* Minimal + claro (azul profundo e bronze só como acento) */
             'tax-blue': '#0E1A24',
             'tax-gold': '#B08D57',
-            'tax-gray': '#E5E7EB',
-            'tax-dark-gray': '#4B5563',
-            'tax-bg-light': '#F3F4F6',
-
-            /* opcional p/ hover elegante (se quiser usar em classes) */
-            'tax-blue-hover': '#1F2F3A',
+            'tax-ink': '#111827',
+            'tax-muted': '#6B7280',
+            'tax-line': '#E5E7EB',
+            'tax-bg': '#FFFFFF',
+            'tax-soft': '#F8FAFC'
           }
         }
       }
     }
   </script>
 
-  <!-- Estilos -->
   <style>
-    html,body{ margin:0; padding:0; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
+    html,body{ margin:0; padding:0; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#fff; color:#111827; }
 
-    /* ✅ fundo geral usando a nova paleta (antes #f6f6f6) */
-    #calc-impacto-fap{ background:#F3F4F6; min-height:100vh; }
+    /* layout mais leve */
+    #calc-impacto-fap{ background:#FFFFFF; min-height:100vh; }
 
-    /* ✅ header azul profundo */
-    .header{ background:#0E1A24; padding:1rem 0; margin-bottom:0; }
-    @media(min-width:768px){ .header{ padding:2rem 0; } }
+    /* Header minimal (claro) */
+    .header{
+      background:#FFFFFF;
+      border-bottom:1px solid #E5E7EB;
+    }
+    @media(min-width:768px){ .header{ padding:0.25rem 0; } }
 
-    /* ✅ faixa bronze (antes dourado ROIT) */
-    .golden-stripe{ background:#B08D57; height:6px; width:100%; }
-
-    .logo-container{ display:flex; align-items:center; }
-    .logo-image{ height:40px; width:auto; max-width:150px; }
-    @media(min-width:768px){ .logo-image{ height:45px; max-width:200px; } }
-
-    /* NAV */
+    /* NAV minimal */
     .top-nav a{
       display:inline-flex;
       align-items:center;
@@ -55,117 +49,116 @@
       font-weight:700;
       font-size:12px;
       line-height:1;
-      color:rgba(255,255,255,.85);
-      border:1px solid rgba(255,255,255,.15);
+      color:#374151;
+      border:1px solid #E5E7EB;
+      background:#fff;
       transition:all .15s ease;
       white-space:nowrap;
     }
     .top-nav a:hover{
-      color:#fff;
-      border-color:rgba(255,255,255,.35);
+      border-color:#D1D5DB;
       transform:translateY(-1px);
     }
     .top-nav a.is-active{
-      background:#B08D57; /* ✅ bronze */
-      color:#0E1A24;      /* ✅ azul profundo */
       border-color:#B08D57;
+      box-shadow:0 0 0 3px rgba(176,141,87,0.12);
+      color:#0E1A24;
     }
-    .top-nav-wrap{
-      margin-top:12px;
-    }
+    .top-nav-wrap{ margin-top:10px; }
 
+    /* Card minimal */
     #calc-impacto-fap .main-card{
       background:#fff;
-      border-radius:16px;
-      box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);
-      border:1px solid #e5e7eb;
+      border-radius:18px;
+      border:1px solid #E5E7EB;
+      box-shadow:0 6px 18px rgba(17,24,39,0.06);
       overflow:hidden;
     }
 
-    #calc-impacto-fap .input-field{
-      background:#fff;
-      border:2px solid #d1d5db;
-      border-radius:12px;
-      transition:all .2s ease;
-      color:#374151;
-      font-weight:500;
-      padding:14px 18px;
-      font-size:16px;
+    .section-header{
+      background:#FFFFFF;
+      border-bottom:1px solid #E5E7EB;
     }
 
-    /* ✅ foco usando novo azul profundo */
+    /* Inputs mais clean */
+    #calc-impacto-fap .input-field{
+      background:#fff;
+      border:1px solid #D1D5DB;
+      border-radius:12px;
+      transition:all .2s ease;
+      color:#111827;
+      font-weight:500;
+      padding:12px 14px;
+      font-size:16px;
+    }
     #calc-impacto-fap .input-field:focus,
     #calc-impacto-fap .input-field:focus-within{
       border-color:#0E1A24;
-      box-shadow:0 0 0 3px rgba(14,26,36,0.12);
+      box-shadow:0 0 0 3px rgba(14,26,36,0.10);
       outline:none;
       background:#fff;
     }
+    #calc-impacto-fap .input-field:hover{ border-color:#9CA3AF; }
 
-    #calc-impacto-fap .input-field:hover{ border-color:#9ca3af; }
-    #calc-impacto-fap input[type=number]::-webkit-inner-spin-button,
-    #calc-impacto-fap input[type=number]::-webkit-outer-spin-button{ -webkit-appearance:none; margin:0; }
-    #calc-impacto-fap input[type=number]{ -moz-appearance:textfield; }
-
-    .section-header{ background:#f3f4f6; border-bottom:1px solid #e5e7eb; }
-
-    /* ✅ resultado com novo azul profundo */
+    /* Resultado com borda (sem “placa preta”) */
     .result-card{
-      background:#0E1A24;
+      background:#F8FAFC;
       border-radius:16px;
-      border:1px solid #0E1A24;
-      box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);
+      border:1px solid #E5E7EB;
+      box-shadow:0 6px 18px rgba(17,24,39,0.06);
     }
 
+    /* Métricas minimal (sem sombra pesada) */
     .metric-card{
       background:#fff;
-      border-radius:12px;
-      padding:20px;
-      box-shadow:0 1px 3px rgba(0,0,0,0.1);
-      border:1px solid #f3f4f6;
-      transition:all .2s ease;
+      border-radius:14px;
+      padding:18px;
+      border:1px solid #E5E7EB;
+      box-shadow:0 1px 2px rgba(0,0,0,0.04);
+      transition:transform .15s ease;
     }
-    @media(min-width:768px){ .metric-card{ padding:24px; } }
     .metric-card:hover{ transform:translateY(-2px); }
-    .label{ font-weight:600; color:#374151; margin-bottom:8px; font-size:14px; }
-    .help-text{ color:#6b7280; font-size:12px; margin-top:6px; font-weight:500; }
+
+    .label{ font-weight:600; color:#111827; margin-bottom:8px; font-size:14px; }
+    .help-text{ color:#6B7280; font-size:12px; margin-top:6px; font-weight:500; }
+
+    /* Badge steps (bronze micro) */
+    .step-badge{
+      background:rgba(176,141,87,0.14);
+      color:#0E1A24;
+      border:1px solid rgba(176,141,87,0.35);
+    }
 
     @media(max-width:767px){
       .header .container{ padding-left:1rem; padding-right:1rem; }
-      .title-container h1{ font-size:1.25rem; line-height:1.75rem; }
+      .title-container h1{ font-size:1.2rem; line-height:1.6rem; }
       .title-container p{ font-size:.75rem; }
       #calc-impacto-fap .container{ padding-left:1rem; padding-right:1rem; margin-top:1rem; }
-      .section-header{ padding:1.5rem; }
-      .section-header h2{ font-size:1.25rem; margin-bottom:1.5rem; }
-      .result-card{ padding:1.5rem; margin-bottom:1.5rem; }
-      .result-card p:last-child{ font-size:2.5rem; }
-      .metric-card{ padding:1.25rem; }
-      .metric-card p:last-child{ font-size:1.5rem; }
-
-      /* no mobile, deixa o nav mais compacto */
+      .section-header{ padding:1.25rem; }
+      .section-header h2{ font-size:1.15rem; margin-bottom:1.25rem; }
+      .result-card{ padding:1.25rem; margin-bottom:1.25rem; }
+      .metric-card{ padding:1.1rem; }
       .top-nav a{ font-size:11px; padding:.4rem .6rem; }
     }
   </style>
 </head>
 
 <body>
-  <!-- HEADER (com navegação) -->
+  <!-- HEADER minimal -->
   <div class="header">
     <div class="container mx-auto px-6">
-      <div class="flex flex-col items-center justify-between py-4 gap-3">
+      <div class="flex flex-col items-center justify-between py-5 gap-3">
         <div class="title-container text-center">
-          <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white">
+          <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-tax-ink tracking-tight">
             Calcule o Impacto do FAP Majorado
           </h1>
-          <p class="text-xs sm:text-sm text-gray-300 mt-1">
+          <p class="text-xs sm:text-sm text-tax-muted mt-1">
             Simule o impacto financeiro do FAP majorado na sua empresa
           </p>
         </div>
 
-        <!-- NAV -->
         <div class="top-nav-wrap w-full">
           <nav class="top-nav flex flex-wrap items-center justify-center gap-2">
-            <!-- AJUSTE OS HREFs PARA SEUS ARQUIVOS -->
             <a href="index.html">Calculadora</a>
             <a href="impacto-fap.html" class="is-active">Impactos do FAP</a>
             <a href="como-o-fap-e-calculado.html">Como o FAP é calculado</a>
@@ -175,21 +168,18 @@
     </div>
   </div>
 
-  <div class="golden-stripe"></div>
-
-  <section id="calc-impacto-fap" class="text-gray-800">
+  <section id="calc-impacto-fap">
     <div class="container mx-auto p-4 sm:p-6 md:p-8 lg:p-12 max-w-5xl">
 
       <div class="main-card overflow-hidden">
+
         <!-- INPUTS -->
         <div class="section-header p-4 sm:p-6 md:p-8 lg:p-10">
-          <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-6 sm:mb-8 flex items-center">
-            <!-- ✅ bolinha usando bronze -->
-            <span class="bg-tax-gold text-tax-blue rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">1</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-tax-ink mb-6 sm:mb-8 flex items-center">
+            <span class="step-badge rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">1</span>
             Insira os dados da sua empresa
           </h2>
 
-          <!-- ✅ Ajuste: agora são 4 campos -->
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8">
             <div>
               <label for="rat" class="label">Alíquota RAT (%)</label>
@@ -202,14 +192,12 @@
             </div>
 
             <div>
-              <!-- ✅ Ajuste: renomeado -->
               <label for="fapPublicado" class="label">Índice FAP Publicado</label>
               <input type="text" id="fapPublicado" value="1,0000" inputmode="decimal" placeholder="1,0000" class="w-full input-field">
               <p class="help-text">Use vírgula: ex. 1,7859</p>
             </div>
 
             <div>
-              <!-- ✅ Ajuste: novo campo aberto -->
               <label for="fapAlvo" class="label">Índice FAP Alvo</label>
               <input type="text" id="fapAlvo" value="0,5000" inputmode="decimal" placeholder="0,5000" class="w-full input-field">
               <p class="help-text">Ex.: 0,6000 • 1,2000 • 0,7500</p>
@@ -218,7 +206,7 @@
             <div>
               <label for="folha" class="label">Folha de Pagamento Mensal</label>
               <div class="relative">
-                <span class="absolute inset-y-0 left-0 pl-5 flex items-center text-gray-500 pointer-events-none font-medium">R$</span>
+                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-tax-muted pointer-events-none font-medium">R$</span>
                 <input type="text" id="folha" inputmode="decimal" placeholder="50.000,00" class="w-full pl-12 text-right input-field">
               </div>
               <p class="help-text">Informe a folha média em reais</p>
@@ -228,63 +216,56 @@
 
         <!-- RESULTADOS -->
         <div class="p-4 sm:p-6 md:p-8 lg:p-10">
-          <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-8 sm:mb-10 flex items-center">
-            <!-- ✅ bolinha usando bronze -->
-            <span class="bg-tax-gold text-tax-blue rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">2</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-tax-ink mb-8 sm:mb-10 flex items-center">
+            <span class="step-badge rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold mr-3">2</span>
             Analise o Resultado
           </h2>
 
-          <!-- IMPACTO TOTAL -->
           <div class="result-card p-4 sm:p-6 md:p-8 text-center mb-8 sm:mb-10">
-            <p class="text-lg sm:text-xl font-semibold text-white mb-2">Custo Adicional em 26 Meses</p>
-
-            <!-- ✅ Ajuste: texto dinâmico -->
-            <p id="impacto-subtitle" class="text-blue-100 mb-4 sm:mb-6 opacity-90 text-sm sm:text-base">
+            <p class="text-base sm:text-lg font-semibold text-tax-ink mb-2">Custo adicional em 26 meses</p>
+            <p id="impacto-subtitle" class="text-tax-muted mb-5 text-sm sm:text-base">
               (Diferença entre seu FAP publicado e o FAP alvo)
             </p>
 
-            <p id="impacto-total" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white">R$ 0,00</p>
+            <p id="impacto-total" class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-tax-blue tracking-tight">R$ 0,00</p>
           </div>
 
-          <!-- MÉTRICAS -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-8">
             <div class="metric-card">
-              <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">RAT Ajustado (Publicado)</p>
-              <p id="rat-ajustado" class="text-2xl sm:text-3xl font-bold text-gray-800">1,0000%</p>
+              <p class="text-xs sm:text-sm text-tax-muted mb-3 font-medium">RAT Ajustado (Publicado)</p>
+              <p id="rat-ajustado" class="text-2xl sm:text-3xl font-bold text-tax-ink">1,0000%</p>
             </div>
 
-            <!-- ✅ Ajuste: nome -->
             <div class="metric-card">
-              <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Publicado)</p>
-              <p id="custo-publicado" class="text-2xl sm:text-3xl font-bold text-red-600">R$ 0,00</p>
+              <p class="text-xs sm:text-sm text-tax-muted mb-3 font-medium">Custo Mensal (FAP Publicado)</p>
+              <p id="custo-publicado" class="text-2xl sm:text-3xl font-bold text-tax-ink">R$ 0,00</p>
             </div>
 
-            <!-- ✅ Ajuste: agora é ALVO (e não mínimo) -->
             <div class="metric-card sm:col-span-2 lg:col-span-1">
-              <p class="text-xs sm:text-sm text-gray-600 mb-3 font-medium">Custo Mensal (FAP Alvo)</p>
-              <p id="custo-alvo" class="text-2xl sm:text-3xl font-bold text-green-600">R$ 0,00</p>
+              <p class="text-xs sm:text-sm text-tax-muted mb-3 font-medium">Custo Mensal (FAP Alvo)</p>
+              <p id="custo-alvo" class="text-2xl sm:text-3xl font-bold text-tax-ink">R$ 0,00</p>
             </div>
           </div>
 
-          <p class="text-center text-xs sm:text-sm text-gray-500 bg-gray-50 rounded-lg p-3 sm:p-4 max-w-2xl mx-auto">
+          <p class="text-center text-xs sm:text-sm text-tax-muted bg-tax-soft border border-tax-line rounded-xl p-3 sm:p-4 max-w-2xl mx-auto">
             *Estimativa considerando 24 salários + 2x décimo terceiro.
           </p>
         </div>
       </div>
 
-      <!-- ✅ Sugestão: Pix antes do footer (fica mais “certo” sem quebrar o rodapé) -->
-      <section class="max-w-3xl mx-auto mt-16 mb-10 px-6">
-        <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 text-center shadow-sm">
-          <h3 class="text-lg font-semibold mb-2">☕ Gostou da ferramenta? Apoie o projeto.</h3>
-          <p class="text-gray-600 text-sm mb-4">
+      <!-- PIX minimal -->
+      <section class="max-w-3xl mx-auto mt-10 px-2 sm:px-6">
+        <div class="bg-white border border-tax-line rounded-2xl p-6 text-center">
+          <h3 class="text-base sm:text-lg font-semibold text-tax-ink mb-2">☕ Gostou da ferramenta? Apoie o projeto.</h3>
+          <p class="text-tax-muted text-sm mb-4">
             Se a calculadora ajudou sua empresa a identificar oportunidades ou reduzir custos,
             você pode contribuir via Pix para manter o projeto atualizado, independente e gratuito.
           </p>
 
           <div class="flex flex-col items-center gap-3">
-            <div class="text-xs text-gray-500">
+            <div class="text-xs text-tax-muted">
               Chave Pix:
-              <span class="font-medium text-gray-800 select-all">eduardocardosop@gmail.com</span>
+              <span class="font-medium text-tax-ink select-all">eduardocardosop@gmail.com</span>
             </div>
 
             <button
@@ -294,28 +275,28 @@
               Copiar chave Pix
             </button>
 
-            <p id="pixCopiedMsg" class="text-xs text-gray-500 hidden">✅ Chave Pix copiada!</p>
-            <p class="text-xs text-gray-400">Contribuição voluntária.</p>
+            <p id="pixCopiedMsg" class="text-xs text-tax-muted hidden">✅ Chave Pix copiada!</p>
+            <p class="text-xs text-tax-muted">Contribuição voluntária.</p>
           </div>
         </div>
       </section>
 
-      <footer class="text-center p-4 sm:p-6">
-        <p class="text-gray-500 text-sm">Simulador desenvolvido para fins de estimativa. Os valores podem variar.</p>
+      <footer class="text-center py-8">
+        <p class="text-tax-muted text-sm">Simulador desenvolvido para fins de estimativa. Os valores podem variar.</p>
       </footer>
+
     </div>
   </section>
 
-  <!-- SCRIPT -->
   <script>
     const ratInput = document.getElementById('rat');
-    const fapPublicadoInput = document.getElementById('fapPublicado'); // ✅ novo id
-    const fapAlvoInput = document.getElementById('fapAlvo');           // ✅ novo
+    const fapPublicadoInput = document.getElementById('fapPublicado');
+    const fapAlvoInput = document.getElementById('fapAlvo');
     const folhaInput = document.getElementById('folha');
 
     const ratAjustadoOutput = document.getElementById('rat-ajustado');
-    const custoPublicadoOutput = document.getElementById('custo-publicado'); // ✅ novo id
-    const custoAlvoOutput = document.getElementById('custo-alvo');           // ✅ novo id
+    const custoPublicadoOutput = document.getElementById('custo-publicado');
+    const custoAlvoOutput = document.getElementById('custo-alvo');
     const impactoTotalOutput = document.getElementById('impacto-total');
     const impactoSubtitle = document.getElementById('impacto-subtitle');
 
@@ -342,7 +323,6 @@
     }
 
     function clampFap(v){
-      // opcional: mantém dentro do intervalo oficial
       if(!isFinite(v)) return 0;
       if(v < 0.5) return 0.5;
       if(v > 2.0) return 2.0;
@@ -355,7 +335,6 @@
       let fapPublicado = parseFap(fapPublicadoInput.value);
       let fapAlvo = parseFap(fapAlvoInput.value);
 
-      // mantém o comportamento mais "seguro" dentro do range
       fapPublicado = clampFap(fapPublicado);
       fapAlvo = clampFap(fapAlvo);
 
@@ -373,7 +352,6 @@
       custoAlvoOutput.textContent = formatToCurrencyDisplay(custoAlvo);
       impactoTotalOutput.textContent = formatToCurrencyDisplay(impacto26Meses);
 
-      // subtítulo (mostra valores que estão sendo comparados)
       impactoSubtitle.textContent =
         `(Diferença entre FAP publicado ${fapPublicado.toFixed(4).replace('.',',')} e FAP alvo ${fapAlvo.toFixed(4).replace('.',',')})`;
     }
@@ -386,7 +364,6 @@
 
     document.addEventListener('DOMContentLoaded', calcularImpacto);
 
-    /* ✅ PIX */
     function copyPixKey() {
       const key = "eduardocardosop@gmail.com";
       const msg = document.getElementById("pixCopiedMsg");

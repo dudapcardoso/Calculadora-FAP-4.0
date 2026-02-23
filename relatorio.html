@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Relatório FAP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+  <div class="max-w-xl mx-auto p-6">
+    <div class="bg-white rounded-xl shadow p-6 border">
+      <h1 class="text-xl font-bold text-gray-800">Relatório Técnico FAP</h1>
+      <p id="status" class="mt-2 text-gray-600">Validando pagamento...</p>
+
+      <div id="actions" class="mt-4 hidden">
+        <a href="index.html" class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gray-800 text-white font-semibold">
+          Voltar para a calculadora
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function getParam(name){
+      return new URL(window.location.href).searchParams.get(name);
+    }
+    function loadPayload(){
+      try { return JSON.parse(localStorage.getItem('fap_pdf_payload_v1')); }
+      catch(e){ return null; }
+    }
+
+    // TODO: vamos plugar aqui sua função real de gerar PDF
+    function gerarPdfPago(payload){
+      // Exemplo: aqui você chamará a função que você já tem
+      // gerarPDF(); ou generatePDF();
+      console.log("payload recebido:", payload);
+      document.getElementById('status').textContent =
+        "Pagamento confirmado. Agora vou gerar seu PDF (preciso plugar a função de PDF aqui).";
+      document.getElementById('actions').classList.remove('hidden');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const paid = getParam('paid'); // '1' ou '0'
+      const statusEl = document.getElementById('status');
+
+      if (paid !== '1') {
+        statusEl.textContent = "Pagamento não confirmado (ou cancelado).";
+        document.getElementById('actions').classList.remove('hidden');
+        return;
+      }
+
+      const payload = loadPayload();
+      if (!payload) {
+        statusEl.textContent = "Pagamento confirmado, mas não encontrei os dados do cálculo neste navegador. Volte, refaça o cálculo e tente novamente.";
+        document.getElementById('actions').classList.remove('hidden');
+        return;
+      }
+
+      // expira em 2h
+      const maxAgeMs = 2 * 60 * 60 * 1000;
+      if (!payload.ts || (Date.now() - payload.ts) > maxAgeMs) {
+        statusEl.textContent = "Seus dados expiraram. Volte, refaça o cálculo e gere o relatório novamente.";
+        document.getElementById('actions').classList.remove('hidden');
+        return;
+      }
+
+      gerarPdfPago(payload);
+    });
+  </script>
+</body>
+</html>

@@ -6,13 +6,6 @@
     <title>Como o FAP é calculado - Infográfico Interativo</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- (REMOVIDO) Google Fonts Inter para padronizar com as outras páginas -->
-    <!--
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    -->
-
     <!-- KaTeX for rendering math formulas -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
@@ -28,14 +21,12 @@
             --color-border: #e2e8f0;
         }
 
-        /* (AJUSTE) padroniza fonte com as outras páginas */
         html, body { margin:0; padding:0; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: #f6f6f6;
         }
 
-        /* ===== Header (igual ao estilo que fizemos em Impactos) ===== */
         .header {
             background: #152e3e;
             padding: 1rem 0;
@@ -74,7 +65,6 @@
             .top-nav a{ font-size:11px; padding:.4rem .6rem; }
         }
 
-        /* ===== Cards e componentes ===== */
         .card {
             background-color: var(--color-card-bg);
             color: var(--color-text-primary);
@@ -99,7 +89,6 @@
             box-shadow: 0 0 0 2px rgba(226, 184, 116, 0.5);
         }
 
-        /* ====== Item 3: tabela com colunas escondidas no mobile ====== */
         .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
         .responsive-table { width: 100%; border-collapse: collapse; table-layout: auto; }
         .responsive-table th, .responsive-table td {
@@ -113,14 +102,12 @@
             }
         }
 
-        /* ====== Itens 5 e 7: reduzir fonte das fórmulas ====== */
         .formula-container {
             padding: 1rem; border: 1px solid var(--color-border); border-radius: 0.5rem; background-color: #f7fafc;
             overflow-x: auto; -webkit-overflow-scrolling: touch;
         }
         .katex-display { color: var(--color-text-primary); margin: 0; }
 
-        /* Redução só nas seções 5 e 7 */
         .section-5 .katex-display,
         .section-7 .katex-display {
             font-size: clamp(0.40rem, 1.2vw, 0.60rem);
@@ -133,7 +120,7 @@
 </head>
 
 <body>
-    <!-- HEADER com navegação (igual ao Impactos) -->
+    <!-- HEADER com navegação -->
     <div class="header">
         <div class="container mx-auto px-6">
             <div class="flex flex-col items-center justify-between py-4 gap-3">
@@ -146,7 +133,6 @@
                     </p>
                 </div>
 
-                <!-- NAV (AJUSTE OS HREFs) -->
                 <div class="top-nav-wrap w-full">
                     <nav class="top-nav flex flex-wrap items-center justify-center gap-2">
                         <a href="index.html">Calculadora</a>
@@ -284,7 +270,7 @@
                 </div>
             </section>
 
-            <!-- 5 (fonte menor) -->
+            <!-- 5 -->
             <section class="card p-6 section-5">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)] mb-4">5. Cálculo dos Indicadores Base</h2>
                 <div class="space-y-6">
@@ -317,14 +303,14 @@
                 </div>
             </section>
 
-            <!-- 7 (fonte menor) -->
+            <!-- 7 -->
             <section class="card p-6 section-7">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)] mb-4">7. Cálculo do Índice Composto</h2>
                 <p class="text-[var(--color-text-secondary)] mb-4">Os percentis de Frequência (P_IF), Gravidade (P_IG) e Custo (P_IC) são combinados na fórmula final para gerar o índice FAP.</p>
                 <div class="formula-container" id="formula-ic-final"></div>
             </section>
 
-             <!-- 8 -->
+            <!-- 8 -->
             <section class="card p-6">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)]">8. Regras e Bloqueios</h2>
                 <ul class="mt-4 list-disc list-inside space-y-2 text-[var(--color-text-secondary)]">
@@ -335,10 +321,11 @@
                 </ul>
             </section>
 
-             <!-- 9 -->
+            <!-- 9 -->
             <section class="card p-6">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)] mb-4">9. Caso Prático</h2>
                 <p class="text-[var(--color-text-secondary)] mb-4">Análise de uma empresa com RAT de 3% e folha de pagamento mensal de R$ 400.000,00.</p>
+
                 <div class="space-y-6">
                     <div>
                         <h3 class="font-semibold text-lg">Cenário Publicado (FAP 1,7859)</h3>
@@ -348,6 +335,7 @@
                             <p><strong>Custo Anual (13 meses):</strong> R$ 21.430,80 × 13 = <span class="font-bold text-gray-800">R$ 278.600,40</span></p>
                         </div>
                     </div>
+
                     <div class="border-t pt-4">
                         <h3 class="font-semibold text-lg">Cenário Alvo (FAP 0,5000)</h3>
                         <div class="mt-2 space-y-2 text-sm text-gray-600">
@@ -357,6 +345,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="border-t pt-4 mt-6">
                     <h3 class="font-bold text-lg text-gray-800">Economia Potencial</h3>
                     <div class="mt-2 space-y-2 text-sm">
@@ -391,6 +380,7 @@
                         <input type="text" id="folhaMensal" value="R$ 400.000,00" class="mt-1 block w-full px-3 py-2 rounded-md shadow-sm sm:text-sm input-light">
                     </div>
                 </div>
+
                 <div id="results" class="mt-6 space-y-4 hidden">
                     <div>
                         <h3 class="font-semibold">Cenário Publicado</h3>
@@ -418,15 +408,48 @@
         </div>
     </div>
 
+    <!-- ✅ DOAÇÃO (AGORA NO HTML, FORA DO <script>) -->
+    <section class="max-w-3xl mx-auto mt-16 mb-10 px-6">
+        <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 text-center shadow-sm">
+            <h3 class="text-lg font-semibold mb-2">☕ Gostou da ferramenta? Apoie o projeto.</h3>
+            <p class="text-gray-600 text-sm mb-4">
+                Se a calculadora ajudou sua empresa a identificar oportunidades ou reduzir custos,
+                você pode contribuir via Pix para manter o projeto atualizado, independente e gratuito.
+            </p>
+
+            <div class="flex flex-col items-center gap-3">
+                <div class="text-xs text-gray-500">
+                    Chave Pix:
+                    <span class="font-medium text-gray-800 select-all">eduardocardosop@gmail.com</span>
+                </div>
+
+                <button
+                    type="button"
+                    onclick="copyPixKey()"
+                    class="bg-black text-white px-6 py-2 rounded-xl text-sm hover:opacity-90 transition">
+                    Copiar chave Pix
+                </button>
+
+                <p id="pixCopiedMsg" class="text-xs text-gray-500 hidden">✅ Chave Pix copiada!</p>
+                <p class="text-xs text-gray-400">Contribuição voluntária.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Script principal (KaTeX + simulador) -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // KaTeX
-            const safeRender = (tex, el, opts={}) => { try { katex.render(tex, el, Object.assign({throwOnError:false, displayMode:true}, opts)); } catch(e){} };
-            safeRender("IF = \\frac{\\sum (B91+B92+B93+B94+\\text{CAT Óbito})}{\\text{Média de Vínculos}} \\times 1000", document.getElementById('formula-if'));
-            safeRender("IG = \\frac{\\sum (B91 \\cdot 0{,}1 + B92 \\cdot 0{,}3 + (B93+\\text{CAT Óbito}) \\cdot 0{,}5 + B94 \\cdot 0{,}1)}{\\text{Média de Vínculos}} \\times 1000", document.getElementById('formula-ig'));
-            safeRender("IC = \\frac{\\text{Valor Total de Benefícios}}{\\text{Massa Salarial}} \\times 1000", document.getElementById('formula-ic'));
-            safeRender("P = \\frac{(k - 1)}{(N - 1)} \\times 100", document.getElementById('formula-percentil'));
-            safeRender("FAP = (0{,}50 \\times P_{IG} + 0{,}35 \\times P_{IF} + 0{,}15 \\times P_{IC}) \\times 0{,}02", document.getElementById('formula-ic-final'), {fleqn:true});
+            const safeRender = (tex, el, opts={}) => {
+                try { katex.render(tex, el, Object.assign({throwOnError:false, displayMode:true}, opts)); }
+                catch(e){}
+            };
+
+            safeRender("IF = \\\\frac{\\\\sum (B91+B92+B93+B94+\\\\text{CAT Óbito})}{\\\\text{Média de Vínculos}} \\\\times 1000", document.getElementById('formula-if'));
+            safeRender("IG = \\\\frac{\\\\sum (B91 \\\\cdot 0{,}1 + B92 \\\\cdot 0{,}3 + (B93+\\\\text{CAT Óbito}) \\\\cdot 0{,}5 + B94 \\\\cdot 0{,}1)}{\\\\text{Média de Vínculos}} \\\\times 1000", document.getElementById('formula-ig'));
+            safeRender("IC = \\\\frac{\\\\text{Valor Total de Benefícios}}{\\\\text{Massa Salarial}} \\\\times 1000", document.getElementById('formula-ic'));
+            safeRender("P = \\\\frac{(k - 1)}{(N - 1)} \\\\times 100", document.getElementById('formula-percentil'));
+            safeRender("FAP = (0{,}50 \\\\times P_{IG} + 0{,}35 \\\\times P_{IF} + 0{,}15 \\\\times P_{IC}) \\\\times 0{,}02", document.getElementById('formula-ic-final'), {fleqn:true});
 
             // Simulador
             const formatCurrency = (v)=> new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v);
@@ -480,67 +503,41 @@
             [ratSelect, fapPublicadoInput, fapCorretoInput, folhaMensalInput].forEach(el => el.addEventListener('input', calculateImpact));
             calculateImpact();
         });
-        <section class="max-w-3xl mx-auto mt-16 mb-10 px-6">
-  <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 text-center shadow-sm">
-    <h3 class="text-lg font-semibold mb-2">☕ Gostou da ferramenta? Apoie o projeto.</h3>
-    <p class="text-gray-600 text-sm mb-4">
-      Se a calculadora ajudou sua empresa a identificar oportunidades ou reduzir custos,
-      você pode contribuir via Pix para manter o projeto atualizado, independente e gratuito.
-    </p>
+    </script>
 
-    <div class="flex flex-col items-center gap-3">
-      <div class="text-xs text-gray-500">
-        Chave Pix:
-        <span class="font-medium text-gray-800 select-all">eduardocardosop@gmail.com</span>
-      </div>
+    <!-- Script do Pix (separado) -->
+    <script>
+        function copyPixKey() {
+            const key = "eduardocardosop@gmail.com";
+            const msg = document.getElementById("pixCopiedMsg");
 
-      <button
-        type="button"
-        onclick="copyPixKey()"
-        class="bg-black text-white px-6 py-2 rounded-xl text-sm hover:opacity-90 transition">
-        Copiar chave Pix
-      </button>
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(key).then(() => {
+                    msg.classList.remove("hidden");
+                    setTimeout(() => msg.classList.add("hidden"), 2500);
+                }).catch(() => fallbackCopy(key, msg));
+            } else {
+                fallbackCopy(key, msg);
+            }
+        }
 
-      <p id="pixCopiedMsg" class="text-xs text-gray-500 hidden">✅ Chave Pix copiada!</p>
-      <p class="text-xs text-gray-400">Contribuição voluntária.</p>
-    </div>
-  </div>
-</section>
-
-<script>
-  function copyPixKey() {
-    const key = "eduardocardosop@gmail.com";
-    const msg = document.getElementById("pixCopiedMsg");
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(key).then(() => {
-        msg.classList.remove("hidden");
-        setTimeout(() => msg.classList.add("hidden"), 2500);
-      }).catch(() => fallbackCopy(key, msg));
-    } else {
-      fallbackCopy(key, msg);
-    }
-  }
-
-  function fallbackCopy(text, msgEl) {
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.setAttribute("readonly", "");
-    ta.style.position = "absolute";
-    ta.style.left = "-9999px";
-    document.body.appendChild(ta);
-    ta.select();
-    try {
-      document.execCommand("copy");
-      msgEl.classList.remove("hidden");
-      setTimeout(() => msgEl.classList.add("hidden"), 2500);
-    } catch (e) {
-      // Se falhar, ao menos o texto está "select-all" no HTML
-      alert("Não foi possível copiar automaticamente. Selecione a chave Pix e copie manualmente.");
-    }
-    document.body.removeChild(ta);
-  }
-</script>
+        function fallbackCopy(text, msgEl) {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            ta.setAttribute("readonly", "");
+            ta.style.position = "absolute";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand("copy");
+                msgEl.classList.remove("hidden");
+                setTimeout(() => msgEl.classList.add("hidden"), 2500);
+            } catch (e) {
+                alert("Não foi possível copiar automaticamente. Selecione a chave Pix e copie manualmente.");
+            }
+            document.body.removeChild(ta);
+        }
     </script>
 </body>
 </html>

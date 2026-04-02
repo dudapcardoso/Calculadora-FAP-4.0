@@ -6,10 +6,9 @@
     <title>Como o FAP é calculado - Infográfico Interativo</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- KaTeX for rendering math formulas -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 
     <style>
         :root {
@@ -103,24 +102,36 @@
         }
 
         .formula-container {
-            padding: 1rem; border: 1px solid var(--color-border); border-radius: 0.5rem; background-color: #f7fafc;
-            overflow-x: auto; -webkit-overflow-scrolling: touch;
+            padding: 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.75rem;
+            background-color: #f8fafc;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
-        .katex-display { color: var(--color-text-primary); margin: 0; }
+
+        .formula-note {
+            margin-top: .75rem;
+            font-size: .9rem;
+            line-height: 1.5;
+            color: #64748b;
+        }
+
+        .katex-display {
+            color: var(--color-text-primary);
+            margin: 0;
+            text-align: center;
+        }
 
         .section-5 .katex-display,
         .section-7 .katex-display {
-            font-size: clamp(0.40rem, 1.2vw, 0.60rem);
-            line-height: 1.25;
-            max-width: 100%;
-            overflow-x: auto;
-            overflow-y: hidden;
+            font-size: clamp(0.95rem, 2vw, 1.2rem);
+            line-height: 1.4;
         }
     </style>
 </head>
 
 <body>
-    <!-- HEADER com navegação -->
     <div class="header">
         <div class="container mx-auto px-6">
             <div class="flex flex-col items-center justify-between py-4 gap-3">
@@ -147,7 +158,7 @@
 
     <div class="max-w-4xl mx-auto p-4 sm:p-6 md:p-8">
         <div class="grid grid-cols-1 gap-8">
-            <!-- 1 -->
+
             <section class="card p-6">
                 <div>
                     <h2 class="text-2xl font-bold text-[var(--color-bg)]">1. O que é o FAP?</h2>
@@ -157,9 +168,8 @@
                 </div>
             </section>
 
-            <!-- 2 -->
             <section class="card p-6">
-                 <div>
+                <div>
                     <h2 class="text-2xl font-bold text-[var(--color-bg)]">2. Como o FAP é calculado?</h2>
                     <p class="mt-2 text-[var(--color-text-secondary)]">O cálculo é feito com base nos dados de acidentalidade dos últimos dois anos, combinando três indicadores com pesos distintos:</p>
                     <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
@@ -176,11 +186,10 @@
                             <div class="mt-1 font-semibold">Custo</div>
                         </div>
                     </div>
-                     <p class="mt-4 text-sm text-gray-500 italic">A alta ponderação da Gravidade (50%) revela que a severidade de um acidente tem o maior peso na definição do FAP.</p>
+                    <p class="mt-4 text-sm text-gray-500 italic">A alta ponderação da Gravidade (50%) revela que a severidade de um acidente tem o maior peso na definição do FAP.</p>
                 </div>
             </section>
 
-            <!-- 3 -->
             <section class="card p-6">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)] mb-4">3. Quais ocorrências entram no cálculo?</h2>
                 <p class="text-[var(--color-text-secondary)] mb-4">A Previdência considera apenas benefícios de natureza acidentária. Acidentes de trajeto <strong>são excluídos</strong>.</p>
@@ -200,7 +209,7 @@
                         <tbody>
                             <tr class="border-b">
                                 <td class="px-4 py-3 font-medium text-gray-900">B91</td>
-                                <td class="px-4 py-3">Auxílio-Doença</td>
+                                <td class="px-4 py-3">Auxílio-doença acidentário</td>
                                 <td class="px-4 py-3 text-center hidden sm:table-cell">Sim (1,0)</td>
                                 <td class="px-4 py-3 text-center">Sim (0,10)</td>
                                 <td class="px-4 py-3 text-center hidden md:table-cell">Sim</td>
@@ -208,7 +217,7 @@
                             </tr>
                             <tr class="bg-gray-50 border-b">
                                 <td class="px-4 py-3 font-medium text-gray-900">B92</td>
-                                <td class="px-4 py-3">Aposentadoria por Invalidez</td>
+                                <td class="px-4 py-3">Aposentadoria por invalidez acidentária</td>
                                 <td class="px-4 py-3 text-center hidden sm:table-cell">Sim (1,0)</td>
                                 <td class="px-4 py-3 text-center">Sim (0,30)</td>
                                 <td class="px-4 py-3 text-center hidden md:table-cell">Sim</td>
@@ -216,7 +225,7 @@
                             </tr>
                             <tr class="border-b">
                                 <td class="px-4 py-3 font-medium text-gray-900">B93</td>
-                                <td class="px-4 py-3">Pensão por Morte</td>
+                                <td class="px-4 py-3">Pensão por morte acidentária</td>
                                 <td class="px-4 py-3 text-center hidden sm:table-cell">Sim (1,0)</td>
                                 <td class="px-4 py-3 text-center">Sim (0,50)</td>
                                 <td class="px-4 py-3 text-center hidden md:table-cell">Sim</td>
@@ -224,7 +233,7 @@
                             </tr>
                             <tr class="bg-gray-50 border-b">
                                 <td class="px-4 py-3 font-medium text-gray-900">B94</td>
-                                <td class="px-4 py-3">Auxílio-Acidente</td>
+                                <td class="px-4 py-3">Auxílio-acidente</td>
                                 <td class="px-4 py-3 text-center hidden sm:table-cell">Sim (1,0)</td>
                                 <td class="px-4 py-3 text-center">Sim (0,10)</td>
                                 <td class="px-4 py-3 text-center hidden md:table-cell">Sim</td>
@@ -232,7 +241,7 @@
                             </tr>
                             <tr>
                                 <td class="px-4 py-3 font-medium text-gray-900">CAT com óbito</td>
-                                <td class="px-4 py-3">(sem pensão)</td>
+                                <td class="px-4 py-3">Comunicação de acidente fatal sem pensão registrada</td>
                                 <td class="px-4 py-3 text-center hidden sm:table-cell">Sim (1,0)</td>
                                 <td class="px-4 py-3 text-center">Sim (0,50)</td>
                                 <td class="px-4 py-3 text-center hidden md:table-cell">Não</td>
@@ -243,7 +252,6 @@
                 </div>
             </section>
 
-            <!-- 4 -->
             <section class="card p-6">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)] mb-4">4. Impacto por Tipo de Evento</h2>
                 <div class="space-y-4">
@@ -259,7 +267,7 @@
                         <h3 class="font-semibold text-gray-800">B94 — Auxílio-Acidente (Sequela)</h3>
                         <p class="text-sm text-gray-600">Concedido após consolidação de lesão com sequela. É indenizatório e vitalício, gerando custo relevante e persistente.</p>
                     </div>
-                     <div class="border-t pt-4">
+                    <div class="border-t pt-4">
                         <h3 class="font-semibold text-gray-800">B93 — Pensão por Morte</h3>
                         <p class="text-sm text-gray-600">Impacto máximo na gravidade (0,50), com custo elevado e persistente.</p>
                     </div>
@@ -270,58 +278,62 @@
                 </div>
             </section>
 
-            <!-- 5 -->
             <section class="card p-6 section-5">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)] mb-4">5. Cálculo dos Indicadores Base</h2>
                 <div class="space-y-6">
                     <div>
                         <h3 class="font-semibold mb-2 text-center">Índice de Frequência (IF)</h3>
                         <div class="formula-container" id="formula-if"></div>
+                        <p class="formula-note">
+                            Soma-se a quantidade de eventos acidentários e divide-se pela média de vínculos da empresa. Depois, multiplica-se por 1.000.
+                        </p>
                     </div>
                     <div>
                         <h3 class="font-semibold mb-2 text-center">Índice de Gravidade (IG)</h3>
                         <div class="formula-container" id="formula-ig"></div>
+                        <p class="formula-note">
+                            Cada evento recebe um peso conforme sua gravidade. A soma ponderada é dividida pela média de vínculos e multiplicada por 1.000.
+                        </p>
                     </div>
                     <div>
                         <h3 class="font-semibold mb-2 text-center">Índice de Custo (IC)</h3>
                         <div class="formula-container" id="formula-ic"></div>
+                        <p class="formula-note">
+                            Compara-se o valor total dos benefícios acidentários pagos com a massa salarial da empresa, multiplicando o resultado por 1.000.
+                        </p>
                     </div>
                 </div>
             </section>
 
-            <!-- 6 -->
             <section class="card p-6">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)] mb-4">6. Conversão para Percentis</h2>
                 <p class="text-[var(--color-text-secondary)] mb-4">Após calcular os índices, cada um é convertido em um percentil. Isso posiciona a empresa em relação a todas as outras do mesmo setor (CNAE).</p>
                 <div class="p-4 bg-gray-50 rounded-lg text-center border">
-                    <p class="mb-2 text-gray-700">Fórmula do Percentil de Ordem:</p>
+                    <p class="mb-2 text-gray-700">Fórmula do percentil de ordem:</p>
                     <div id="formula-percentil"></div>
                     <div class="mt-4 text-left text-sm text-gray-600 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <p><strong>k</strong> = Posição da empresa na lista.</p>
-                        <p><strong>N</strong> = Número total de empresas.</p>
+                        <p><strong>k</strong> = posição da empresa no rol da subclasse CNAE.</p>
+                        <p><strong>N</strong> = número total de estabelecimentos considerados.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 7 -->
             <section class="card p-6 section-7">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)] mb-4">7. Cálculo do Índice Composto</h2>
-                <p class="text-[var(--color-text-secondary)] mb-4">Os percentis de Frequência (P_IF), Gravidade (P_IG) e Custo (P_IC) são combinados na fórmula final para gerar o índice FAP.</p>
+                <p class="text-[var(--color-text-secondary)] mb-4">Os percentis de Frequência, Gravidade e Custo são combinados na fórmula final para gerar o índice composto que dá origem ao FAP.</p>
                 <div class="formula-container" id="formula-ic-final"></div>
             </section>
 
-            <!-- 8 -->
             <section class="card p-6">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)]">8. Regras e Bloqueios</h2>
                 <ul class="mt-4 list-disc list-inside space-y-2 text-[var(--color-text-secondary)]">
-                    <li><strong>Sem acidentes:</strong> Garante o FAP mínimo de 0,5000 (bônus máximo).</li>
-                    <li><strong>Omissão de CAT:</strong> Resulta no FAP máximo de 2,0000 (punição máxima).</li>
-                    <li><strong>Morte ou Invalidez:</strong> Se ocorrer no 1º ano do período-base, o FAP fica travado em no mínimo 1,0000.</li>
-                    <li><strong>Rotatividade &gt; 75%:</strong> Causa a perda do bônus, fixando o FAP em 1,0000.</li>
+                    <li><strong>Sem acidentes:</strong> garante o FAP mínimo de 0,5000.</li>
+                    <li><strong>Omissão de CAT:</strong> pode resultar no FAP máximo de 2,0000.</li>
+                    <li><strong>Morte ou invalidez:</strong> se ocorrer no primeiro ano do período-base, o FAP pode ficar travado em no mínimo 1,0000.</li>
+                    <li><strong>Rotatividade acima de 75%:</strong> causa perda do bônus, fixando o FAP em 1,0000.</li>
                 </ul>
             </section>
 
-            <!-- 9 -->
             <section class="card p-6">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)] mb-4">9. Caso Prático</h2>
                 <p class="text-[var(--color-text-secondary)] mb-4">Análise de uma empresa com RAT de 3% e folha de pagamento mensal de R$ 400.000,00.</p>
@@ -349,13 +361,12 @@
                 <div class="border-t pt-4 mt-6">
                     <h3 class="font-bold text-lg text-gray-800">Economia Potencial</h3>
                     <div class="mt-2 space-y-2 text-sm">
-                         <p><strong>Economia Anual:</strong> R$ 278.600,40 - R$ 78.000,00 = <span class="text-xl font-bold" style="color: var(--color-accent);">R$ 200.600,40</span></p>
-                         <p><strong>Economia Bienal (26 meses):</strong> R$ 200.600,40 × 2 = <span class="text-xl font-bold" style="color: var(--color-accent);">R$ 401.200,80</span></p>
+                        <p><strong>Economia Anual:</strong> R$ 278.600,40 - R$ 78.000,00 = <span class="text-xl font-bold" style="color: var(--color-accent);">R$ 200.600,40</span></p>
+                        <p><strong>Economia Bienal (26 meses):</strong> R$ 200.600,40 × 2 = <span class="text-xl font-bold" style="color: var(--color-accent);">R$ 401.200,80</span></p>
                     </div>
                 </div>
             </section>
 
-            <!-- 10 -->
             <section class="card p-6">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)] mb-4">10. Simulador de Impacto</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
@@ -398,7 +409,6 @@
                 </div>
             </section>
 
-            <!-- 11 -->
             <section class="card p-6">
                 <h2 class="text-2xl font-bold text-[var(--color-bg)]">11. Ponto-Chave: O Efeito Bienal</h2>
                 <p class="mt-4 text-[var(--color-text-secondary)]">
@@ -408,7 +418,6 @@
         </div>
     </div>
 
-    <!-- ✅ DOAÇÃO (AGORA NO HTML, FORA DO <script>) -->
     <section class="max-w-3xl mx-auto mt-16 mb-10 px-6">
         <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 text-center shadow-sm">
             <h3 class="text-lg font-semibold mb-2">☕ Gostou da ferramenta? Apoie o projeto.</h3>
@@ -436,24 +445,55 @@
         </div>
     </section>
 
-    <!-- Script principal (KaTeX + simulador) -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // KaTeX
-            const safeRender = (tex, el, opts={}) => {
-                try { katex.render(tex, el, Object.assign({throwOnError:false, displayMode:true}, opts)); }
-                catch(e){}
+            const safeRender = (tex, el, opts = {}) => {
+                try {
+                    katex.render(
+                        tex,
+                        el,
+                        Object.assign(
+                            { throwOnError: false, displayMode: true, strict: "ignore" },
+                            opts
+                        )
+                    );
+                } catch (e) {
+                    console.error("Erro ao renderizar fórmula:", e);
+                }
             };
 
-            safeRender("IF = \\\\frac{\\\\sum (B91+B92+B93+B94+\\\\text{CAT Óbito})}{\\\\text{Média de Vínculos}} \\\\times 1000", document.getElementById('formula-if'));
-            safeRender("IG = \\\\frac{\\\\sum (B91 \\\\cdot 0{,}1 + B92 \\\\cdot 0{,}3 + (B93+\\\\text{CAT Óbito}) \\\\cdot 0{,}5 + B94 \\\\cdot 0{,}1)}{\\\\text{Média de Vínculos}} \\\\times 1000", document.getElementById('formula-ig'));
-            safeRender("IC = \\\\frac{\\\\text{Valor Total de Benefícios}}{\\\\text{Massa Salarial}} \\\\times 1000", document.getElementById('formula-ic'));
-            safeRender("P = \\\\frac{(k - 1)}{(N - 1)} \\\\times 100", document.getElementById('formula-percentil'));
-            safeRender("FAP = (0{,}50 \\\\times P_{IG} + 0{,}35 \\\\times P_{IF} + 0{,}15 \\\\times P_{IC}) \\\\times 0{,}02", document.getElementById('formula-ic-final'), {fleqn:true});
+            safeRender(
+                String.raw`IF = \frac{B91 + B92 + B93 + B94 + \text{CAT com óbito}}{\text{Média de vínculos}} \cdot 1000`,
+                document.getElementById('formula-if')
+            );
 
-            // Simulador
-            const formatCurrency = (v)=> new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v);
-            const parseCurrency  = (v)=> parseFloat(v.replace(/[^0-9,-]+/g,"").replace(",", ".")) || 0;
+            safeRender(
+                String.raw`IG = \frac{(B91 \cdot 0{,}10) + (B92 \cdot 0{,}30) + (B93 \cdot 0{,}50) + (\text{CAT com óbito} \cdot 0{,}50) + (B94 \cdot 0{,}10)}{\text{Média de vínculos}} \cdot 1000`,
+                document.getElementById('formula-ig')
+            );
+
+            safeRender(
+                String.raw`IC = \frac{\text{Valor total de benefícios}}{\text{Massa salarial}} \cdot 1000`,
+                document.getElementById('formula-ic')
+            );
+
+            safeRender(
+                String.raw`P = \frac{k - 1}{N - 1} \cdot 100`,
+                document.getElementById('formula-percentil')
+            );
+
+            safeRender(
+                String.raw`\text{Índice Composto} = (0{,}50 \cdot P_{\mathrm{IG}}) + (0{,}35 \cdot P_{\mathrm{IF}}) + (0{,}15 \cdot P_{\mathrm{IC}})`,
+                document.getElementById('formula-ic-final')
+            );
+
+            const formatCurrency = (v) => new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(v);
+
+            const parseCurrency = (v) =>
+                parseFloat((v || '').replace(/[^0-9,-]+/g, "").replace(",", ".")) || 0;
 
             const folhaMensalInput = document.getElementById('folhaMensal');
             const fapPublicadoInput = document.getElementById('fapPublicado');
@@ -486,7 +526,10 @@
 
             folhaMensalInput.addEventListener('input', (e) => {
                 let v = e.target.value.replace(/\D/g, '');
-                v = (v / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                v = (v / 100).toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                });
                 e.target.value = v;
                 calculateImpact();
             });
@@ -500,12 +543,14 @@
                 });
             });
 
-            [ratSelect, fapPublicadoInput, fapCorretoInput, folhaMensalInput].forEach(el => el.addEventListener('input', calculateImpact));
+            [ratSelect, fapPublicadoInput, fapCorretoInput, folhaMensalInput].forEach(el => {
+                el.addEventListener('input', calculateImpact);
+            });
+
             calculateImpact();
         });
     </script>
 
-    <!-- Script do Pix (separado) -->
     <script>
         function copyPixKey() {
             const key = "eduardocardosop@gmail.com";

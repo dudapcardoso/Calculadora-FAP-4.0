@@ -18,7 +18,7 @@ layout: null
     tailwind.config = {
       theme: { extend: {
         colors: {
-          'tax-blue':'#152E3E','tax-gold':'#E2B874','tax-gray':'#EBEBEB',
+          'tax-blue':'#000000','tax-gold':'#E2B874','tax-gray':'#EBEBEB',
           'tax-dark-gray':'#6B7280','tax-bg-light':'#F9FAFB'
         }
       } }
@@ -28,7 +28,7 @@ layout: null
   <style>
     #calc-fap { background-color: #f6f6f6; min-height: 100vh; }
 
-    .header{ background:#152e3e; padding:1rem 0; margin-bottom:0; }
+    .header{ background:#000000; padding:1rem 0; margin-bottom:0; }
     @media(min-width:768px){ .header{ padding:2rem 0; } }
     .golden-stripe{ background:#dba958; height:6px; width:100%; }
 
@@ -56,7 +56,7 @@ layout: null
     }
     .top-nav a.is-active{
       background:#dba958;
-      color:#152e3e;
+      color:#000000;
       border-color:#dba958;
     }
     .top-nav-wrap{ margin-top:12px; }
@@ -65,13 +65,13 @@ layout: null
     }
 
     .main-card{ background:#fff;border-radius:.75rem;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1) }
-    .input-field{ background:#F3F4F6;border:1px solid #D1D5DB;border-radius:.5rem;transition:all .2s;color:#152E3E }
+    .input-field{ background:#F3F4F6;border:1px solid #D1D5DB;border-radius:.5rem;transition:all .2s;color:#000000 }
     .input-field:focus{ border-color:#E2B874; box-shadow:0 0 0 2px rgba(226,184,116,.3); outline:none }
     input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
     input[type=number]{-moz-appearance:textfield}
-    .btn-primary{ background:#152E3E;color:#fff;border-radius:.5rem;padding:.75rem 1rem;font-weight:600;transition:filter .2s;width:100% }
+    .btn-primary{ background:#000000;color:#fff;border-radius:.5rem;padding:.75rem 1rem;font-weight:600;transition:filter .2s;width:100% }
     .btn-primary:hover{ filter:brightness(1.1) }
-    .btn-secondary{ background:#E2B874;color:#152E3E;border-radius:.5rem;padding:.75rem 1rem;font-weight:600;transition:filter .2s;width:100% }
+    .btn-secondary{ background:#E2B874;color:#000000;border-radius:.5rem;padding:.75rem 1rem;font-weight:600;transition:filter .2s;width:100% }
     .btn-secondary:hover{ filter:brightness(1.05) }
     .hidden{ display:none; }
     .blob { position:absolute; filter: blur(40px); opacity:.25; pointer-events:none; }

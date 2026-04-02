@@ -82,42 +82,73 @@ layout: null
 
 <body>
 <section id="calc-fap" class="text-gray-800">
- <div class="header">
+<div class="header">
   <div class="container mx-auto px-6">
 
-    <!-- LINHA 1: LOGO + TÍTULO -->
-    <div class="flex items-center justify-between py-4">
+    <!-- MOBILE -->
+    <div class="flex flex-col items-center gap-2 py-4 md:hidden">
 
-      <!-- LOGO (ESQUERDA) -->
-      <div class="flex items-center">
-        <img src="./logo_inteligencia_prev.png" 
-             alt="Inteligência Prev"
-             class="h-24 sm:h-28 object-contain">
-      </div>
+      <img src="./logo_inteligencia_prev.png" 
+           alt="Inteligência Prev"
+           class="h-16 object-contain">
 
-      <!-- TÍTULO (CENTRO ABSOLUTO) -->
-      <div class="absolute left-1/2 transform -translate-x-1/2 text-center">
-        <h1 class="text-lg sm:text-xl md:text-2xl font-bold text-white">
-          Calculadora do FAP
-        </h1>
-        <p class="text-xs sm:text-sm text-gray-400">
-          Recalcule índices e veja o impacto
-        </p>
-      </div>
+      <h1 class="text-lg font-bold text-white text-center">
+        Calculadora do FAP
+      </h1>
 
-      <!-- ESPAÇO DIREITA (equilibra layout) -->
-      <div class="w-16 sm:w-20"></div>
+      <p class="text-xs text-gray-400 text-center">
+        Recalcule índices e veja o impacto
+      </p>
 
-    </div>
-
-    <!-- LINHA 2: MENU CENTRALIZADO -->
-    <div class="flex justify-center pb-4">
-      <nav class="top-nav flex flex-wrap items-center justify-center gap-2">
+      <nav class="top-nav flex flex-wrap justify-center gap-2 mt-2">
         <a href="./index.html" class="is-active">Calculadora</a>
         <a href="./impacto-fap.html">Impactos do FAP</a>
         <a href="./como-o-fap-e-calculado.html">Como o FAP é calculado</a>
       </nav>
+
     </div>
+
+    <!-- DESKTOP -->
+    <div class="hidden md:block">
+
+      <!-- LINHA 1 -->
+      <div class="flex items-center justify-between py-4 relative">
+
+        <!-- LOGO -->
+        <img src="./logo_inteligencia_prev.png" 
+             alt="Inteligência Prev"
+             class="h-30 lg:h-34 object-contain">
+
+        <!-- TÍTULO CENTRAL -->
+        <div class="absolute left-1/2 transform -translate-x-1/2 text-center">
+          <h1 class="text-xl md:text-2xl font-bold text-white">
+            Calculadora do FAP
+          </h1>
+          <p class="text-sm text-gray-400">
+            Recalcule índices e veja o impacto
+          </p>
+        </div>
+
+        <!-- ESPAÇO DIREITA -->
+        <div class="w-24"></div>
+
+      </div>
+
+      <!-- LINHA 2 MENU -->
+      <div class="flex justify-center pb-4">
+        <nav class="top-nav flex flex-wrap gap-2">
+          <a href="./index.html" class="is-active">Calculadora</a>
+          <a href="./impacto-fap.html">Impactos do FAP</a>
+          <a href="./como-o-fap-e-calculado.html">Como o FAP é calculado</a>
+        </nav>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="golden-stripe"></div>
 
   </div>
 </div>
